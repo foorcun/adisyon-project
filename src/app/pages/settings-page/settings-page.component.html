@@ -1,1 +1,62 @@
-<p>settings-page works!</p>
+<div class="settings-container">
+  <!-- Sidebar -->
+  <app-settings-sidebar (sectionSelected)="onSectionChange($event)"></app-settings-sidebar>
+
+  <!-- Main Content -->
+  <div class="settings-content">
+    <ng-container [ngSwitch]="selectedSection">
+      <div *ngSwitchCase="'profile'">
+        <h2>Profile Settings</h2>
+        <!-- Profile form -->
+        <form>
+          <label>Name:</label>
+          <input type="text" placeholder="Enter your name" />
+          <label>Email:</label>
+          <input type="email" placeholder="Enter your email" />
+          <button type="submit">Save</button>
+        </form>
+      </div>
+
+      <div *ngSwitchCase="'account'">
+        <h2>Account Settings</h2>
+        <form>
+          <label>Password:</label>
+          <input type="password" placeholder="Enter new password" />
+          <button type="submit">Update Password</button>
+        </form>
+      </div>
+
+      <div *ngSwitchCase="'restaurant'">
+        <h2>Restaurant Settings</h2>
+        <form>
+          <label>Restaurant Name:</label>
+          <input type="text" placeholder="Enter restaurant name" />
+          <label>Location:</label>
+          <input type="text" placeholder="Enter location" />
+          <button type="submit">Save Changes</button>
+        </form>
+      </div>
+
+      <div *ngSwitchCase="'notifications'">
+        <h2>Notification Preferences</h2>
+        <label><input type="checkbox"> Order Alerts</label><br/>
+        <label><input type="checkbox"> Reservation Alerts</label><br/>
+        <button type="button">Update Preferences</button>
+      </div>
+
+      <div *ngSwitchCase="'users'">
+        <h2>User Management</h2>
+        <p>Add/remove restaurant staff and assign roles.</p>
+      </div>
+
+      <div *ngSwitchCase="'api'">
+        <h2>API Access</h2>
+        <p>Manage API keys for integrations.</p>
+      </div>
+
+      <div *ngSwitchDefault>
+        <h2>Select a section from the sidebar.</h2>
+      </div>
+    </ng-container>
+  </div>
+</div>

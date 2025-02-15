@@ -1,0 +1,10 @@
+.settings-container {
+  display: flex;
+  height: 100vh;
+
+  .settings-content {
+    flex: 3;
+    padding: 20px;
+    overflow-y: auto;
+  }
+}
