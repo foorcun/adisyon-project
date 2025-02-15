@@ -12,6 +12,11 @@
         <app-category-component></app-category-component>
       </div>
 
+      <div *ngSwitchCase="'menu-item'">
+        <h2>Menu Item Settings</h2>
+        <app-menu-item></app-menu-item>
+      </div>
+      
       <div *ngSwitchCase="'profile'">
         <h2>Profile Settings</h2>
         <!-- Profile form -->

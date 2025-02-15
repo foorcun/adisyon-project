@@ -1,0 +1,117 @@
+<div class="menu-item-settings">
+  <h2>🍽️ Menu Item Settings</h2>
+
+  <!-- Category Selection for Viewing Menu Items -->
+  <div class="category-select">
+    <label for="categoryDropdown">Select Category to View Items:</label>
+    <select
+      id="categoryDropdown"
+      #categorySelector
+      (change)="onCategorySelect(categorySelector.value)"
+      class="form-select"
+    >
+      <option value="" selected disabled>Select a category</option>
+      <option *ngFor="let categoryId of getCategoryKeys()" [value]="categoryId">
+        {{ categories[categoryId].name }}
+      </option>
+    </select>
+  </div>
+
+  <!-- Add New Menu Item Form -->
+  <form
+    [formGroup]="menuItemForm"
+    (ngSubmit)="addMenuItem()"
+    class="add-menu-item-form"
+  >
+    <div class="form-group">
+      <!-- Dropdown for Category Selection -->
+      <label for="addCategoryDropdown">Category:</label>
+      <select id="addCategoryDropdown" formControlName="categoryId">
+        <option value="" selected disabled>Select category</option>
+        <option
+          *ngFor="let categoryId of getCategoryKeys()"
+          [value]="categoryId"
+        >
+          {{ categories[categoryId].name }}
+        </option>
+      </select>
+
+      <input formControlName="name" placeholder="📝 Item Name" />
+      <input formControlName="description" placeholder="📝 Description" />
+      <input
+        formControlName="price"
+        placeholder="💲 Price"
+        type="number"
+        min="0"
+      />
+      <input formControlName="imageUrl" placeholder="🌆 Image URL (optional)" />
+      <button type="submit" [disabled]="menuItemForm.invalid">
+        ➕ Add Item
+      </button>
+    </div>
+  </form>
+
+  <!-- Display Existing Menu Items -->
+  <div class="menu-item-list" *ngIf="getMenuItemKeys().length > 0">
+    <h3>📋 Current Menu Items:</h3>
+
+    <div *ngFor="let menuItemId of getMenuItemKeys()" class="menu-item">
+      <div class="item-details">
+        <div class="info">
+          <strong>Name:</strong>
+          <input [(ngModel)]="menuItems[menuItemId].name" placeholder="Name" />
+        </div>
+        <div class="info">
+          <strong>Description:</strong>
+          <input
+            [(ngModel)]="menuItems[menuItemId].description"
+            placeholder="Description"
+          />
+        </div>
+        <div class="info">
+          <strong>Price:</strong>
+          <input
+            [(ngModel)]="menuItems[menuItemId].price"
+            type="number"
+            min="0"
+            placeholder="Price"
+          />
+        </div>
+        <div class="info">
+          <strong>Image URL:</strong>
+          <input
+            [(ngModel)]="menuItems[menuItemId].imageUrl"
+            placeholder="Image URL"
+          />
+        </div>
+      </div>
+
+      <div class="item-actions">
+        <!-- Update Button -->
+        <button
+          class="update-btn"
+          (click)="
+            updateMenuItem(
+              menuItemId,
+              menuItems[menuItemId].name,
+              menuItems[menuItemId].description,
+              menuItems[menuItemId].price,
+              menuItems[menuItemId].imageUrl
+            )
+          "
+        >
+          🔄 Update
+        </button>
+
+        <!-- Delete Button -->
+        <button class="delete-btn" (click)="deleteMenuItem(menuItemId)">
+          ❌ Delete
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <p *ngIf="!getMenuItemKeys().length && selectedCategoryId">
+    🚫 No menu items available.
+  </p>
+</div>

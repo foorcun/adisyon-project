@@ -9,6 +9,7 @@ export class CategoryMapper {
         const categoryData = data as { [key: string]: any };
         const menuItems: { [key: string]: MenuItem } = {};
 
+        // Map 'menuItem' from Firebase into 'menuItems' for the Category entity
         if (categoryData['menuItem'] && typeof categoryData['menuItem'] === 'object') {
             const items = categoryData['menuItem'] as Record<string, unknown>;
             for (const [key, value] of Object.entries(items)) {

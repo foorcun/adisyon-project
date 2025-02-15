@@ -4,18 +4,20 @@ import { CommonModule } from '@angular/common';
 import { CategoryComponentComponent } from './category-component/category-component.component';
 import { MenuFirebaseRepository } from '../../MenuFeature/infrastructure/menu-firebase.repository';
 import { Menu } from '../../MenuFeature/domain/entity/menu.entity';
+import { MenuItemComponent } from './menu-item/menu-item.component';
 
 @Component({
   selector: 'app-settings-page',
   imports: [SettingsSidebarComponent, CommonModule,
-    CategoryComponentComponent
+    CategoryComponentComponent,
+    MenuItemComponent
   ],
   templateUrl: './settings-page.component.html',
   styleUrl: './settings-page.component.scss'
 })
 export class SettingsPageComponent implements OnInit {
   // selectedSection: string = 'profile';
-  selectedSection: string = 'category';
+  selectedSection: string = 'menu-item';
 
 constructor(private menuRepository: MenuFirebaseRepository) {}
 

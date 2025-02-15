@@ -4,6 +4,6 @@ export class Category {
     constructor(
         public id: string,
         public name: string,
-        public menuItems: { [key: string]: MenuItem  } = {}
+        public menuItems: { [key: string]: MenuItem } = {}  // This expects `menuItems`, not `menuItem`
     ) {}
 }

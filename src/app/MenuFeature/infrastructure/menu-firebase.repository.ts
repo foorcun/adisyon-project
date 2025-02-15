@@ -4,6 +4,7 @@ import { BehaviorSubject, from, Observable } from 'rxjs';
 import { Menu } from '../domain/entity/menu.entity';
 import { MenuMapper } from '../domain/entity/menu-mapper';
 import { Category } from '../domain/entity/category.entity';
+import { MenuItem } from '../domain/entity/menuitem.entity';
 
 @Injectable({
     providedIn: 'root',
@@ -59,5 +60,27 @@ export class MenuFirebaseRepository {
     updateCategoryName(menuKey: string, categoryId: string, newName: string): Observable<void> {
         const categoryRef = ref(this.database, `${this.basePath}/${menuKey}/category/${categoryId}`);
         return from(update(categoryRef, { name: newName }));
+    }
+    // Add Menu Item
+    addMenuItem(menuKey: string, categoryId: string, menuItem: MenuItem): Observable<void> {
+        const menuItemRef = ref(this.database, `${this.basePath}/${menuKey}/category/${categoryId}/menuItem`);
+        return from(push(menuItemRef, {
+            name: menuItem.name,
+            description: menuItem.description,
+            price: menuItem.price,
+            imageUrl: menuItem.imageUrl
+        }).then(() => { }));
+    }
+
+    // Remove Menu Item
+    removeMenuItem(menuKey: string, categoryId: string, menuItemId: string): Observable<void> {
+        const menuItemRef = ref(this.database, `${this.basePath}/${menuKey}/category/${categoryId}/menuItem/${menuItemId}`);
+        return from(remove(menuItemRef));
+    }
+
+    // Update Menu Item
+    updateMenuItem(menuKey: string, categoryId: string, menuItemId: string, updates: Partial<MenuItem>): Observable<void> {
+        const menuItemRef = ref(this.database, `${this.basePath}/${menuKey}/category/${categoryId}/menuItem/${menuItemId}`);
+        return from(update(menuItemRef, updates));
     }
 }
