@@ -1,3 +1,4 @@
+<!-- 🏷️ Category Header -->
 <div class="categories-header" style="user-select: none">
   <div class="dark-overlay">
     <div class="categories-row">
@@ -15,26 +16,21 @@
   </div>
 </div>
 
+<!-- 🛒 Menu Items (Scrollable) -->
 <div class="menu-items-column" *ngIf="categoryProducts.length">
   <div
     class="category-group"
     *ngFor="let categoryProduct of categoryProducts"
     [id]="categoryProduct.category.id"
   >
-    <!-- 🏷️ Category Title -->
-    <h2 class="category-title" style="user-select: none; padding-top: 0.2rem">
+    <h2 class="category-title">
       {{ categoryProduct.category.name | uppercase }}
     </h2>
-
-    <!-- 🛒 Menu Items List -->
     <div class="menu-items-list">
       <div class="menu-item" *ngFor="let menuItem of categoryProduct.menuItems">
-        <!-- 🖼️ Menu Item Image -->
         <div class="menu-item-image">
           <img [src]="menuItem.imageUrl" [alt]="menuItem.name" />
         </div>
-
-        <!-- 📋 Menu Item Details -->
         <div class="menu-item-details">
           <h3>{{ menuItem.name }}</h3>
           <p class="description">{{ menuItem.description }}</p>

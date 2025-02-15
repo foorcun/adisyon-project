@@ -19,24 +19,12 @@ export interface CategoryProducts {
 })
 export class MenuPageComponent implements OnInit {
 
-  // categories$: Observable<Category[]> | undefined;
-
   categories: { [key: string]: Category } = {};
   categoryProducts: CategoryProducts[] = [];
-  // categoryProducts$: Observable<CategoryProducts[]> | undefined;
-
-  // // isModalOpen = false;
 
   constructor(
     private menuRepository: MenuFirebaseRepository,
-    // private modalService: ModalService,
-    // private menuItemPageFacadeService: MenuItemPageFacadeService
   ) { }
-
-  // ngOnInit(): void {
-  //   this.categories$ = this.menuPageFacadeService.getCategories();
-  //   this.categoryProducts$ = this.menuPageFacadeService.getProductsGroupedByCategory();
-  // }
 
 
   ngOnInit(): void {
