@@ -1,1 +1,28 @@
-<p>category-component works!</p>
+<div class="category-settings">
+  <h2>Category Settings</h2>
+
+  <!-- Add Category Form -->
+  <form [formGroup]="categoryForm" (ngSubmit)="addCategory()" class="add-category-form">
+    <input formControlName="name" placeholder="Enter category name" />
+    <button type="submit" [disabled]="categoryForm.invalid">Add Category</button>
+  </form>
+
+  <!-- Display Existing Categories -->
+  <div class="category-list" *ngIf="getCategoryKeys().length">
+    <h3>Existing Categories:</h3>
+    <div *ngFor="let categoryId of getCategoryKeys()">
+      <div class="category-item">
+        <span>{{ categories[categoryId].name }}</span>
+
+        <!-- Update Category Name -->
+        <input #updatedName placeholder="New name" />
+        <button (click)="updateCategoryName(categoryId, updatedName.value)">Update</button>
+
+        <!-- Delete Category -->
+        <button (click)="deleteCategory(categoryId)" class="delete-btn">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <p *ngIf="getCategoryKeys().length === 0">No categories available.</p>
+</div>

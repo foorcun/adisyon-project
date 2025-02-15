@@ -3,6 +3,7 @@ import { Database, ref, onValue, push, remove, update } from '@angular/fire/data
 import { BehaviorSubject, from, Observable } from 'rxjs';
 import { Menu } from '../domain/entity/menu.entity';
 import { MenuMapper } from '../domain/entity/menu-mapper';
+import { Category } from '../domain/entity/category.entity';
 
 @Injectable({
     providedIn: 'root',
@@ -40,5 +41,23 @@ export class MenuFirebaseRepository {
     updateMenu(menuKey: string, updates: Partial<Menu>): Observable<void> {
         const menuRef = ref(this.database, `${this.basePath}/${menuKey}`);
         return from(update(menuRef, updates));
+    }
+
+    // ✅ Missing Method: addCategory
+    addCategory(menuKey: string, category: Category): Observable<void> {
+        const categoryRef = ref(this.database, `${this.basePath}/${menuKey}/category`);
+        return from(push(categoryRef, {
+            name: category.name
+        }).then(() => { }));
+    }
+    removeCategory(menuKey: string, categoryId: string): Observable<void> {
+        const categoryRef = ref(this.database, `${this.basePath}/${menuKey}/category/${categoryId}`);
+        return from(remove(categoryRef));
+    }
+
+    // ✅ Update Category Name
+    updateCategoryName(menuKey: string, categoryId: string, newName: string): Observable<void> {
+        const categoryRef = ref(this.database, `${this.basePath}/${menuKey}/category/${categoryId}`);
+        return from(update(categoryRef, { name: newName }));
     }
 }
