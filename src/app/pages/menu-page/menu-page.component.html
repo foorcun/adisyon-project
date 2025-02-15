@@ -15,33 +15,39 @@
   </div>
 </div>
 
-<!-- <div
-  class="products-column"
-  *ngIf="categoryProducts$ | async as categoryProducts"
->
+<div class="menu-items-column" *ngIf="categoryProducts.length">
   <div
     class="category-group"
     *ngFor="let categoryProduct of categoryProducts"
     [id]="categoryProduct.category.id"
   >
+    <!-- 🏷️ Category Title -->
     <h2 class="category-title" style="user-select: none; padding-top: 0.2rem">
       {{ categoryProduct.category.name | uppercase }}
     </h2>
-    <div class="products-list">
-      <div
-        class="product-item"
-        *ngFor="let product of categoryProduct.products"
-        (click)="openProductModal(product)"
-      >
-        <div class="product-image">
-          <img [src]="product.imageUrl" [alt]="product.name" />
+
+    <!-- 🛒 Menu Items List -->
+    <div class="menu-items-list">
+      <div class="menu-item" *ngFor="let menuItem of categoryProduct.menuItems">
+        <!-- 🖼️ Menu Item Image -->
+        <div class="menu-item-image">
+          <img [src]="menuItem.imageUrl" [alt]="menuItem.name" />
         </div>
-        <div class="product-details">
-          <h3>{{ product.name }}</h3>
-          <p class="description">{{ product.description }}</p>
-          <p class="price">{{ product.price | currency : "TRY" : "symbol" }}</p>
+
+        <!-- 📋 Menu Item Details -->
+        <div class="menu-item-details">
+          <h3>{{ menuItem.name }}</h3>
+          <p class="description">{{ menuItem.description }}</p>
+          <p class="price">
+            {{ menuItem.price | currency : "TRY" : "symbol" }}
+          </p>
         </div>
       </div>
     </div>
   </div>
-</div> -->
+</div>
+
+<!-- 🛑 Fallback Message -->
+<p *ngIf="!categoryProducts.length" class="text-center text-danger mt-3">
+  <i class="fas fa-exclamation-circle"></i> No menu items available.
+</p>
