@@ -13,7 +13,7 @@
   position: relative;
   top: 0;
   height: 20vh;
-  border: 3px solid green;
+  // border: 3px solid green;
   z-index: 2;
   background-color: #fff;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
@@ -21,9 +21,12 @@
 
 /* 🛒 Menu Items Column */
 .menu-items-column {
-  border: 3px solid red;
-  margin-top: 10vh; /* 🔑 10vh space between category and items */
-  height: 50vh; /* Fixed scroll area */
+  // border: 3px solid red;
+  // margin-top: 10vh; /* 🔑 10vh space between category and items */
+  // margin-top: 1vh; /* 🔑 10vh space between category and items */
+  margin-top: 0; /* 🔑 10vh space between category and items */
+  // height: 50vh; /* Fixed scroll area */
+  height: 70vh; /* Fixed scroll area */
   overflow-y: auto; /* Vertical scroll */
   box-sizing: border-box;
 }
