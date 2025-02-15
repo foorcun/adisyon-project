@@ -1,15 +1,16 @@
+<app-navbar-bootstrap></app-navbar-bootstrap>
 
 <!-- Hero Section -->
 <app-hero-section></app-hero-section>
-
-
 
 <app-message-menu-belt></app-message-menu-belt>
 
 <!-- Modal for Wi-Fi password -->
 <div id="wifiPasswordModal" class="wifi-modal" *ngIf="showModal">
-  <div class="modal-content" style="user-select: none;">
-    <p>Wi-Fi şifresi: <span id="wifiPassword">{{ wifiPassword }}</span></p>
+  <div class="modal-content" style="user-select: none">
+    <p>
+      Wi-Fi şifresi: <span id="wifiPassword">{{ wifiPassword }}</span>
+    </p>
     <button (click)="copyWifiPassword()">Kopyala</button>
     <button (click)="closeModal()">Kapat</button>
   </div>

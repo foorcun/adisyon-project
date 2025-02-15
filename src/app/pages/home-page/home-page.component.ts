@@ -3,10 +3,11 @@ import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MessageMenuBeltComponent } from './message-menu-belt/message-menu-belt.component';
 import { HeroSectionComponent } from './hero-section/hero-section.component';
+import { NavbarBootstrapComponent } from '../../common/navbar-bootstrap/navbar-bootstrap.component';
 
 @Component({
   selector: 'app-home-page',
-  imports: [CommonModule,HeroSectionComponent, MessageMenuBeltComponent ],
+  imports: [CommonModule,HeroSectionComponent, MessageMenuBeltComponent, NavbarBootstrapComponent ],
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.scss'
 })

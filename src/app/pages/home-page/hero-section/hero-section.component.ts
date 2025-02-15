@@ -2,12 +2,13 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { IconButtonComponent } from '../../../common/icon-button/icon-button.component';
+import { NavbarBootstrapComponent } from '../../../common/navbar-bootstrap/navbar-bootstrap.component';
 
 @Component({
   selector: 'app-hero-section',
-  imports: [IconButtonComponent,CommonModule ],
+  imports: [IconButtonComponent,CommonModule, ],
   templateUrl: './hero-section.component.html',
-  styleUrl: './hero-section.component.scss'
+  styleUrl: './hero-section.component.scss',
 })
 export class HeroSectionComponent {
 

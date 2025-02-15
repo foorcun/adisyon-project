@@ -5,12 +5,14 @@ import { CategoryComponentComponent } from './category-component/category-compon
 import { MenuFirebaseRepository } from '../../MenuFeature/infrastructure/menu-firebase.repository';
 import { Menu } from '../../MenuFeature/domain/entity/menu.entity';
 import { MenuItemComponent } from './menu-item/menu-item.component';
+import { NavbarBootstrapComponent } from '../../common/navbar-bootstrap/navbar-bootstrap.component';
 
 @Component({
   selector: 'app-settings-page',
   imports: [SettingsSidebarComponent, CommonModule,
     CategoryComponentComponent,
-    MenuItemComponent
+    MenuItemComponent,
+NavbarBootstrapComponent
   ],
   templateUrl: './settings-page.component.html',
   styleUrl: './settings-page.component.scss'
