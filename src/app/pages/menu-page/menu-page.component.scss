@@ -74,18 +74,18 @@
   // text-transform: uppercase; /* Ensures text is uppercase */
 }
 
-/* Products Column */
-.products-column {
+/* menu-items Column */
+.menu-items-column {
   display: flex;
   flex-direction: column; /* Arrange items in a vertical column */
-  gap: 1rem; /* Space between product items */
+  gap: 1rem; /* Space between menu-item items */
   max-height: 80vh; /* Limit height to make it scrollable */
   overflow-y: auto; /* Enable vertical scrolling */
   padding: 1rem;
   box-sizing: border-box;
 }
 
-.product-item {
+.menu-item {
   display: flex;
   gap: 1rem; /* Space between image and details */
   background-color: white;
@@ -96,33 +96,33 @@
   margin-top: 0.2rem;
 }
 
-.product-image img {
+.menu-item-image img {
   width: 80px;
   height: 80px;
   object-fit: cover;
   border-radius: 5px;
 }
 
-.product-details {
+.menu-item-details {
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
 
-.product-details h3 {
+.menu-item-details h3 {
   margin: 0 0 0.5rem;
   font-size: 1.2rem;
   font-weight: bold;
   color: #333;
 }
 
-.product-details .description {
+.menu-item-details .description {
   margin: 0 0 0.5rem;
   font-size: 0.9rem;
   color: #666;
 }
 
-.product-details .price {
+.menu-item-details .price {
   margin: 0;
   font-size: 1rem;
   font-weight: bold;
@@ -130,15 +130,15 @@
 }
 
 /* Optional: Customize scrollbars */
-.products-column::-webkit-scrollbar {
+.menu-items-column::-webkit-scrollbar {
   width: 8px;
 }
 
-.products-column::-webkit-scrollbar-thumb {
+.menu-items-column::-webkit-scrollbar-thumb {
   background-color: #ccc;
   border-radius: 4px;
 }
 
-.products-column::-webkit-scrollbar-thumb:hover {
+.menu-items-column::-webkit-scrollbar-thumb:hover {
   background-color: #aaa;
 }
