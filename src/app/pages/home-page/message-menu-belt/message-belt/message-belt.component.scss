@@ -1,3 +1,6 @@
+
+$primary-color: #4C3398;
+
 .message-body {
     display: flex;
     justify-content: center;
@@ -13,7 +16,7 @@
     font-size: calc(1.5vw + 0.8rem); /* Slightly smaller font size */
     font-weight: bold;
     color: #F4F7FA; /* Light text color for contrast */
-    background-color: #1D2D46; /* Primary deep blue for ribbon */
+    background-color: $primary-color; /* Primary deep blue for ribbon */
     padding: 0.8rem 1.5rem; /* Reduced padding inside the ribbon */
     line-height: 1.2;
     border-radius: 0.4rem; /* Slightly smaller rounded corners */
