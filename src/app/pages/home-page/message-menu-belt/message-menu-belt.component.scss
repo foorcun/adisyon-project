@@ -1,0 +1,27 @@
+.message-menu-belt {
+  width: 100%;
+  height: 30vh; // Full viewport height
+  //   border: 3px solid red;
+}
+
+#upper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50%;
+  // border: 3px solid green;
+}
+
+#lower {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50%;
+  // border: 3px solid blue;
+}
+
+@media (min-width: 768px) {
+.menu-belt{
+    visibility: hidden;
+}
+}

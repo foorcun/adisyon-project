@@ -1,0 +1,58 @@
+.message-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    // padding: 1.5rem; /* Reduced padding around the content */
+    background-color: lightgray; /* Soft gray background */
+}
+
+.message-body h1 {
+    position: relative;
+    font-size: calc(1.5vw + 0.8rem); /* Slightly smaller font size */
+    font-weight: bold;
+    color: #F4F7FA; /* Light text color for contrast */
+    background-color: #1D2D46; /* Primary deep blue for ribbon */
+    padding: 0.8rem 1.5rem; /* Reduced padding inside the ribbon */
+    line-height: 1.2;
+    border-radius: 0.4rem; /* Slightly smaller rounded corners */
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.15); /* Softer shadow */
+}
+
+.message-body h1 span {
+    display: block;
+    white-space: nowrap;
+}
+
+.message-body h1:before,
+.message-body h1:after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1.5rem; /* Smaller ribbon extensions */
+    height: 100%;
+    background-color: #2C476A; /* Slightly lighter blue for ribbon extensions */
+    z-index: -1;
+}
+
+.message-body h1:before {
+    left: -1.5rem;
+    clip-path: polygon(0 0, 100% 50%, 0 100%);
+}
+
+.message-body h1:after {
+    right: -1.5rem;
+    clip-path: polygon(100% 0, 0 50%, 100% 100%);
+}
+
+.message-body p {
+    font-size: calc(1.2vw + 0.4rem); /* Slightly smaller font size */
+    font-weight: bold;
+    color: #1D2D46; /* Primary deep blue for text */
+    margin-top: 0.8rem; /* Less spacing above */
+    background-color: #A9D6E5; /* Soft cyan for emphasis */
+    padding: 0.4rem 0.8rem; /* Reduced padding inside the text */
+    border-radius: 0.2rem; /* Smaller rounded corners */
+}

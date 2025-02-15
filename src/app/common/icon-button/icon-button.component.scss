@@ -1,0 +1,28 @@
+.icon-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 2rem 3rem;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  color: black; /* Text and icon color */
+  width: fit-content; /* Automatically adjust to the content size */
+}
+
+.icon-button:hover {
+  background-color: #e0e0e0;
+}
+
+.icon-button i {
+  font-size: 1.4rem;
+  color: black; /* Icon color */
+}
+
+.icon-button span {
+  font-size: 1.2rem;
+  color: black; /* Text color */
+}
