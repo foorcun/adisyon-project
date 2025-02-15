@@ -1,10 +1,17 @@
 <div class="settings-container">
   <!-- Sidebar -->
-  <app-settings-sidebar (sectionSelected)="onSectionChange($event)"></app-settings-sidebar>
+  <app-settings-sidebar
+    (sectionSelected)="onSectionChange($event)"
+  ></app-settings-sidebar>
 
   <!-- Main Content -->
   <div class="settings-content">
     <ng-container [ngSwitch]="selectedSection">
+      <div *ngSwitchCase="'category'">
+        <h2>Category Settings</h2>
+        <app-category-component></app-category-component>
+      </div>
+
       <div *ngSwitchCase="'profile'">
         <h2>Profile Settings</h2>
         <!-- Profile form -->
@@ -39,8 +46,8 @@
 
       <div *ngSwitchCase="'notifications'">
         <h2>Notification Preferences</h2>
-        <label><input type="checkbox"> Order Alerts</label><br/>
-        <label><input type="checkbox"> Reservation Alerts</label><br/>
+        <label><input type="checkbox" /> Order Alerts</label><br />
+        <label><input type="checkbox" /> Reservation Alerts</label><br />
         <button type="button">Update Preferences</button>
       </div>
 
