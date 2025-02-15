@@ -5,5 +5,6 @@ export const routes: Routes = [
     { path: "", loadComponent: () => import('./pages/home-page/home-page.component').then(m => m.HomePageComponent) },
     { path: "settings-page", loadComponent: () => import('./pages/settings-page/settings-page.component').then(m => m.SettingsPageComponent) },
     // { path: "", loadComponent: () => import('./pages/settings-page/settings-page.component').then(m => m.SettingsPageComponent) },
-    { path: "menu-page", loadComponent: () => import('./pages/menu-item-page/menu-item-page.component').then(m => m.MenuItemPageComponent) },
+    // { path: "menu-page", loadComponent: () => import('./pages/menu-item-page/menu-item-page.component').then(m => m.MenuItemPageComponent) },
+    { path: "menu-page", loadComponent: () => import('./pages/menu-page/menu-page.component').then(m => m.MenuPageComponent) },
 ];

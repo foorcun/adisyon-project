@@ -1,0 +1,47 @@
+<div class="categories-header" style="user-select: none">
+  <div class="dark-overlay">
+    <div class="categories-row">
+      <div
+        class="category-item"
+        *ngFor="let categoryId of categories | keyvalue"
+        (click)="scrollToCategory(categoryId.key)"
+        [style.backgroundImage]="'url(' + categoryId.value.imageUrl + ')'"
+      >
+        <div style="background-color: rgba(0, 0, 0, 0.5)">
+          {{ categoryId.value.name | uppercase }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- <div
+  class="products-column"
+  *ngIf="categoryProducts$ | async as categoryProducts"
+>
+  <div
+    class="category-group"
+    *ngFor="let categoryProduct of categoryProducts"
+    [id]="categoryProduct.category.id"
+  >
+    <h2 class="category-title" style="user-select: none; padding-top: 0.2rem">
+      {{ categoryProduct.category.name | uppercase }}
+    </h2>
+    <div class="products-list">
+      <div
+        class="product-item"
+        *ngFor="let product of categoryProduct.products"
+        (click)="openProductModal(product)"
+      >
+        <div class="product-image">
+          <img [src]="product.imageUrl" [alt]="product.name" />
+        </div>
+        <div class="product-details">
+          <h3>{{ product.name }}</h3>
+          <p class="description">{{ product.description }}</p>
+          <p class="price">{{ product.price | currency : "TRY" : "symbol" }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> -->
