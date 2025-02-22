@@ -5,6 +5,9 @@ import { routes } from './app.routes';
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { provideAuth, getAuth } from '@angular/fire/auth';
 import { provideDatabase, getDatabase } from '@angular/fire/database';
+import { FirestoreRoleRepository } from './UserFeature/infrastructure/firestore-role.repository';
+import { RoleRepository } from './UserFeature/domain/repositories/role.repository';
+import { provideHttpClient } from '@angular/common/http';
 
 const firebaseConfig = {
   apiKey: "AIzaSyCEbHghNUSZ6juY9bPRWdrmH0xK_FDk5hY",
@@ -19,8 +22,10 @@ const firebaseConfig = {
 
 export const appConfig: ApplicationConfig = {
   providers: [provideZoneChangeDetection({ eventCoalescing: true }), provideRouter(routes),
+  provideHttpClient(),
   provideFirebaseApp(() => initializeApp(firebaseConfig)),
   provideAuth(() => getAuth()),
   provideDatabase(() => getDatabase()),
+  { provide: RoleRepository, useClass: FirestoreRoleRepository }
   ]
 };
