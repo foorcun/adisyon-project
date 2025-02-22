@@ -1,0 +1,11 @@
+/* Styles specific to the OrderPageComponent, if any */
+:host {
+  display: block;
+}
+
+/* Example: Add padding around the navbar and content */
+app-order-page-navbar {
+  margin-bottom: 1.5rem;
+}
+
+/* If there are any global styles related to the overall page, keep them here */

@@ -1,0 +1,65 @@
+
+  .order-content {
+    background-color: lightgray; /* Light gray background */
+    padding: 1.5rem; /* Use rem for padding */
+    // border-radius: 0.5rem; /* Convert px to rem */
+    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1); /* Use rem for shadow */
+    overflow: auto; /* Handle overflow by enabling scroll if content exceeds */
+    max-height: calc(
+      100vh - 12.5rem
+    ); /* Prevent the container from growing too large */
+
+    // border: 3px solid green;
+  }
+
+  .order-list {
+    display: grid;
+    grid-template-columns: repeat(
+      auto-fill,
+      minmax(15rem, 1fr)
+    ); /* Minimum size is 15rem, adjust as needed */
+    gap: 1.5rem; /* Space between cards */
+    padding: 0.5rem;
+  }
+
+  .order-card {
+    background: #fff;
+    border-radius: 0.5rem; /* Use rem for border-radius */
+    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1); /* Use rem for shadow */
+    padding: 1rem; /* Use rem for padding */
+    border: 0.0625rem solid #ddd; /* Convert 1px to rem */
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+    &:hover {
+      transform: translateY(-0.25rem); /* Use rem for translation */
+      box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2); /* Use rem for shadow */
+    }
+
+    /* Specific status styles (inherit border-radius) */
+    &.PENDING {
+      background-color: #fff3cd; /* Light yellow */
+      border-color: #ffeeba;
+    }
+
+    &.IN_PROGRESS {
+      background-color: #cce5ff; /* Light blue */
+      border-color: #b8daff;
+    }
+
+    &.COMPLETED {
+      background-color: #d4edda; /* Light green */
+      border-color: #c3e6cb;
+    }
+
+    &.CANCELLED {
+      background-color: #f8d7da; /* Light red */
+      border-color: #f5c6cb;
+    }
+  }
+
+  .no-orders {
+    text-align: center;
+    padding: 2rem; /* Use rem for padding */
+    font-style: italic;
+    color: #888;
+  }
