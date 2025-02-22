@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { Category } from '../../MenuFeature/domain/entity/category.entity';
 import { MenuFirebaseRepository } from '../../MenuFeature/infrastructure/menu-firebase.repository';
 import { MenuItem } from '../../MenuFeature/domain/entity/menuitem.entity';
+import { NavbarBootstrapComponent } from '../../common/navbar-bootstrap/navbar-bootstrap.component';
 
 export interface CategoryProducts {
   category: Category;
@@ -13,7 +14,7 @@ export interface CategoryProducts {
 
 @Component({
   selector: 'app-menu-page',
-  imports: [CommonModule],
+  imports: [CommonModule, NavbarBootstrapComponent],
   templateUrl: './menu-page.component.html',
   styleUrl: './menu-page.component.scss'
 })
