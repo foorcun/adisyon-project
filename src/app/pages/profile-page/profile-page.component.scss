@@ -1,0 +1,95 @@
+.profile-page-content {
+  padding: 1rem;
+}
+
+.profile-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 400px;
+  margin: auto;
+}
+
+.profile-title {
+  text-align: center;
+  width: 100%;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+}
+
+.profile-list {
+  width: 100%;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+}
+
+.list-tile {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem;
+  border-bottom: 1px solid #ddd;
+}
+
+.list-label {
+  font-weight: bold;
+  color: #333;
+}
+
+.list-value {
+  color: #555;
+}
+
+.profile-photo {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+/* Button Group */
+.button-group {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.button-group button {
+  width: 100%;
+  max-width: 250px;
+  padding: 10px;
+  margin: 5px 0;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.google-signin-btn {
+  background: #4285f4;
+  color: white;
+}
+
+.admin-btn {
+  background: #ff9800;
+  color: white;
+}
+
+.user-btn {
+  background: #4caf50;
+  color: white;
+}
+
+.logout-btn {
+  background: #d9534f;
+  color: white;
+}
+
+.error-message {
+  color: red;
+  text-align: center;
+}
