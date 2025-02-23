@@ -6,13 +6,15 @@ import { MenuFirebaseRepository } from '../../MenuFeature/infrastructure/menu-fi
 import { Menu } from '../../MenuFeature/domain/entity/menu.entity';
 import { MenuItemComponent } from './menu-item/menu-item.component';
 import { NavbarBootstrapComponent } from '../../common/navbar-bootstrap/navbar-bootstrap.component';
+import { TableComponent } from './table/table.component';
 
 @Component({
   selector: 'app-settings-page',
   imports: [SettingsSidebarComponent, CommonModule,
     CategoryComponentComponent,
     MenuItemComponent,
-NavbarBootstrapComponent
+    NavbarBootstrapComponent,
+    TableComponent
   ],
   templateUrl: './settings-page.component.html',
   styleUrl: './settings-page.component.scss'
@@ -21,7 +23,7 @@ export class SettingsPageComponent implements OnInit {
   // selectedSection: string = 'profile';
   selectedSection: string = 'menu-item';
 
-constructor(private menuRepository: MenuFirebaseRepository) {}
+  constructor(private menuRepository: MenuFirebaseRepository) { }
 
   ngOnInit(): void {
     const menuKey = 'menuKey1'; // replace with actual menu key

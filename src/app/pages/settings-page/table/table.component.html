@@ -1,0 +1,22 @@
+<div class="container mt-4">
+  <h2 class="mb-4">Restaurant Tables</h2>
+  <div class="row">
+    <div *ngFor="let table of tables | keyvalue" class="col-md-4">
+      <div
+        class="card mb-3"
+        [ngClass]="{
+          'bg-success text-white': table.value.status === 'available',
+          'bg-danger text-white': table.value.status === 'occupied'
+        }"
+      >
+        <div class="card-body">
+          <h5 class="card-title">{{ table.value.name }}</h5>
+          <p class="card-text">Capacity: {{ table.value.capacity }}</p>
+          <p class="card-text">
+            Status: <strong>{{ table.value.status }}</strong>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
