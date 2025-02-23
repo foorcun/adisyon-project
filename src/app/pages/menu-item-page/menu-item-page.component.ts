@@ -21,8 +21,12 @@ export class MenuItemPageComponent {
   ) {
     this.menuPageFacadeService.selectedMenuItem$.subscribe((cartItem: CartItem | null) => {
       console.log('selectedMenuItem$ value:', cartItem);
-
-      this.selectedMenuItem = cartItem;
+      if (cartItem) {
+        this.selectedMenuItem = cartItem;
+      }
+      else {
+        this.router.navigate(["/menu-page"])
+      }
     });
   }
 

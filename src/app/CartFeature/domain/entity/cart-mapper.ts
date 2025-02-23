@@ -24,7 +24,7 @@ export class CartMapper {
                 item?.product?.imageUrl || "",
                 item?.product?.categoryId || ""
             ),
-            item?.quantity || 1 // Default quantity to 1 if missing
+            item?.quantity || 7 // Default quantity to 1 if missing
         );
     }
 }

@@ -6,7 +6,7 @@
   </div>
   <div id="sub-button-container">
     <p>
-      {{ selectedMenuItem.getTotalPrice | currency : "TRY" : "symbol" }}
+      {{ selectedMenuItem!.getTotalPrice | currency : "TRY" : "symbol" }}
     </p>
 
     <button class="btn btn-primary" (click)="addToCart()">Add to Cart</button>
