@@ -1,0 +1,12 @@
+<div id="sepetim-navbar">
+  <div *ngIf="cart$ | async as cart;">
+  <button *ngIf="cart.totalAmount > 0" class="close-button" (click)="clearCart()">
+  <i class="fas fa-trash"></i>
+  </button>
+  </div>
+  <h2>Sepetim</h2>
+  <button class="close-button" (click)="closeCartModal()">
+    <i class="fas fa-times"></i>
+  </button>
+</div>
+

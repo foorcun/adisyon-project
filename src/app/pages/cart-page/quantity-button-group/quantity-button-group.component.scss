@@ -1,0 +1,51 @@
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.minus-button {
+  background-color: #ffc107; /* Yellow for Minus */
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.minus-button:hover {
+  background-color: #e0a800;
+}
+
+.remove-button {
+  background-color: #f44336; /* Red for Remove */
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.remove-button:hover {
+  background-color: #d32f2f;
+}
+
+.plus-button {
+  background-color: #4caf50; /* Green for Plus */
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.plus-button:hover {
+  background-color: #388e3c;
+}
+
+.quantity {
+  font-size: 16px;
+  font-weight: bold;
+  margin: 0 5px;
+}

@@ -1,0 +1,36 @@
+$primary-color: #1D2D46;
+
+#sepetim-navbar {
+  display: flex;
+  justify-content: space-between; /* Align items at the left, center, and right */
+  align-items: center;
+  padding: 1rem;
+  background-color: $primary-color;
+  color: white;
+  border-bottom: 3px solid #ccc;
+
+  i {
+    font-size: 24px; /* Ensure consistent icon size */
+  }
+
+  h2 {
+    flex: 1; /* Take up remaining space for center alignment */
+    text-align: center;
+    margin: 0; /* Remove default margin */
+  }
+
+  .close-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+
+    i {
+      font-size: 24px;
+      color: white; /* Matches the navbar text color */
+    }
+  }
+}

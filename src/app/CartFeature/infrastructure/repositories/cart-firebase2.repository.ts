@@ -25,13 +25,15 @@ export class CartFirebase2Repository {
     }
 
     getCartFieldVariable() {
+        this.cart$.subscribe(cart => console.log("[CartFirebase2Repository] cart$:", cart));
         return this.cart$;
     }
-    listenForHelloFirebaseChanges(userKey: string) {
+    listenForCartChanges(userKey: string) {
         const helloRef = ref(this.database, `${this.basePath}/${userKey}`);
         onValue(helloRef, (snapshot) => {
             const cartData = snapshot.val();
             const transformedCart = CartMapper.toCart(cartData);
+            console.log("[CartFirebase2Repository] listenForHelloFirebaseChanges:", transformedCart);
             this.cartSubject.next(transformedCart);
         });
     }

@@ -1,0 +1,30 @@
+<div class="actions">
+  <!-- Show Remove Button if quantity is 1 -->
+  <button
+    *ngIf="quantity === 1"
+    class="remove-button"
+    (click)="onRemove()"
+  >
+    <i class="fas fa-trash"></i>
+  </button>
+
+  <!-- Show Minus Button if quantity > 1 -->
+  <button
+    *ngIf="quantity > 1"
+    class="minus-button"
+    (click)="onDecrease()"
+  >
+    -
+  </button>
+
+  <span class="quantity">{{ quantity }}</span>
+
+  <!-- Plus Button -->
+  <button
+    class="plus-button"
+    (click)="onIncrease()"
+  >
+    +
+  </button>
+</div>
+

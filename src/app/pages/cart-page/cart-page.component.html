@@ -1,0 +1,64 @@
+<div class="page-container">
+  <div *ngIf="cart$ | async as cart; else loading">
+    <app-cart-page-navbar></app-cart-page-navbar>
+    <app-table-name-selector
+      [tableNames]="availableTables"
+      [selectedTableName]="selectedTable || ''"
+      (tableNameSelected)="onTableNameSelected($event)"
+    ></app-table-name-selector>
+
+    <!-- Error message -->
+    <div *ngIf="errorMessage" class="error-message">
+      {{ errorMessage }}
+    </div>
+
+    <div
+      class="product-item card-item"
+      *ngFor="let item of cart.items | keyvalue"
+    >
+      <div class="product-details">
+        <h3>{{ item.value.product.name }}</h3>
+        <p class="price">
+          {{ item.value.product.price | currency : "TRY" : "symbol" }}
+        </p>
+      </div>
+      <app-quantity-button-group
+        [quantity]="item.value.quantity"
+        [productId]="item.value.product.id"
+        (increase)="increaseQuantity($event)"
+        (decrease)="decreaseQuantity($event)"
+        (remove)="removeItem($event)"
+      ></app-quantity-button-group>
+    </div>
+
+    <div id="total-price" *ngIf="cart.totalAmount > 0">
+      <p>Toplam: {{ cart.totalAmount | currency : "TRY" : "symbol" }}</p>
+    </div>
+  </div>
+
+  <div *ngIf="cart$ | async as cart">
+    <div
+      style="
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      "
+      *ngIf="cart.totalAmount == 0"
+    >
+      <div class="menu-belt" style="display: flex; gap: 10px">
+        <app-icon-button
+          iconClass="fas fa-utensils"
+          label="Menüye için tıklayın"
+          (clicked)="handleClick()"
+        ></app-icon-button>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #loading>
+    <p>Loading cart...</p>
+  </ng-template>
+
+  <app-order-now-footer (orderNowClicked)="onOrderNow()"></app-order-now-footer>
+</div>

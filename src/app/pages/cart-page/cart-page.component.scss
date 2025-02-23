@@ -1,0 +1,66 @@
+$primary-color: #1D2D46;
+.page-container {
+  background-color: lightgray; /* Light gray background */
+  min-height: 100vh; /* Ensure it covers the entire viewport */
+}
+
+
+#total-price {
+  height: 10vh;
+  background-color: pink;
+  margin: 1rem;
+}
+
+.card-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: 3px solid grey;
+  margin: 1rem;
+}
+
+#sepetim-navbar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  background-color: $primary-color;
+  color: white;
+  border-bottom: 3px solid #ccc;
+}
+
+.product-image {
+  max-width: 150px;
+  max-height: 150px;
+  object-fit: contain;
+}
+
+.product-image img {
+  max-width: 150px;
+  max-height: 150px;
+  object-fit: contain;
+}
+
+#navbar-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: 3px solid #ccc;
+}
+
+.logo-image {
+  max-width: 150px;
+  max-height: 150px;
+  object-fit: contain;
+  background-color: red;
+}
+
+.error-message {
+  margin-top: 8px;
+  color: red;
+  font-size: 14px;
+  font-weight: bold;
+}

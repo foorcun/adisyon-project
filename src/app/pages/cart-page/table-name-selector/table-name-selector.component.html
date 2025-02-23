@@ -1,0 +1,13 @@
+<div class="table-name-selector">
+  <label for="table-selector">Select Table:</label>
+  <select
+    id="table-selector"
+    [(ngModel)]="selectedTableName"
+    (change)="onTableNameChange(selectedTableName)"
+  >
+    <option value="" disabled>Please select a table</option>
+    <option *ngFor="let table of tableNames" [value]="table">
+      {{ table }}
+    </option>
+  </select>
+</div>
