@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { Cart } from '../../../CartFeature/domain/entity/cart';
 import { CommonModule } from '@angular/common';
 import { CartFirebase2Repository } from '../../../CartFeature/infrastructure/repositories/cart-firebase2.repository';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cart-page-navbar',
@@ -17,14 +18,16 @@ export class CartPageNavbarComponent {
   constructor(
     // private cartModalService: CartModalService,
     // private cartPageFacadeService: CartPageFacadeService
-    private cartFirebase2Repository: CartFirebase2Repository
+    private cartFirebase2Repository: CartFirebase2Repository,
+    private router: Router
   ) {
     this.cart$ = this.cartFirebase2Repository.cart$;
   }
 
 
-  closeCartModal() {
+  closeCartPage() {
     // this.cartModalService.closeModal();
+    this.router.navigate(["/menu-page"]);
   }
 
   clearCart() {
