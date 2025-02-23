@@ -13,12 +13,13 @@ export class MenuFirebaseRepository {
     private basePath = 'menu';
     private menuSubject = new BehaviorSubject<Menu | null>(null);
     menu$ = this.menuSubject.asObservable();
+    menuKey = 'menuKey1';
 
     constructor(private database: Database) { }
 
     // Listen for changes in the menu
-    listenForMenuChanges(menuKey: string) {
-        const menuRef = ref(this.database, `${this.basePath}/${menuKey}`);
+    listenForMenuChanges() {
+        const menuRef = ref(this.database, `${this.basePath}/${this.menuKey}`);
         onValue(menuRef, (snapshot) => {
             const menuData = snapshot.val();
             const transformedMenu = MenuMapper.toMenu(menuData);
@@ -45,20 +46,20 @@ export class MenuFirebaseRepository {
     }
 
     // ✅ Missing Method: addCategory
-    addCategory(menuKey: string, category: Category): Observable<void> {
-        const categoryRef = ref(this.database, `${this.basePath}/${menuKey}/category`);
+    addCategory(category: Category): Observable<void> {
+        const categoryRef = ref(this.database, `${this.basePath}/${this.menuKey}/category`);
         return from(push(categoryRef, {
             name: category.name
         }).then(() => { }));
     }
-    removeCategory(menuKey: string, categoryId: string): Observable<void> {
-        const categoryRef = ref(this.database, `${this.basePath}/${menuKey}/category/${categoryId}`);
+    removeCategory( categoryId: string): Observable<void> {
+        const categoryRef = ref(this.database, `${this.basePath}/${this.menuKey}/category/${categoryId}`);
         return from(remove(categoryRef));
     }
 
     // ✅ Update Category Name
-    updateCategoryName(menuKey: string, categoryId: string, newName: string): Observable<void> {
-        const categoryRef = ref(this.database, `${this.basePath}/${menuKey}/category/${categoryId}`);
+    updateCategoryName( categoryId: string, newName: string): Observable<void> {
+        const categoryRef = ref(this.database, `${this.basePath}/${this.menuKey}/category/${categoryId}`);
         return from(update(categoryRef, { name: newName }));
     }
     // Add Menu Item

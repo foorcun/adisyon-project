@@ -37,7 +37,7 @@ export class MenuItemComponent implements OnInit {
 
   // Load categories from Firebase
   loadCategories() {
-    this.menuRepository.listenForMenuChanges(this.menuKey);
+    this.menuRepository.listenForMenuChanges();
     this.menuRepository.menu$.subscribe(menu => {
       if (menu?.categories) {
         this.categories = menu.categories;

@@ -11,7 +11,6 @@ import { MenuFirebaseRepository } from '../../MenuFeature/infrastructure/menu-fi
   imports: [CommonModule]
 })
 export class MenuItemPageComponent implements OnInit {
-  menuKey = 'menuKey1';
   categories: { [key: string]: Category } = {};
 
   constructor(private menuRepository: MenuFirebaseRepository) {}
@@ -22,7 +21,7 @@ export class MenuItemPageComponent implements OnInit {
 
   // Load categories from Firebase
   loadCategories() {
-    this.menuRepository.listenForMenuChanges(this.menuKey);
+    this.menuRepository.listenForMenuChanges();
     this.menuRepository.menu$.subscribe(menu => {
       if (menu && menu.categories) {
         this.categories = menu.categories;

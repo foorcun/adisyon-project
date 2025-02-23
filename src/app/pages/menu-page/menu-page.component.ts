@@ -34,7 +34,7 @@ export class MenuPageComponent implements OnInit {
 
   // Load categories from Firebase
   loadCategories() {
-    this.menuRepository.listenForMenuChanges('menuKey1');
+    this.menuRepository.listenForMenuChanges();
     this.menuRepository.menu$.subscribe(menu => {
       if (menu && menu.categories) {
         // Assign categories directly

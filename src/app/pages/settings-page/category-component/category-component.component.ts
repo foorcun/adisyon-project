@@ -13,7 +13,6 @@ import { MenuFirebaseRepository } from '../../../MenuFeature/infrastructure/menu
 })
 export class CategoryComponentComponent implements OnInit {
   categories: { [key: string]: Category } = {};
-  menuKey = 'menuKey1'; // Replace with actual menu key
   categoryForm: FormGroup;
 
   constructor(private menuRepository: MenuFirebaseRepository, private fb: FormBuilder) {
@@ -28,7 +27,7 @@ export class CategoryComponentComponent implements OnInit {
 
   // Load categories from Firebase
   loadCategories() {
-    this.menuRepository.listenForMenuChanges(this.menuKey);
+    this.menuRepository.listenForMenuChanges();
     this.menuRepository.menu$.subscribe(menu => {
       if (menu && menu.categories) {
         this.categories = menu.categories;
@@ -41,7 +40,7 @@ export class CategoryComponentComponent implements OnInit {
   addCategory() {
     if (this.categoryForm.valid) {
       const newCategory = new Category('', this.categoryForm.value.name);
-      this.menuRepository.addCategory(this.menuKey, newCategory).subscribe(() => {
+      this.menuRepository.addCategory(newCategory).subscribe(() => {
         this.categoryForm.reset();
       });
     }
@@ -49,14 +48,14 @@ export class CategoryComponentComponent implements OnInit {
 
   // Delete a category
   deleteCategory(categoryId: string) {
-    this.menuRepository.removeCategory(this.menuKey, categoryId).subscribe(() => {
+    this.menuRepository.removeCategory(categoryId).subscribe(() => {
       console.log(`Category ${categoryId} deleted.`);
     });
   }
 
   // Update a category name
   updateCategoryName(categoryId: string, newName: string) {
-    this.menuRepository.updateCategoryName(this.menuKey, categoryId, newName).subscribe(() => {
+    this.menuRepository.updateCategoryName( categoryId, newName).subscribe(() => {
       console.log(`Category ${categoryId} updated to ${newName}.`);
     });
   }

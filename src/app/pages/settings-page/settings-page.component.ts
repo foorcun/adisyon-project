@@ -26,10 +26,9 @@ export class SettingsPageComponent implements OnInit {
   constructor(private menuRepository: MenuFirebaseRepository) { }
 
   ngOnInit(): void {
-    const menuKey = 'menuKey1'; // replace with actual menu key
 
     // Start listening for changes and log the menu data
-    this.menuRepository.listenForMenuChanges(menuKey);
+    this.menuRepository.listenForMenuChanges();
 
     // Subscribe to the observable to log data
     this.menuRepository.menu$.subscribe((menu: Menu | null) => {
