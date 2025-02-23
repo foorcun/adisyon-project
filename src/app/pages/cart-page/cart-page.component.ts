@@ -12,6 +12,7 @@ import { CartFirebase2Repository } from '../../CartFeature/infrastructure/reposi
 import { CartPageNavbarComponent } from './cart-page-navbar/cart-page-navbar.component';
 import { CartService } from '../../services/cart.service';
 import { filter, take } from 'rxjs/operators';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-cart-page',
@@ -52,6 +53,7 @@ export class CartPageComponent {
 
   removeItem(productId: string): void {
     // this.cartFirebase2Repository.removeItem(productId); // Remove an item via the facade service
+    this.cartService.removeItem("7UMNf9av9YZSU4fUx17D5IGHG6I2", productId);
   }
 
 
