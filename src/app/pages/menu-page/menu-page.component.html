@@ -1,4 +1,3 @@
-
 <app-navbar-bootstrap></app-navbar-bootstrap>
 <!-- 🏷️ Category Header -->
 <div class="categories-header" style="user-select: none">
@@ -19,7 +18,11 @@
 </div>
 
 <!-- 🛒 Menu Items (Scrollable) -->
-<div class="menu-items-column" *ngIf="categoryProducts.length" >
+<div
+  class="menu-items-column"
+  *ngIf="categoryProducts.length"
+  (click)="navigateSiparisDetay()"
+>
   <div
     class="category-group"
     *ngFor="let categoryProduct of categoryProducts"

@@ -6,6 +6,7 @@ export const routes: Routes = [
     // {path: "", loadComponent: ()=> import('./pages/table-page/table-page.component').then(m=>m.TablePageComponent)},
     { path: "settings-page", loadComponent: () => import('./pages/settings-page/settings-page.component').then(m => m.SettingsPageComponent) },
     { path: "menu-page", loadComponent: () => import('./pages/menu-page/menu-page.component').then(m => m.MenuPageComponent) },
+    {path: "menu-item-page", loadComponent: () => import('./pages/menu-item-page/menu-item-page.component').then(m => m.MenuItemPageComponent)},
     { path: "profile-page", loadComponent: () => import('./pages/profile-page/profile-page.component').then(m => m.ProfilePageComponent) },
     {path: "admin-orders-page", loadComponent: () => import('./pages/order-page/order-page.component').then(m => m.OrderPageComponent)},
     { path: "home-page", redirectTo: "" },

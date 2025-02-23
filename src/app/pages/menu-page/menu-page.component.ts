@@ -1,11 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
 // import { CategoryProducts } from './models/category-products.entity';
 import { CommonModule } from '@angular/common';
 import { Category } from '../../MenuFeature/domain/entity/category.entity';
 import { MenuFirebaseRepository } from '../../MenuFeature/infrastructure/menu-firebase.repository';
 import { MenuItem } from '../../MenuFeature/domain/entity/menuitem.entity';
 import { NavbarBootstrapComponent } from '../../common/navbar-bootstrap/navbar-bootstrap.component';
+import { MenuService } from '../../services/menu.service';
+import { Router } from '@angular/router';
 
 export interface CategoryProducts {
   category: Category;
@@ -18,57 +20,29 @@ export interface CategoryProducts {
   templateUrl: './menu-page.component.html',
   styleUrl: './menu-page.component.scss'
 })
-export class MenuPageComponent implements OnInit {
-
+export class MenuPageComponent implements OnInit, OnDestroy {
   categories: { [key: string]: Category } = {};
   categoryProducts: CategoryProducts[] = [];
+  private categoriesSubscription!: Subscription;
+  private categoryProductsSubscription!: Subscription;
 
   constructor(
-    private menuRepository: MenuFirebaseRepository,
-  ) { }
-
+    private router: Router,
+    private menuService: MenuService) { }
 
   ngOnInit(): void {
-    this.loadCategories();
-  }
+    // ✅ Subscribe to categories
+    this.categoriesSubscription = this.menuService.categories$.subscribe(categories => {
+      this.categories = categories;
+      console.log('Categories updated:', this.categories);
+    });
 
-  // Load categories from Firebase
-  loadCategories() {
-    this.menuRepository.listenForMenuChanges();
-    this.menuRepository.menu$.subscribe(menu => {
-      if (menu && menu.categories) {
-        // Assign categories directly
-        this.categories = menu.categories;
-        console.log('Categories:', this.categories);
-
-        // Transform into categoryProducts
-        this.categoryProducts = Object.entries(menu.categories).map(([categoryId, category]) => {
-          // Convert menuItems object into array for categoryProducts
-          const menuItemsArray = Object.entries(category.menuItems || {}).map(([menuItemId, menuItem]) => ({
-            id: menuItemId,
-            name: menuItem.name,
-            description: menuItem.description,
-            price: menuItem.price,
-            imageUrl: menuItem.imageUrl
-          }));
-
-          return {
-            category: {
-              id: categoryId,
-              name: category.name,
-              imageUrl: category.imageUrl,
-              menuItems: category.menuItems // <-- Keep original object structure
-            },
-            menuItems: menuItemsArray // <-- Provide array for CategoryProducts interface
-          };
-        });
-
-        console.log('Category Products:', this.categoryProducts);
-      }
+    // ✅ Subscribe to categoryProducts
+    this.categoryProductsSubscription = this.menuService.categoryProducts$.subscribe(categoryProducts => {
+      this.categoryProducts = categoryProducts;
+      console.log('Category Products updated:', this.categoryProducts);
     });
   }
-
-
 
 
   scrollToCategory(categoryId: string) {
@@ -78,35 +52,17 @@ export class MenuPageComponent implements OnInit {
     }
   }
 
-
-  // // openModal() {
-  // //   this.isModalOpen = true;
-  // // }
-
-  // // closeModal() {
-  // //   this.isModalOpen = false;
-  // // }
-
-  // openProductModal(product: Product): void {
-  //   console.log('burdakki product', product);
-
-  //   // var cartItem: CartItem = new CartItem({id: "1",}, 1);
-  //   var cartItem: CartItem = new CartItemFactory().create({
-  //     id: product.id,
-  //     name: product.name,
-  //     description: product.description,
-  //     price: product.price,
-  //     imageUrl: product.imageUrl,
-  //     categoryId: product.categoryId
-  //   }, 1);
-
-  //   console.log('burdakki cartItem', cartItem);
-  //   console.log('burdakki cartItem.product', cartItem.product);
-
-  //   this.menuItemPageFacadeService.setSelectedMenuItem(cartItem);
-  //   this.modalService.openModal({
-  //     title: product.name,
-  //     description: product.description,
-  //   });
-  // }
+  navigateSiparisDetay(){
+    this.router.navigate(['/menu-item-page']);
+  }
+  /** ✅ Prevent memory leaks */
+  ngOnDestroy(): void {
+    if (this.categoriesSubscription) {
+      this.categoriesSubscription.unsubscribe();
+    }
+    if (this.categoryProductsSubscription) {
+      this.categoryProductsSubscription.unsubscribe();
+    }
+  }
 }
+
