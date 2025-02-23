@@ -87,7 +87,7 @@ export class CartPageComponent {
 
   handleClick() {
     this.closeCartModal();
-    this.router.navigate(['menu-page']);
+    this.router.navigate(['/menu-page']);
   }
 
   closeCartModal() {

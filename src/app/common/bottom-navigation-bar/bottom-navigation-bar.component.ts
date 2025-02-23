@@ -14,6 +14,7 @@ import { UserWithRole } from '../../UserFeature/domain/entities/user-with-role';
 // import { UserService } from '../../../services/user.service';
 // import { UserWithRole } from '../../../UserFeature/domain/entities/user-with-role';
 // import { MyOrdersModalService } from '../../../services/modals/my-orders-modal.service';
+import { CartService } from '../../services/cart.service';
 
 @Component({
   selector: 'app-bottom-navigation-bar',
@@ -44,12 +45,19 @@ export class BottomNavigationBarComponent {
     // private orderModalService: OrderModalService,
     // private myOrdersModalService: MyOrdersModalService,
     // private cartPageFacadeService: CartPageFacadeService,
+    private cartService: CartService,
     private userService: UserService
   ) {
     // this.cartPageFacadeService.getCart().subscribe((cart: Cart) => {
     //   console.log('Cart updated in bottom nav:', cart);
     //   this.itemCountSubject.next(cart.getItemsCount());
     // });
+    this.cartService.cart$.subscribe((cart) => {
+      console.log('Cart updated in bottom nav:', cart);
+      // this.itemCountSubject.next(cart.getItemsCount());
+      this.navItems[1].badge = cart.getItemsCount();
+    }
+    );
 
     this.itemCount$.subscribe((count) => {
       console.log('Item count updated:', count);
@@ -89,7 +97,7 @@ export class BottomNavigationBarComponent {
     //   this.myOrdersModalService.openModal();
     // }
     // else {
-      this.router.navigate([route]);
+    this.router.navigate([route]);
     // }
   }
 }

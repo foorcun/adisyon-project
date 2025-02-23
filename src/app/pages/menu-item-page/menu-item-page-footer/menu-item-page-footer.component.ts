@@ -2,6 +2,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CartItem } from '../../../CartFeature/domain/entity/cart-item';
 import { MenuPageFacadeService } from '../../../services/menu-page-facade.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-menu-item-page-footer',
@@ -18,7 +19,8 @@ export class MenuItemPageFooterComponent {
 
   constructor(
     // private menuItemPageFacadeService: MenuItemPageFacadeService,
-    private menuPageFacadeService: MenuPageFacadeService
+    private menuPageFacadeService: MenuPageFacadeService,
+    private router: Router
   ) {
     this.menuPageFacadeService.selectedMenuItem$.subscribe((value) => {
       console.log('selectedMenuItem$ value:', value);
@@ -44,5 +46,6 @@ export class MenuItemPageFooterComponent {
 
   addToCart(): void {
     this.addToCartClicked.emit({ quantity: this.quantity });
+    this.router.navigate(["/menu-page"]);
   }
 }
