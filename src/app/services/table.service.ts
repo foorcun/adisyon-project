@@ -26,4 +26,12 @@ export class TableService {
   getTables(): { [key: string]: Table } {
     return this.tablesSubject.getValue();
   }
+
+  // ✅ Expose Create Table Function
+  createTable(table: Table): Observable<void> {
+    return this.tableRepository.createTable(table);
+  }
+  updateTable(tableId: string, updates: Partial<Table>): Observable<void> {
+    return this.tableRepository.updateTable(tableId, updates);
+  }
 }

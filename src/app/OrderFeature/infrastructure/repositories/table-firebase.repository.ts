@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Database, ref, onValue } from '@angular/fire/database';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, from, Observable } from 'rxjs';
 import { Table } from '../../domain/entities/table.entity';
 import { Order } from '../../domain/entities/order.entity';
+
+import { Database, ref, onValue, push, remove, update } from '@angular/fire/database';
 
 @Injectable({
   providedIn: 'root',
@@ -12,13 +13,13 @@ export class TableFirebaseRepository {
   private tablesSubject = new BehaviorSubject<{ [key: string]: Table } | null>(null);
   tables$ = this.tablesSubject.asObservable();
 
-  constructor(private database: Database) {}
+  constructor(private database: Database) { }
 
   listenForTablesChanges() {
     const tablesRef = ref(this.database, this.basePath);
     onValue(tablesRef, (snapshot) => {
       const tablesData = snapshot.val();
-      
+
       // 🔥 Convert Firebase data to Table instances
       if (tablesData) {
         const transformedTables: { [key: string]: Table } = {};
@@ -58,4 +59,16 @@ export class TableFirebaseRepository {
 
     return orders;
   }
+
+  // ✅ Add Table Function
+  createTable(table: Table): Observable<void> {
+    const tableRef = ref(this.database, this.basePath);
+    return from(push(tableRef, table).then(() => { }));
+  }
+
+  updateTable(tableId: string, updates: Partial<Table>): Observable<void> {
+    const tableRef = ref(this.database, `${this.basePath}/${tableId}`);
+    return from(update(tableRef, updates));
+  }
+
 }

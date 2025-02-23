@@ -1,22 +1,51 @@
 <div class="container mt-4">
   <h2 class="mb-4">Restaurant Tables</h2>
+
+  <!-- ✅ Table Creation Form -->
+  <div class="mb-4 p-3 border rounded bg-light">
+    <h4>Create New Table</h4>
+    <div class="row">
+      <div class="col-md-5">
+        <input [(ngModel)]="newTableName" class="form-control" placeholder="Enter table name" />
+      </div>
+      <div class="col-md-3">
+        <input [(ngModel)]="newTableCapacity" type="number" class="form-control" placeholder="Capacity" />
+      </div>
+      <div class="col-md-4">
+        <button class="btn btn-success w-100" (click)="createTable()">Add Table</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ✅ Tables Display -->
   <div class="row">
     <div *ngFor="let table of tables | keyvalue" class="col-md-4">
-      <div
-        class="card mb-3"
-        [ngClass]="{
-          'bg-success text-white': table.value.status === 'available',
-          'bg-danger text-white': table.value.status === 'occupied'
-        }"
-      >
+      <div class="card mb-3" 
+           [ngClass]="{ 'bg-success text-white': table.value.status === 'available', 'bg-danger text-white': table.value.status === 'occupied' }">
         <div class="card-body">
-          <h5 class="card-title">{{ table.value.name }}</h5>
-          <p class="card-text">Capacity: {{ table.value.capacity }}</p>
-          <p class="card-text">
-            Status: <strong>{{ table.value.status }}</strong>
-          </p>
+          <!-- ✅ Edit Mode -->
+          <div *ngIf="editingTableId === table.value.id">
+            <input [(ngModel)]="editedTable.name" class="form-control mb-2" placeholder="Table Name" />
+            <input [(ngModel)]="editedTable.capacity" type="number" class="form-control mb-2" placeholder="Capacity" />
+            <select [(ngModel)]="editedTable.status" class="form-control mb-2">
+              <option value="available">Available</option>
+              <option value="occupied">Occupied</option>
+            </select>
+            <button class="btn btn-primary w-100" (click)="updateTable()">Save</button>
+          </div>
+
+          <!-- ✅ View Mode -->
+          <div *ngIf="editingTableId !== table.value.id">
+            <h5 class="card-title">{{ table.value.name }}</h5>
+            <p class="card-text">Capacity: {{ table.value.capacity }}</p>
+            <p class="card-text">Status: <strong>{{ table.value.status }}</strong></p>
+            <button class="btn btn-warning w-100 mt-2" (click)="startEditing(table.value)">Edit</button>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </div>
+
+
+
