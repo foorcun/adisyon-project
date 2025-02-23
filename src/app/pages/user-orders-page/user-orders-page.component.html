@@ -1,0 +1,37 @@
+<div class="container">
+  <h2>My Orders</h2>
+
+  <!-- Loading Indicator -->
+  <div *ngIf="loading" class="loading">Loading orders...</div>
+
+  <!-- Error Message -->
+  <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+
+  <!-- No Orders Found -->
+  <div *ngIf="userOrders.length === 0 && !loading" class="no-orders">
+    No orders found.
+  </div>
+
+  <!-- Orders List -->
+  <div *ngFor="let order of userOrders" class="order-card">
+    <h3>Table: {{ order.tableName }}</h3>
+    <p>Status: <strong>{{ order.status }}</strong></p>
+    <p>Total Amount: <strong>{{ order.totalAmount | currency }}</strong></p>
+    <p>Created At: {{ order.createdAt | date:'short' }}</p>
+
+    <!-- Order Items -->
+    <h4>Items:</h4>
+    <ul>
+      <li *ngFor="let item of order.items">
+        {{ item.product.name }} (x{{ item.quantity }})
+      </li>
+    </ul>
+
+    <!-- Actions (Cancel Order, View Details, Reorder) -->
+    <div class="order-actions">
+      <!-- <button class="btn btn-primary" (click)="viewOrderDetails(order.id)">View Details</button>
+      <button class="btn btn-danger" (click)="cancelOrder(order.id)" *ngIf="order.status !== 'COMPLETED'">Cancel</button> -->
+    </div>
+  </div>
+</div>
+

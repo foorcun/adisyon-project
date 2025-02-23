@@ -48,7 +48,8 @@ export class OrderPageFacadeService {
           const currentOrders = this.orders.getValue();
           const updatedOrders = currentOrders.map(order => {
             if (order.id === orderId) {
-              order.updateStatus(status);
+              // order.updateStatus(status);
+              order.status = status;
               return order;
             }
             return order;

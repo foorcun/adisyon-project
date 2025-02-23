@@ -9,6 +9,7 @@ export const routes: Routes = [
     {path: "menu-item-page", loadComponent: () => import('./pages/menu-item-page/menu-item-page.component').then(m => m.MenuItemPageComponent)},
     { path: "profile-page", loadComponent: () => import('./pages/profile-page/profile-page.component').then(m => m.ProfilePageComponent) },
     {path: "admin-orders-page", loadComponent: () => import('./pages/order-page/order-page.component').then(m => m.OrderPageComponent)},
+    {path: "user-orders-page", loadComponent: () => import('./pages/user-orders-page/user-orders-page.component').then(m => m.UserOrdersPageComponent)},
     {path:"cart-page", loadComponent: () => import('./pages/cart-page/cart-page.component').then(m => m.CartPageComponent)},    
     { path: "home-page", redirectTo: "" },
 ];
