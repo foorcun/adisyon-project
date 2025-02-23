@@ -30,15 +30,15 @@ export class MenuItemPageFooterComponent {
   }
 
   incrementQuantity(): void {
-    this.quantity++;
+    // this.quantity++;
     // this.menuItemPageFacadeService.incrementQuantity();
     this.menuPageFacadeService.incrementQuantity();
   }
 
   decrementQuantity(): void {
     if (this.quantity > 1) {
-      this.quantity--;
-      // this.menuItemPageFacadeService.decrementQuantity();
+      // this.quantity--;
+      this.menuPageFacadeService.decrementQuantity();
     }
   }
 

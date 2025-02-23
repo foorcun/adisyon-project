@@ -47,4 +47,14 @@ export class MenuPageFacadeService {
       this.selectedMenuItemSubject.next(currentItem);
     }
   }
+
+  decrementQuantity(): void {
+    console.log("[MenuPageFacadeService] incrementQuantity");
+
+    const currentItem = this.selectedMenuItemSubject.value;
+    if (currentItem) {
+      currentItem.quantity = currentItem.quantity - 1;
+      this.selectedMenuItemSubject.next(currentItem);
+    }
+  }
 }
