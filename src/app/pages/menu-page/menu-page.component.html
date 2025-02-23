@@ -1,4 +1,5 @@
 <app-navbar-bootstrap></app-navbar-bootstrap>
+
 <!-- 🏷️ Category Header -->
 <div class="categories-header" style="user-select: none">
   <div class="dark-overlay">
@@ -18,11 +19,7 @@
 </div>
 
 <!-- 🛒 Menu Items (Scrollable) -->
-<div
-  class="menu-items-column"
-  *ngIf="categoryProducts.length"
-  (click)="navigateSiparisDetay()"
->
+<div class="menu-items-column" *ngIf="categoryProducts.length">
   <div
     class="category-group"
     *ngFor="let categoryProduct of categoryProducts"
@@ -32,7 +29,12 @@
       {{ categoryProduct.category.name | uppercase }}
     </h2>
     <div class="menu-items-list">
-      <div class="menu-item" *ngFor="let menuItem of categoryProduct.menuItems">
+      <div
+        class="menu-item"
+        *ngFor="let menuItem of categoryProduct.menuItems"
+        (click)="selectMenuItem(menuItem, categoryProduct.category.id); navigateSiparisDetay()"
+        [ngClass]="{ 'selected-item': selectedMenuItem?.product!.id === menuItem.id }"
+      >
         <div class="menu-item-image">
           <img [src]="menuItem.imageUrl" [alt]="menuItem.name" />
         </div>
@@ -50,6 +52,5 @@
 
 <!-- 🛑 Fallback Message -->
 <p *ngIf="!categoryProducts.length" class="text-center text-danger mt-3">
-  <!-- <i class="fas fa-exclamation-circle"></i> No menu items available.... -->
-  <i class="fas fa-exclamation-circle"></i> Menu yukleniyor..
+  <i class="fas fa-exclamation-circle"></i> Menü yükleniyor...
 </p>

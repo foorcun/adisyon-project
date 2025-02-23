@@ -1,56 +1,23 @@
-<div class="menu-item-page container mt-5">
+<div id="sepetim-navbar">
+  <h2 class="navbar-title">Sipariş Detay</h2>
+  <button class="close-btn" (click)="goBackToMenuPage()">
+    <i class="fas fa-times"></i> <!-- ✅ Font Awesome Close Icon -->
+  </button>
+</div>
 
-  <!-- Category Cards -->
-  <div class="category-list d-flex flex-wrap justify-content-center gap-3 mb-5">
-    <div 
-      *ngFor="let categoryId of getCategoryKeys()" 
-      class="category-card"
-      (click)="scrollToCategory(categoryId)">
-      <div class="card text-center shadow-sm p-3">
-        <h5 class="mb-0">{{ categories[categoryId].name }}</h5>
-      </div>
-    </div>
+<div class="menu-item-container">
+  <div class="menu-item-header">
+    <h1>{{ selectedMenuItem!.product.name }}</h1>
   </div>
 
-  <!-- Menu Items by Category -->
-  <div 
-    *ngFor="let categoryId of getCategoryKeys()" 
-    [id]="'category-' + categoryId"
-    class="category-section mb-5">
-    
-    <h3 class="mb-3 text-info border-bottom pb-2">
-      <i class="fas fa-layer-group"></i> {{ categories[categoryId].name }}
-    </h3>
-
-    <div class="row">
-      <div 
-        *ngFor="let menuItemId of getMenuItemKeys(categories[categoryId])" 
-        class="col-lg-4 col-md-6 col-sm-12 mb-4">
-        
-        <div class="card h-100 shadow-sm">
-          <!-- Image -->
-          <img [src]="categories[categoryId].menuItems[menuItemId].imageUrl || 'https://via.placeholder.com/300'" 
-               class="card-img-top" alt="Menu Item Image">
-
-          <!-- Card Body -->
-          <div class="card-body">
-            <h5 class="card-title fw-bold">
-              <i class="fas fa-utensils"></i> {{ categories[categoryId].menuItems[menuItemId].name }}
-            </h5>
-            <p class="card-text text-muted">
-              {{ categories[categoryId].menuItems[menuItemId].description }}
-            </p>
-            <div class="price text-success fw-bold">
-              ${{ categories[categoryId].menuItems[menuItemId].price.toFixed(2) }}
-            </div>
-          </div>
-        </div>
-      </div>
+  <div class="menu-item-content">
+    <div class="menu-item-details">
+      <p>
+        <strong>Price:</strong>
+        {{ selectedMenuItem!.product.price | currency: "TRY": "symbol" }}
+      </p>
     </div>
-
-    <!-- No Items Message -->
-    <p *ngIf="getMenuItemKeys(categories[categoryId]).length === 0" class="text-center text-warning mt-3">
-      <i class="fas fa-exclamation-circle"></i> No items available in this category.
-    </p>
   </div>
 </div>
+
+<app-menu-item-page-footer (addToCartClicked)="addToCart()"></app-menu-item-page-footer>

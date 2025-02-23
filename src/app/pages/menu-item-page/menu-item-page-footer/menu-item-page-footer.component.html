@@ -1,0 +1,14 @@
+<div id="footer-add-to-cart">
+  <div class="quantity-controls">
+    <button class="btn-decrement" (click)="decrementQuantity()">-</button>
+    <span class="quantity-display">{{ quantity }}</span>
+    <button class="btn-increment" (click)="incrementQuantity()">+</button>
+  </div>
+  <div id="sub-button-container">
+    <p>
+      {{ selectedMenuItem.getTotalPrice | currency : "TRY" : "symbol" }}
+    </p>
+
+    <button class="btn btn-primary" (click)="addToCart()">Add to Cart</button>
+  </div>
+</div>
