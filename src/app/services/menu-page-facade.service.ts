@@ -4,6 +4,7 @@ import { CartItem } from '../CartFeature/domain/entity/cart-item';
 import { MenuItem } from '../MenuFeature/domain/entity/menuitem.entity';
 import { Product } from '../CartFeature/domain/entity/product.entity';
 import { CartFirebase2Repository } from '../CartFeature/infrastructure/repositories/cart-firebase2.repository';
+import { UserService } from './user.service';
 
 @Injectable({
   providedIn: 'root',
@@ -14,8 +15,9 @@ export class MenuPageFacadeService {
 
   // quantity: number = 1; // Default quantity
   constructor(
-    // private cartFirebase2Repository: CartFirebase2Repository
-  ) {}
+    private cartFirebase2Repository: CartFirebase2Repository,
+    private userService: UserService
+  ) { }
 
   /** ✅ Set selected menu item, ensuring `categoryId` is passed */
   setSelectedMenuItem(menuItem: MenuItem, categoryId: string): void {
@@ -55,6 +57,17 @@ export class MenuPageFacadeService {
     if (currentItem) {
       currentItem.quantity = currentItem.quantity - 1;
       this.selectedMenuItemSubject.next(currentItem);
+    }
+  }
+
+
+  addToCart(selectedMenuItem: CartItem) {
+    // const userId = this.currentUserWithRole?.firebaseUser.uid;
+    const userId = this.userService.getCurrentUser()?.uid;
+    if (userId) {
+      this.cartFirebase2Repository.addCartItem(userId, selectedMenuItem);
+    } else {
+      console.error('Cannot add to cart: User is not authenticated.');
     }
   }
 }

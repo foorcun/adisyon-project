@@ -31,12 +31,12 @@ export class MenuItemPageComponent {
   }
 
   addToCart() {
-    // if (this.selectedMenuItem && this.selectedMenuItem) {
-    //   this.menuItemPageFacadeService.addToCart(this.selectedMenuItem);
-    //   this.modalService.closeModal();
-    // } else {
-    //   console.error('No valid item to add to cart');
-    // }
+    if (this.selectedMenuItem && this.selectedMenuItem) {
+      this.menuPageFacadeService.addToCart(this.selectedMenuItem);
+      // this.modalService.closeModal();
+    } else {
+      console.error('No valid item to add to cart');
+    }
   }
   /** ✅ Navigate back to the menu page */
   goBackToMenuPage(): void {
