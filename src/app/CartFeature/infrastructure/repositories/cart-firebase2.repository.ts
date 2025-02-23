@@ -48,6 +48,7 @@ export class CartFirebase2Repository {
 
 
     clearCart(userKey: string): Observable<void> {
+        console.log("[CartFirebase2Repository] clearCart:", userKey);
         const cartItemsRef = ref(this.database, `carts/${userKey}/items`);
 
         return from(remove(cartItemsRef));

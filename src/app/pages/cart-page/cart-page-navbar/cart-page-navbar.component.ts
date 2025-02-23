@@ -4,6 +4,7 @@ import { Cart } from '../../../CartFeature/domain/entity/cart';
 import { CommonModule } from '@angular/common';
 import { CartFirebase2Repository } from '../../../CartFeature/infrastructure/repositories/cart-firebase2.repository';
 import { Router } from '@angular/router';
+import { CartService } from '../../../services/cart.service';
 
 @Component({
   selector: 'app-cart-page-navbar',
@@ -18,10 +19,11 @@ export class CartPageNavbarComponent {
   constructor(
     // private cartModalService: CartModalService,
     // private cartPageFacadeService: CartPageFacadeService
-    private cartFirebase2Repository: CartFirebase2Repository,
+    // private cartFirebase2Repository: CartFirebase2Repository,
+    private cartService: CartService,
     private router: Router
   ) {
-    this.cart$ = this.cartFirebase2Repository.cart$;
+    this.cart$ = this.cartService.cart$;
   }
 
 
@@ -33,6 +35,7 @@ export class CartPageNavbarComponent {
   clearCart() {
     console.log("Clear Cart called")
     // this.cartPageFacadeService.clearCart();
+    this.cartService.clearCart("7UMNf9av9YZSU4fUx17D5IGHG6I2");
   }
 
 }

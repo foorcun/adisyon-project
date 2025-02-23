@@ -46,7 +46,7 @@ export class CartPageComponent {
   }
 
   clearCart(): void {
-    // this.cartPageFacadeService.clearCart(); // Clear the cart via the facade service
+    this.cartService.clearCart("7UMNf9av9YZSU4fUx17D5IGHG6I2"); // Clear the cart via the facade service
   }
 
   removeItem(productId: string): void {
