@@ -1,0 +1,25 @@
+<div>
+  <h1>Tables Overview</h1>
+  <div *ngFor="let table of tables | keyvalue">
+    <h2>{{ table.value.name }} ({{ table.value.status }})</h2>
+    <p>Capacity: {{ table.value.capacity }}</p>
+
+    <h3>Orders:</h3>
+    <ul>
+      <!-- <li *ngFor="let order of table.value.orders | keyvalue">
+        Order ID: {{ order.value.id }} - Status: {{ order.value.status }} - Total: ${{ order.value.totalPrice }}
+        <button *ngIf="order.value.status === 'pending'" (click)="completeOrder(table.key, order.value.id)">
+          Complete Order
+        </button>
+
+        <ul>
+          <li *ngFor="let item of order.value.items | keyvalue">
+            {{ item.value.quantity }}x {{ item.value.name }} - ${{ item.value.price }}
+          </li>
+        </ul>
+      </li> -->
+    </ul>
+
+    <!-- <button (click)="addOrderToTable1()">Add Order to Table 1</button> -->
+  </div>
+</div>

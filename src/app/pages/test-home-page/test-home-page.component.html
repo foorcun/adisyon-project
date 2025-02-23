@@ -1,0 +1,5 @@
+<div>
+  <h1>Firebase Message</h1>
+  <p *ngIf="helloMessage; else loading">{{ helloMessage }}</p>
+  <ng-template #loading><p>Loading...</p></ng-template>
+</div>
