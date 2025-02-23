@@ -4,6 +4,7 @@ import { Cart } from '../CartFeature/domain/entity/cart';
 import { CartFirebase2Repository } from '../CartFeature/infrastructure/repositories/cart-firebase2.repository';
 import { CartItem } from '../CartFeature/domain/entity/cart-item';
 import { UserService } from './user.service';
+import { UserWithRole } from '../UserFeature/domain/entities/user-with-role';
 
 @Injectable({
   providedIn: 'root',
@@ -12,16 +13,20 @@ export class CartService {
   private cartSubject = new BehaviorSubject<Cart>(new Cart('', {}));
   cart$ = this.cartSubject.asObservable();
 
-  constructor(private cartRepository: CartFirebase2Repository,
-    // private UserService: UserService
-  ) {
+  currentUserWithRole: UserWithRole | null = null;
 
-    this.listenForCartChanges(); // 🔥 Listen immediately when the service is initialized
+  constructor(private cartRepository: CartFirebase2Repository,
+    private userService: UserService
+  ) {
+    this.userService.currentUserWithRole$.subscribe(user => {
+      this.currentUserWithRole = user;
+      this.listenForCartChanges(); // 🔥 Listen immediately when the service is initialized
+    });
   }
 
   /** ✅ Listen for real-time cart changes */
   private listenForCartChanges(): void {
-    this.cartRepository.listenForCartChanges('7UMNf9av9YZSU4fUx17D5IGHG6I2');
+    this.cartRepository.listenForCartChanges(this.currentUserWithRole!.firebaseUser.uid);
     this.cartRepository.getCartFieldVariable().subscribe(cart => {
       if (cart) {
         this.cartSubject.next(cart);

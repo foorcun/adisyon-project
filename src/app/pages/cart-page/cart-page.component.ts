@@ -13,6 +13,7 @@ import { CartPageNavbarComponent } from './cart-page-navbar/cart-page-navbar.com
 import { CartService } from '../../services/cart.service';
 import { filter, take } from 'rxjs/operators';
 import { UserService } from '../../services/user.service';
+import { UserWithRole } from '../../UserFeature/domain/entities/user-with-role';
 
 @Component({
   selector: 'app-cart-page',
@@ -30,12 +31,15 @@ export class CartPageComponent {
   selectedTable: string | null = null; // Currently selected table name
   errorMessage: string | null = null; // To display error messages
 
+  currentUserWithRole: UserWithRole | null = null;
+
   constructor(
     // private cartPageFacadeService: CartPageFacadeService,
     // private cartFirebase2Repository: CartFirebase2Repository,
     private cartService: CartService,
     private router: Router,
     // private cartModalService: CartModalService
+    private userService: UserService
   ) {
     this.cart$ = this.cartService.cart$;
 
@@ -45,15 +49,19 @@ export class CartPageComponent {
       // console.log('Updated cart itemssssss:', this.cartItems);
       console.log('Updated carttttt:', cart);
     });
+
+    this.userService.currentUserWithRole$.subscribe(user => {
+      this.currentUserWithRole = user;
+    });
   }
 
   clearCart(): void {
-    this.cartService.clearCart("7UMNf9av9YZSU4fUx17D5IGHG6I2"); // Clear the cart via the facade service
+    this.cartService.clearCart(this.currentUserWithRole!.firebaseUser.uid); // Clear the cart via the facade service
   }
 
   removeItem(productId: string): void {
     // this.cartFirebase2Repository.removeItem(productId); // Remove an item via the facade service
-    this.cartService.removeItem("7UMNf9av9YZSU4fUx17D5IGHG6I2", productId);
+    this.cartService.removeItem(this.currentUserWithRole!.firebaseUser.uid, productId);
   }
 
 
@@ -64,7 +72,7 @@ export class CartPageComponent {
         if (item) {
           console.log('Item found:', item);
           const newQuantity = item.quantity + 1;
-          this.cartService.updateItemQuantity("7UMNf9av9YZSU4fUx17D5IGHG6I2", productId, newQuantity);
+          this.cartService.updateItemQuantity(this.currentUserWithRole!.firebaseUser.uid, productId, newQuantity);
         }
       }
     });
@@ -78,7 +86,7 @@ export class CartPageComponent {
         if (item) {
           console.log('Item found:', item);
           const newQuantity = item.quantity - 1;
-          this.cartService.updateItemQuantity("7UMNf9av9YZSU4fUx17D5IGHG6I2", productId, newQuantity);
+          this.cartService.updateItemQuantity(this.currentUserWithRole!.firebaseUser.uid, productId, newQuantity);
         }
       }
     });
