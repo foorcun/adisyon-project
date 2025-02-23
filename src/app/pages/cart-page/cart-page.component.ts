@@ -11,12 +11,13 @@ import { IconButtonComponent } from '../../common/icon-button/icon-button.compon
 import { CartFirebase2Repository } from '../../CartFeature/infrastructure/repositories/cart-firebase2.repository';
 import { CartPageNavbarComponent } from './cart-page-navbar/cart-page-navbar.component';
 import { CartService } from '../../services/cart.service';
+import { filter, take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-cart-page',
   templateUrl: './cart-page.component.html',
   styleUrls: ['./cart-page.component.scss'],
-  imports: [CommonModule, CartPageNavbarComponent, 
+  imports: [CommonModule, CartPageNavbarComponent,
     QuantityButtonGroupComponent,
     IconButtonComponent, TableNameSelectorComponent, OrderNowFooterComponent]
 })
@@ -53,12 +54,33 @@ export class CartPageComponent {
     // this.cartFirebase2Repository.removeItem(productId); // Remove an item via the facade service
   }
 
+
   increaseQuantity(productId: string): void {
-    // this.cartFirebase2Repository.increaseQuantity(productId); // Increase item quantity
+    this.cartService.cart$.pipe(take(1)).subscribe(cart => {
+      if (cart.items && typeof cart.items === 'object') {
+        const item = Object.values(cart.items).find(item => item.product.id === productId);
+        if (item) {
+          console.log('Item found:', item);
+          const newQuantity = item.quantity + 1;
+          this.cartService.updateItemQuantity("7UMNf9av9YZSU4fUx17D5IGHG6I2", productId, newQuantity);
+        }
+      }
+    });
   }
 
+
   decreaseQuantity(productId: string): void {
-    // this.cartFirebase2Repository.decreaseQuantity(productId); // Decrease item quantity
+    this.cartService.cart$.pipe(take(1)).subscribe(cart => {
+      if (cart.items && typeof cart.items === 'object') {
+        const item = Object.values(cart.items).find(item => item.product.id === productId);
+        if (item) {
+          console.log('Item found:', item);
+          const newQuantity = item.quantity - 1;
+          this.cartService.updateItemQuantity("7UMNf9av9YZSU4fUx17D5IGHG6I2", productId, newQuantity);
+        }
+      }
+    });
+
   }
 
   handleClick() {
