@@ -5,6 +5,9 @@ import { CartFirebase2Repository } from '../CartFeature/infrastructure/repositor
 import { CartItem } from '../CartFeature/domain/entity/cart-item';
 import { UserService } from './user.service';
 import { UserWithRole } from '../UserFeature/domain/entities/user-with-role';
+import { OrderRepository } from '../OrderFeature/domain/repositories/order-repository';
+import { Order } from '../OrderFeature/domain/entities/order.entity';
+import { OrderDto } from '../OrderFeature/domain/entities/order.dto';
 
 @Injectable({
   providedIn: 'root',
@@ -16,6 +19,7 @@ export class CartService {
   currentUserWithRole: UserWithRole | null = null;
 
   constructor(private cartRepository: CartFirebase2Repository,
+    private orderRepository: OrderRepository,
     private userService: UserService
   ) {
     this.userService.currentUserWithRole$.subscribe(user => {
@@ -57,5 +61,11 @@ export class CartService {
   /** ✅ Clear the cart */
   clearCart(userKey: string): Observable<void> {
     return this.cartRepository.clearCart(userKey);
+  }
+
+  createOrder(order: OrderDto): Observable<string> {
+
+    // return this.cartRepository.createOrder(userKey, tableName);
+    return this.orderRepository.createOrder(order);
   }
 }

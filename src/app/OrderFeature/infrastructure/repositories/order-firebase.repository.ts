@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 import { OrderRepository } from '../../domain/repositories/order-repository';
 import { Order } from '../../domain/entities/order.entity';
 import { OrderStatus } from '../../domain/entities/order-status';
+import { OrderDto } from '../../domain/entities/order.dto';
 
 @Injectable({
   providedIn: 'root',
@@ -21,17 +22,20 @@ export class OrderFirebaseRepository extends OrderRepository {
    * @param order The order to create.
    * @returns An Observable emitting the generated order ID.
    */
-  createOrder(order: Order): Observable<string> {
-    return new Observable((observer) => {
-      const orderRef = push(ref(this.database, this.basePath));
-      set(orderRef, order)
-        .then(() => {
-          observer.next(orderRef.key as string); // Firebase-generated ID
-          observer.complete();
-        })
-        .catch((error) => observer.error(error));
-    });
-  }
+
+createOrder(order: OrderDto): Observable<string> {
+  return new Observable((observer) => {
+    const orderRef = push(ref(this.database, this.basePath));
+
+    set(orderRef, order)
+      .then(() => {
+        observer.next(orderRef.key as string); // Firebase-generated ID
+        observer.complete();
+      })
+      .catch((error) => observer.error(error));
+  });
+}
+
 
   /**
    * Fetches a specific order by its ID.

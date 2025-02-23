@@ -1,5 +1,6 @@
 import { Observable } from 'rxjs';
 import { Order } from '../entities/order.entity';
+import { OrderDto } from '../entities/order.dto';
 
 export abstract class OrderRepository {
   /**
@@ -7,7 +8,7 @@ export abstract class OrderRepository {
    * @param order The order to create.
    * @returns An Observable indicating the creation completion.
    */
-  abstract createOrder(order: Order): Observable<string>;
+  abstract createOrder(order: OrderDto): Observable<string>;
 
   /**
    * Fetches an order by its ID.

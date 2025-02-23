@@ -11,10 +11,6 @@ export class Order {
     public updatedAt: Date,
     public totalAmount: number,
     public userUid: string // Added user's UID
-  ) {}
+  ) { }
 
-  updateStatus(newStatus: OrderStatus): void {
-    this.status = newStatus;
-    this.updatedAt = new Date();
-  }
 }

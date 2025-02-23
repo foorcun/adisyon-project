@@ -14,6 +14,10 @@ import { CartService } from '../../services/cart.service';
 import { filter, take } from 'rxjs/operators';
 import { UserService } from '../../services/user.service';
 import { UserWithRole } from '../../UserFeature/domain/entities/user-with-role';
+import { Order } from '../../OrderFeature/domain/entities/order.entity';
+import { OrderStatus } from '../../OrderFeature/domain/entities/order-status';
+import { OrderItem } from '../../OrderFeature/domain/entities/order-item.entity';
+import { OrderDto } from '../../OrderFeature/domain/entities/order.dto';
 
 @Component({
   selector: 'app-cart-page',
@@ -102,9 +106,36 @@ export class CartPageComponent {
     // this.cartModalService.closeModal();
   }
 
-  createOrder(tableName: string) {
-    // this.cartPageFacadeService.createOrder(tableName);
-  }
+createOrder(tableName: string) {
+  console.log("[CartPageComponent] createOrder: ", tableName);
+
+  this.cartService.cart$.pipe(take(1)).subscribe(cart => {
+    if (cart.items && typeof cart.items === 'object') {
+      const orderItems = Object.values(cart.items).map(item => {
+        return new OrderItem(item.product, item.quantity);
+      });
+
+      // Convert Order to Firestore-compatible DTO
+      const orderDto: OrderDto = {
+        id: '',
+        items: orderItems,
+        tableName: tableName,
+        status: OrderStatus.PENDING,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        totalAmount: 0,
+        userUid: this.currentUserWithRole!.firebaseUser.uid,
+      };
+
+      this.cartService.createOrder(orderDto).subscribe(orderId => {
+        console.log('Order created successfully:', orderId);
+        this.clearCart();
+      });
+    }
+  });
+}
+
+
 
   onTableNameSelected(tableName: string): void {
     this.selectedTable = tableName;
