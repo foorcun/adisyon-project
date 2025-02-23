@@ -34,4 +34,10 @@ export class TableService {
   updateTable(tableId: string, updates: Partial<Table>): Observable<void> {
     return this.tableRepository.updateTable(tableId, updates);
   }
+
+
+  /** ✅ Delete a table */
+  deleteTable(tableId: string): Observable<void> {
+    return this.tableRepository.deleteTable(tableId);
+  }
 }

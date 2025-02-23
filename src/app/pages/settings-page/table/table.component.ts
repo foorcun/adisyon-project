@@ -60,4 +60,15 @@ export class TableComponent implements OnInit {
       });
     }
   }
+
+
+  /** ✅ Delete a table */
+  deleteTable(tableId: string) {
+    if (confirm('Are you sure you want to delete this table?')) {
+      this.tableService.deleteTable(tableId).subscribe(() => {
+        console.log(`Table ${tableId} deleted`);
+      });
+    }
+  }
 }
+

@@ -40,12 +40,10 @@
             <p class="card-text">Capacity: {{ table.value.capacity }}</p>
             <p class="card-text">Status: <strong>{{ table.value.status }}</strong></p>
             <button class="btn btn-warning w-100 mt-2" (click)="startEditing(table.value)">Edit</button>
+            <button class="btn btn-danger w-100 mt-2" (click)="deleteTable(table.value.id)">Delete</button>
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
-
-
-

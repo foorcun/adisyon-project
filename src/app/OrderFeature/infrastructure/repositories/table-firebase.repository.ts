@@ -71,4 +71,10 @@ export class TableFirebaseRepository {
     return from(update(tableRef, updates));
   }
 
+
+  /** ✅ Delete a table */
+  deleteTable(tableId: string): Observable<void> {
+    const tableRef = ref(this.database, `${this.basePath}/${tableId}`);
+    return from(remove(tableRef));
+  }
 }
