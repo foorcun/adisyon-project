@@ -4,6 +4,7 @@ import { UserService } from '../../services/user.service';
 import { UserWithRole } from '../../UserFeature/domain/entities/user-with-role';
 import { Order } from '../../OrderFeature/domain/entities/order.entity';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user-orders-page',
@@ -19,8 +20,9 @@ export class UserOrdersPageComponent implements OnInit {
 
   constructor(
     private orderService: OrderService,
-    private userService: UserService
-  ) {}
+    private userService: UserService,
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
     this.userService.currentUserWithRole$.subscribe({
@@ -49,5 +51,9 @@ export class UserOrdersPageComponent implements OnInit {
         this.loading = false;
       }
     });
+  }
+
+  goBackToMenuPage(): void {
+    this.router.navigate(['/menu-page']);
   }
 }

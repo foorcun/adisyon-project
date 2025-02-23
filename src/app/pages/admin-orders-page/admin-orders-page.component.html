@@ -1,44 +1,40 @@
+
 <div id="sepetim-navbar">
-  <h2 class="navbar-title">Sipariş Detay</h2>
+  <h2 class="navbar-title">Sipariş Ekranı</h2>
   <button class="close-btn" (click)="goBackToMenuPage()">
     <i class="fas fa-times"></i>
   </button>
 </div>
 <div class="container mt-4">
+  <h2 class="mb-4">All Orders</h2>
+
   <!-- Loading Indicator -->
-  <div *ngIf="loading" class="alert alert-info text-center">
-    Loading orders...
-  </div>
+  <div *ngIf="loading" class="alert alert-info text-center">Loading orders...</div>
 
   <!-- Error Message -->
-  <div *ngIf="errorMessage" class="alert alert-danger text-center">
-    {{ errorMessage }}
-  </div>
+  <div *ngIf="errorMessage" class="alert alert-danger text-center">{{ errorMessage }}</div>
 
   <!-- No Orders Found -->
-  <div
-    *ngIf="userOrders.length === 0 && !loading"
-    class="alert alert-warning text-center"
-  >
+  <div *ngIf="allOrders.length === 0 && !loading" class="alert alert-warning text-center">
     No orders found.
   </div>
 
-  <!-- Orders List -->
+  <!-- Orders List (Two Cards Per Row) -->
   <div class="row">
-    <div *ngFor="let order of userOrders" class="col-md-6 col-lg-4 mb-4">
+    <div *ngFor="let order of allOrders; let i = index" class="col-md-6 mb-4">
       <div class="card shadow-sm">
         <div class="card-body">
           <h5 class="card-title">Table: {{ order.tableName }}</h5>
           <p class="card-text">
-            <strong>Status:</strong>
+            <strong>Status:</strong> 
             <span class="badge bg-secondary">{{ order.status }}</span>
           </p>
           <p class="card-text">
             <strong>Total Amount:</strong> {{ order.totalAmount | currency }}
           </p>
-          <p class="card-text">
-            <strong>Created At:</strong> {{ order.createdAt | date : "short" }}
-          </p>
+          <!-- <p class="card-text">
+            <strong>Created At:</strong> {{ order.createdAt | date:'short' }}
+          </p> -->
 
           <!-- Order Items -->
           <h6 class="mt-3">Items:</h6>
@@ -48,18 +44,18 @@
             </li>
           </ul>
 
-          <!-- Actions (View Details, Cancel) -->
+          <!-- Actions (Update Status, Delete) -->
           <div class="mt-3 d-flex justify-content-between">
-            <!-- <button class="btn btn-primary btn-sm" (click)="viewOrderDetails(order.id)">
-              View Details
+            <button class="btn btn-success btn-sm" (click)="updateOrderStatus(order.id, 'COMPLETED')">
+              Mark as Completed
             </button>
-            <button class="btn btn-danger btn-sm" (click)="cancelOrder(order.id)" 
-              *ngIf="order.status !== 'COMPLETED'">
-              Cancel
-            </button> -->
+            <button class="btn btn-danger btn-sm" (click)="deleteOrder(order.id)">
+              Delete
+            </button>
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
+
