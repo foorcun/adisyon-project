@@ -1,28 +1,40 @@
 <div class="category-settings">
-  <h2>Category Settings</h2>
+  <h2><i class="fas fa-list"></i> Category Settings</h2>
 
   <!-- Add Category Form -->
   <form [formGroup]="categoryForm" (ngSubmit)="addCategory()" class="add-category-form">
-    <input formControlName="name" placeholder="Enter category name" />
-    <button type="submit" [disabled]="categoryForm.invalid">Add Category</button>
+    <div class="input-group">
+      <input formControlName="name" placeholder="Enter category name" />
+      <button type="submit" [disabled]="categoryForm.invalid">
+        <i class="fas fa-plus-circle"></i> Add
+      </button>
+    </div>
   </form>
 
   <!-- Display Existing Categories -->
   <div class="category-list" *ngIf="getCategoryKeys().length">
-    <h3>Existing Categories:</h3>
-    <div *ngFor="let categoryId of getCategoryKeys()">
+    <h3><i class="fas fa-box"></i> Existing Categories:</h3>
+    <div *ngFor="let categoryId of getCategoryKeys()" class="category-card">
       <div class="category-item">
         <span>{{ categories[categoryId].name }}</span>
 
         <!-- Update Category Name -->
-        <input #updatedName placeholder="New name" />
-        <button (click)="updateCategoryName(categoryId, updatedName.value)">Update</button>
+        <div class="input-group">
+          <input #updatedName placeholder="New name" />
+          <button (click)="updateCategoryName(categoryId, updatedName.value)" title="Update">
+            <i class="fas fa-edit"></i>
+          </button>
+        </div>
 
         <!-- Delete Category -->
-        <button (click)="deleteCategory(categoryId)" class="delete-btn">Delete</button>
+        <button (click)="deleteCategory(categoryId)" class="delete-btn" title="Delete">
+          <i class="fas fa-trash"></i>
+        </button>
       </div>
     </div>
   </div>
 
-  <p *ngIf="getCategoryKeys().length === 0">No categories available.</p>
+  <p *ngIf="getCategoryKeys().length === 0" class="no-categories">
+    <i class="fas fa-exclamation-circle"></i> No categories available.
+  </p>
 </div>
