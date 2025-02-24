@@ -18,6 +18,9 @@ export class MenuItemComponent implements OnInit {
   selectedCategoryId: string | null = null;
   menuItems: { [key: string]: MenuItem } = {};
 
+  // Track visibility of the add item form
+  isAddItemVisible: boolean = false;
+
   // Track update status for visual feedback
   updatingItems: { [key: string]: boolean } = {};
   updatedItems: { [key: string]: boolean } = {};
@@ -68,6 +71,11 @@ export class MenuItemComponent implements OnInit {
     }
   }
 
+  // Toggle add menu item form visibility
+  toggleAddItemForm() {
+    this.isAddItemVisible = !this.isAddItemVisible;
+  }
+
   // Add a new menu item
   addMenuItem() {
     if (this.menuItemForm.valid) {
@@ -84,6 +92,7 @@ export class MenuItemComponent implements OnInit {
       this.menuRepository.addMenuItem(this.menuKey, selectedCategory, newItem).subscribe(() => {
         console.log('Menu item added successfully');
         this.menuItemForm.reset();
+        this.isAddItemVisible = false; // Collapse the form after adding
         this.loadMenuItems();
       });
     } else {

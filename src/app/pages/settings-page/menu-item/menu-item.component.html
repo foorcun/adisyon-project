@@ -4,12 +4,7 @@
   <!-- Category Selection for Viewing Menu Items -->
   <div class="category-select">
     <label for="categoryDropdown">📂 Select Category:</label>
-    <select
-      id="categoryDropdown"
-      #categorySelector
-      (change)="onCategorySelect(categorySelector.value)"
-      class="form-select"
-    >
+    <select id="categoryDropdown" #categorySelector (change)="onCategorySelect(categorySelector.value)" class="form-select">
       <option value="" selected disabled>Select a category</option>
       <option *ngFor="let categoryId of getCategoryKeys()" [value]="categoryId">
         {{ categories[categoryId].name }}
@@ -17,10 +12,15 @@
     </select>
   </div>
 
-  <!-- Add New Menu Item Form -->
-  <form [formGroup]="menuItemForm" (ngSubmit)="addMenuItem()" class="add-menu-item-form">
+  <!-- Toggle Add Item Section -->
+  <button class="toggle-add-item-btn" (click)="toggleAddItemForm()">
+    <span *ngIf="!isAddItemVisible">➕ Add New Item</span>
+    <span *ngIf="isAddItemVisible">🔼 Close</span>
+  </button>
+
+  <!-- Add New Menu Item Form (Initially Collapsed) -->
+  <form *ngIf="isAddItemVisible" [formGroup]="menuItemForm" (ngSubmit)="addMenuItem()" class="add-menu-item-form">
     <div class="form-group">
-      <!-- Dropdown for Category Selection -->
       <label for="addCategoryDropdown">📂 Category:</label>
       <select id="addCategoryDropdown" formControlName="categoryId">
         <option value="" selected disabled>Select category</option>
@@ -34,18 +34,17 @@
       <input formControlName="price" placeholder="💲 Price" type="number" min="0" />
       <input formControlName="imageUrl" placeholder="🌆 Image URL (optional)" />
 
-      <button type="submit" [disabled]="menuItemForm.invalid">
-        ➕ Add Item
-      </button>
+      <button type="submit" [disabled]="menuItemForm.invalid">➕ Add Item</button>
     </div>
   </form>
 
   <!-- Display Existing Menu Items -->
   <div class="menu-item-list" *ngIf="getMenuItemKeys().length > 0">
     <h3>📋 Current Menu Items:</h3>
-
+    
     <div *ngFor="let menuItemId of getMenuItemKeys()" class="menu-item-card">
       <div class="menu-item">
+        <!-- Image Preview -->
         <!-- <div class="item-image" *ngIf="menuItems[menuItemId].imageUrl">
           <img [src]="menuItems[menuItemId].imageUrl" alt="Menu Item Image" />
         </div> -->
@@ -99,7 +98,5 @@
     </div>
   </div>
 
-  <p *ngIf="!getMenuItemKeys().length && selectedCategoryId">
-    🚫 No menu items available.
-  </p>
+  <p *ngIf="!getMenuItemKeys().length && selectedCategoryId">🚫 No menu items available.</p>
 </div>
