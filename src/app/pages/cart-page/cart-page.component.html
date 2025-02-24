@@ -31,9 +31,6 @@
       ></app-quantity-button-group>
     </div>
 
-    <div id="total-price" *ngIf="cart.totalAmount > 0">
-      <p>Toplam: {{ cart.totalAmount | currency : "TRY" : "symbol" }}</p>
-    </div>
   </div>
 
   <div *ngIf="cart$ | async as cart">
