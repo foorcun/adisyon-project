@@ -24,20 +24,39 @@
   }
 }
 
+// ✅ Default card styling
 .card {
   width: 100%;
   height: 100%;
-  border-radius: 10px;
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
-  font-size: 1.2rem;
+  font-size: 1.3rem;
+  font-weight: bold;
+  transition: transform 0.2s, background 0.3s ease-in-out;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+  &:hover {
+    transform: scale(1.05);
+  }
 }
 
+// ✅ Status-specific background colors
+.status-default {
+  background-color: #6c757d; // Gray for no orders
+}
 
+.status-pending {
+  background-color: #ffcc00; // Yellow for pending
+}
 
-$primary-color: #4C3398;
+.status-in-progress {
+  background-color: #007bff; // Blue for in-progress
+}
+
+$primary-color: #4c3398;
 
 #sepetim-navbar {
   display: flex;

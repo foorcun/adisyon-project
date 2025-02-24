@@ -5,6 +5,7 @@ import { Order } from '../../OrderFeature/domain/entities/order.entity';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { Table } from '../../OrderFeature/domain/entities/table.entity';
+import { OrderStatus } from '../../OrderFeature/domain/entities/order-status';
 
 @Component({
   selector: 'app-admin-orders-page',
@@ -73,6 +74,24 @@ export class AdminOrdersPageComponent implements OnInit {
   }
   navigateToTableDetails(tableId: string): void {
     this.router.navigate(['/table-details', tableId]);
+  }
+
+  getTableStatusClass(tableId: string): string {
+    // Get all orders for this table
+    const tableOrders = this.allOrders.filter(order => order.tableName === this.tableMap[tableId]?.name);
+
+    // Check for "PENDING" orders first
+    if (tableOrders.some(order => order.status === OrderStatus.PENDING)) {
+      return 'status-pending';
+    }
+
+    // If no "PENDING", check for "IN_PROGRESS"
+    if (tableOrders.some(order => order.status === OrderStatus.IN_PROGRESS)) {
+      return 'status-in-progress';
+    }
+
+    // Default class if no relevant orders
+    return 'status-default';
   }
 
 }

@@ -34,10 +34,12 @@
       (click)="navigateToTableDetails(table.id)"
     >
       <div
-        class="card shadow-sm d-flex align-items-center justify-content-center"
-      >
-        <h5 class="card-title">{{ table.name }}</h5>
-      </div>
+  class="card shadow-sm d-flex align-items-center justify-content-center"
+  [ngClass]="getTableStatusClass(table.id)"
+>
+  <h5 class="card-title">{{ table.name }}</h5>
+</div>
+
     </div>
   </div>
 </div>
