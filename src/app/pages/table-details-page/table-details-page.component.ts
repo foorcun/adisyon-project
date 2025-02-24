@@ -23,12 +23,15 @@ export class TableDetailsPageComponent implements OnInit {
     private route: ActivatedRoute,
     private tableService: TableService,
     private orderService: OrderService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     const tableId = this.route.snapshot.paramMap.get('id');
     if (tableId) {
       this.fetchTableDetails(tableId);
+    }
+    if (this.table === null) {  
+      this.goBack();
     }
   }
 

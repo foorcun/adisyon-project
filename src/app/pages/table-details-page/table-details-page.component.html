@@ -1,17 +1,20 @@
-<div class="container mt-4">
-  <div class="header">
-    <button class="btn btn-secondary back-btn" (click)="goBack()">
-      ← Back
-    </button>
-    <h2>Table Details</h2>
-  </div>
 
-  <div *ngIf="table; else notFound">
+<div id="sepetim-navbar">
+  <h2 class="navbar-title">{{ table!.name }} Detay</h2>
+  <button class="close-btn" (click)="goBack()">
+    <i class="fas fa-times"></i>
+  </button>
+</div>
+
+<div class="container mt-4">
+
+
+  <!-- <div *ngIf="table; else notFound">
     <div class="table-info">
       <h3>{{ table.name }}</h3>
       <p><strong>Capacity:</strong> {{ table.capacity }}</p>
     </div>
-  </div>
+  </div> -->
 
   <ng-template #notFound>
     <p class="alert alert-warning text-center">Table not found.</p>
