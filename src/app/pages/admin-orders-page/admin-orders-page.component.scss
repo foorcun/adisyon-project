@@ -1,19 +1,40 @@
 .container {
-  max-width: 900px;
+  max-width: 1200px;
   margin: 0 auto;
 }
 
+.order-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px; // Space between cards
+  justify-content: flex-start;
+}
+
+.table-card {
+  flex: 1 1 auto;
+  width: 200px; // Default size for desktop
+  height: 200px; // Ensure square shape
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  @media (max-width: 768px) {
+    width: calc(50% - 8px); // Two square cards per row on mobile
+    height: calc(50vw - 16px); // Maintain square shape dynamically
+  }
+}
+
 .card {
+  width: 100%;
+  height: 100%;
   border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 1.2rem;
 }
 
-.list-group-item {
-  font-size: 0.9rem;
-}
-
-.btn {
-  min-width: 120px;
-}
 
 
 $primary-color: #4C3398;
