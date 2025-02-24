@@ -1,16 +1,33 @@
 import { Component, Renderer2 } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { UserService } from '../../services/user.service';
+import { UserWithRole } from '../../UserFeature/domain/entities/user-with-role';
+import { UserRole } from '../../UserFeature/domain/entities/user-role.enum';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-navbar-bootstrap',
-  imports: [RouterModule],
+  imports: [RouterModule, CommonModule],
   templateUrl: './navbar-bootstrap.component.html',
-  styleUrl: './navbar-bootstrap.component.scss'
+  styleUrl: './navbar-bootstrap.component.scss',
 })
 export class NavbarBootstrapComponent {
   isNavbarCollapsed = true;
-  constructor(private renderer: Renderer2) { }
 
+  currentUserWithRole: UserWithRole | null = null;
+
+  constructor(
+    private renderer: Renderer2,
+    private userService: UserService
+  ) {
+    this.userService.currentUserWithRole$.subscribe(user => {
+      this.currentUserWithRole = user;
+    });
+  }
+
+  get isAdmin(): boolean {
+    return this.currentUserWithRole?.role === UserRole.ADMIN;
+  }
   toggleNavbar(): void {
     const navbar = document.querySelector('.navbar-collapse');
     if (navbar) {
