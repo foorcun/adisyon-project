@@ -13,4 +13,8 @@ export class Order {
     public userUid: string // Added user's UID
   ) { }
 
+  getTotalAmount(): number {
+    return this.items.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
+  }
+
 }

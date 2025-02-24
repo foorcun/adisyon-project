@@ -37,7 +37,7 @@
         </div>
         <div class="card-body">
           <h5 class="card-title">Order #{{ order.id }}</h5>
-          <p><strong>Total:</strong> {{ order.totalAmount | currency }}</p>
+          <p><strong>Total:</strong> {{ order.getTotalAmount() | currency }}</p>
           <p><strong>Created:</strong> {{ order.createdAt | date:'short' }}</p>
           <p><strong>Updated:</strong> {{ order.updatedAt | date:'short' }}</p>
 
@@ -45,7 +45,7 @@
           <h6 class="mt-2">Items:</h6>
           <ul class="list-group">
             <li *ngFor="let item of order.items" class="list-group-item">
-              <strong>{{ item.product.name }}</strong> (x{{ item.quantity }})
+              <strong>{{ item.product.name }}</strong> (x{{ item.quantity }}) - {{ item.product.price | currency }}
             </li>
           </ul>
         </div>
