@@ -1,3 +1,16 @@
 <div class="order-now-footer">
-  <button (click)="onOrderNow()">Order Now</button>
+  <!-- <button (click)="onOrderNow()">Order Now</button> -->
+
+  <!-- <div class="quantity-controls">
+    <button class="btn-decrement" (click)="decrementQuantity()">-</button>
+    <span class="quantity-display">{{ quantity }}</span>
+    <button class="btn-increment" (click)="incrementQuantity()">+</button>
+  </div> -->
+  <div id="sub-button-container">
+    <p>
+      {{ getTotalPrice() | currency : "TRY" : "symbol" }}
+    </p>
+
+  <button class="btn btn-primary" (click)="onOrderNow()">Order Now</button>
+  </div>
 </div>
