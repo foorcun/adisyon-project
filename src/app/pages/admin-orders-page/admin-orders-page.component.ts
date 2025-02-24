@@ -71,4 +71,8 @@ export class AdminOrdersPageComponent implements OnInit {
   goBackToMenuPage(): void {
     this.router.navigate(['/menu-page']);
   }
+navigateToTableDetails(tableId: string): void {
+  this.router.navigate(['/table-details', tableId]);
+}
+
 }

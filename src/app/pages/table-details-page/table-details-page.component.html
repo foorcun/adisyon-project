@@ -1,0 +1,12 @@
+<div class="container mt-4">
+  <h2>Table Details</h2>
+  
+  <div *ngIf="table; else notFound">
+    <p><strong>Table Name:</strong> {{ table.name }}</p>
+    <p><strong>Capacity:</strong> {{ table.capacity }}</p>
+  </div>
+
+  <ng-template #notFound>
+    <p class="alert alert-warning">Table not found.</p>
+  </ng-template>
+</div>

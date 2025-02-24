@@ -9,20 +9,33 @@
   <h2 class="mb-4">All Tables</h2>
 
   <!-- Loading Indicator -->
-  <div *ngIf="loading" class="alert alert-info text-center">Loading tables...</div>
+  <div *ngIf="loading" class="alert alert-info text-center">
+    Loading tables...
+  </div>
 
   <!-- Error Message -->
-  <div *ngIf="errorMessage" class="alert alert-danger text-center">{{ errorMessage }}</div>
+  <div *ngIf="errorMessage" class="alert alert-danger text-center">
+    {{ errorMessage }}
+  </div>
 
   <!-- No Tables Found -->
-  <div *ngIf="tables.length === 0 && !loading" class="alert alert-warning text-center">
+  <div
+    *ngIf="tables.length === 0 && !loading"
+    class="alert alert-warning text-center"
+  >
     No tables found.
   </div>
 
   <!-- Tables Grid -->
   <div class="order-list d-flex flex-wrap">
-    <div *ngFor="let table of tables" class="table-card">
-      <div class="card shadow-sm d-flex align-items-center justify-content-center">
+    <div
+      *ngFor="let table of tables"
+      class="table-card"
+      (click)="navigateToTableDetails(table.id)"
+    >
+      <div
+        class="card shadow-sm d-flex align-items-center justify-content-center"
+      >
         <h5 class="card-title">{{ table.name }}</h5>
       </div>
     </div>
