@@ -1,16 +1,17 @@
 .menu-item-settings {
-  padding: 20px;
+  padding: 25px;
   border: 3px solid #6c63ff;
   border-radius: 15px;
-  max-width: 600px;
+  max-width: 700px;
   margin: 30px auto;
-  background-color: #f3f4f6;
-  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+  background-color: #f8fafc;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 
   h2 {
     text-align: center;
     color: #4f46e5;
     margin-bottom: 20px;
+    font-size: 1.8rem;
   }
 
   .category-select {
@@ -19,16 +20,22 @@
     label {
       font-weight: bold;
       color: #374151;
+      font-size: 1.1rem;
     }
 
     select {
       margin-top: 5px;
-      padding: 10px;
+      padding: 12px;
       width: 100%;
-      border: 1px solid #d1d5db;
+      border: 2px solid #d1d5db;
       border-radius: 8px;
-      font-size: 1em;
+      font-size: 1.1em;
       cursor: pointer;
+      transition: all 0.3s ease;
+
+      &:hover {
+        border-color: #4f46e5;
+      }
     }
   }
 
@@ -47,21 +54,28 @@
 
       select, input {
         padding: 12px;
-        border: 1px solid #d1d5db;
+        border: 2px solid #d1d5db;
         border-radius: 8px;
-        font-size: 1em;
+        font-size: 1.1em;
+        transition: border 0.3s ease-in-out;
+
+        &:focus {
+          border-color: #4f46e5;
+          outline: none;
+          box-shadow: 0 0 8px rgba(79, 70, 229, 0.5);
+        }
       }
 
       button {
         margin-top: 15px;
-        padding: 12px;
+        padding: 14px;
         background-color: #16a34a;
         color: #fff;
         border: none;
         border-radius: 8px;
         cursor: pointer;
-        transition: 0.3s;
-        font-size: 1em;
+        transition: all 0.3s ease;
+        font-size: 1.1em;
 
         &:disabled {
           background-color: #a1a1aa;
@@ -76,17 +90,53 @@
   }
 
   .menu-item-list {
+    margin-top: 20px;
+
+    h3 {
+      text-align: center;
+      color: #333;
+      font-size: 1.3rem;
+    }
+
+    .menu-item-card {
+      background: #f3f4f6;
+      border-radius: 12px;
+      padding: 15px;
+      margin-bottom: 15px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+      transition: transform 0.3s ease-in-out;
+
+      &:hover {
+        transform: scale(1.02);
+      }
+    }
+
     .menu-item {
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 12px;
       padding: 15px;
-      margin: 15px 0;
-      border: 2px solid #3b82f6;
+      border: 2px solid #4f46e5;
       border-radius: 12px;
-      background-color: #fefefe;
+      background-color: #fff;
+
+      .item-image {
+        text-align: center;
+        margin-bottom: 10px;
+
+        img {
+          max-width: 100%;
+          height: auto;
+          border-radius: 8px;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+      }
 
       .item-details {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+
         .info {
           display: flex;
           align-items: center;
@@ -95,10 +145,16 @@
 
           input {
             flex: 1;
-            padding: 5px 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 0.95em;
+            padding: 8px;
+            border: 2px solid #ccc;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: border 0.3s ease-in-out;
+
+            &:focus {
+              border-color: #4f46e5;
+              outline: none;
+            }
           }
 
           strong {
@@ -115,23 +171,36 @@
         gap: 10px;
 
         .update-btn {
-          padding: 7px 15px;
-          border: none;
-          border-radius: 5px;
-          background-color: #0ea5e9;
+          padding: 8px 16px;
+          border-radius: 6px;
+          background-color: #0284c7;
           color: #fff;
           cursor: pointer;
           transition: 0.3s;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          min-width: 120px;
+          text-align: center;
+          justify-content: center;
 
           &:hover {
-            background-color: #0284c7;
+            background-color: #0369a1;
+          }
+
+          &:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+          }
+
+          .fa-spinner {
+            font-size: 1rem;
           }
         }
 
         .delete-btn {
-          padding: 7px 15px;
-          border: none;
-          border-radius: 5px;
+          padding: 8px 16px;
+          border-radius: 6px;
           background-color: #ef4444;
           color: #fff;
           cursor: pointer;

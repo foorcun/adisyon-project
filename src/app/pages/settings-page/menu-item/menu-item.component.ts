@@ -18,6 +18,10 @@ export class MenuItemComponent implements OnInit {
   selectedCategoryId: string | null = null;
   menuItems: { [key: string]: MenuItem } = {};
 
+  // Track update status for visual feedback
+  updatingItems: { [key: string]: boolean } = {};
+  updatedItems: { [key: string]: boolean } = {};
+
   // Form to add a new menu item
   menuItemForm: FormGroup;
 
@@ -97,13 +101,27 @@ export class MenuItemComponent implements OnInit {
     }
   }
 
-  // Update a menu item
+  // Update a menu item with visual feedback
   updateMenuItem(menuItemId: string, name: string, description: string, price: number, imageUrl: string) {
     if (this.selectedCategoryId) {
       const updates: Partial<MenuItem> = { name, description, price, imageUrl };
+
+      // Set loading state
+      this.updatingItems[menuItemId] = true;
+      this.updatedItems[menuItemId] = false;
+
       this.menuRepository.updateMenuItem(this.menuKey, this.selectedCategoryId, menuItemId, updates).subscribe(() => {
         console.log(`Menu item ${menuItemId} updated.`);
         this.loadMenuItems();
+
+        // Show success feedback
+        this.updatingItems[menuItemId] = false;
+        this.updatedItems[menuItemId] = true;
+
+        // Reset success message after 2 seconds
+        setTimeout(() => {
+          this.updatedItems[menuItemId] = false;
+        }, 2000);
       });
     }
   }
