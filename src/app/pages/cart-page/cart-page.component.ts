@@ -18,6 +18,8 @@ import { Order } from '../../OrderFeature/domain/entities/order.entity';
 import { OrderStatus } from '../../OrderFeature/domain/entities/order-status';
 import { OrderItem } from '../../OrderFeature/domain/entities/order-item.entity';
 import { OrderDto } from '../../OrderFeature/domain/entities/order.dto';
+import { TableService } from '../../services/table.service';
+import { Table } from '../../OrderFeature/domain/entities/table.entity';
 
 @Component({
   selector: 'app-cart-page',
@@ -31,6 +33,8 @@ export class CartPageComponent {
   cart$: Observable<Cart>;
   cartItems: CartItem[] = []; // Local list of items
 
+  tables: Table[] = [];
+  tableMap: { [key: string]: Table } = {};
   availableTables: string[] = ['Table 1', 'Table 2', 'Table 3', 'Table 4']; // Example table names
   selectedTable: string | null = null; // Currently selected table name
   errorMessage: string | null = null; // To display error messages
@@ -43,7 +47,8 @@ export class CartPageComponent {
     private cartService: CartService,
     private router: Router,
     // private cartModalService: CartModalService
-    private userService: UserService
+    private userService: UserService,
+    private tableService: TableService
   ) {
     this.cart$ = this.cartService.cart$;
 
@@ -57,6 +62,15 @@ export class CartPageComponent {
     this.userService.currentUserWithRole$.subscribe(user => {
       this.currentUserWithRole = user;
     });
+
+
+    this.fetchTables();
+    this.availableTables = this.tables.map(table => table.name);
+  }
+
+  private fetchTables(): void {
+    this.tables = Object.values(this.tableService.getTables()); // Convert object to array
+    this.tableMap = this.tableService.getTables(); // Keep table map for quick lookup
   }
 
   clearCart(): void {
@@ -106,34 +120,34 @@ export class CartPageComponent {
     // this.cartModalService.closeModal();
   }
 
-createOrder(tableName: string) {
-  console.log("[CartPageComponent] createOrder: ", tableName);
+  createOrder(tableName: string) {
+    console.log("[CartPageComponent] createOrder: ", tableName);
 
-  this.cartService.cart$.pipe(take(1)).subscribe(cart => {
-    if (cart.items && typeof cart.items === 'object') {
-      const orderItems = Object.values(cart.items).map(item => {
-        return new OrderItem(item.product, item.quantity);
-      });
+    this.cartService.cart$.pipe(take(1)).subscribe(cart => {
+      if (cart.items && typeof cart.items === 'object') {
+        const orderItems = Object.values(cart.items).map(item => {
+          return new OrderItem(item.product, item.quantity);
+        });
 
-      // Convert Order to Firestore-compatible DTO
-      const orderDto: OrderDto = {
-        id: '',
-        items: orderItems,
-        tableName: tableName,
-        status: OrderStatus.PENDING,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        totalAmount: 0,
-        userUid: this.currentUserWithRole!.firebaseUser.uid,
-      };
+        // Convert Order to Firestore-compatible DTO
+        const orderDto: OrderDto = {
+          id: '',
+          items: orderItems,
+          tableName: tableName,
+          status: OrderStatus.PENDING,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+          totalAmount: 0,
+          userUid: this.currentUserWithRole!.firebaseUser.uid,
+        };
 
-      this.cartService.createOrder(orderDto).subscribe(orderId => {
-        console.log('Order created successfully:', orderId);
-        this.clearCart();
-      });
-    }
-  });
-}
+        this.cartService.createOrder(orderDto).subscribe(orderId => {
+          console.log('Order created successfully:', orderId);
+          this.clearCart();
+        });
+      }
+    });
+  }
 
 
 
