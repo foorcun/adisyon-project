@@ -24,7 +24,7 @@ export class AdminOrdersPageComponent implements OnInit {
     private orderService: OrderService,
     private tableService: TableService,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.fetchOrders();
@@ -71,8 +71,8 @@ export class AdminOrdersPageComponent implements OnInit {
   goBackToMenuPage(): void {
     this.router.navigate(['/menu-page']);
   }
-navigateToTableDetails(tableId: string): void {
-  this.router.navigate(['/table-details', tableId]);
-}
+  navigateToTableDetails(tableId: string): void {
+    this.router.navigate(['/table-details', tableId]);
+  }
 
 }

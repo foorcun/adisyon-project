@@ -24,8 +24,21 @@ export class TableService {
   }
 
   getTables(): { [key: string]: Table } {
-    return this.tablesSubject.getValue();
+    // return this.tablesSubject.getValue();
+    const tables = this.tablesSubject.getValue();
+
+    // Convert to array, sort by name using natural sorting, then back to an object
+    const sortedTablesArray = Object.entries(tables)
+      .sort(([, a], [, b]) => a.name.localeCompare(b.name, undefined, { numeric: true }))
+      .reduce((acc, [key, table]) => {
+        acc[key] = table;
+        return acc;
+      }, {} as { [key: string]: Table });
+
+    return sortedTablesArray;
   }
+
+
 
   // ✅ Expose Create Table Function
   createTable(table: Table): Observable<void> {
