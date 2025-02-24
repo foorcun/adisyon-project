@@ -1,6 +1,8 @@
 <div class="container mt-4">
   <div class="header">
-    <button class="btn btn-secondary back-btn" (click)="goBack()">← Back</button>
+    <button class="btn btn-secondary back-btn" (click)="goBack()">
+      ← Back
+    </button>
     <h2>Table Details</h2>
   </div>
 
@@ -18,13 +20,20 @@
   <h3 class="mt-4">Orders for this Table</h3>
 
   <!-- Loading Indicator -->
-  <div *ngIf="loading" class="alert alert-info text-center">Loading orders...</div>
+  <div *ngIf="loading" class="alert alert-info text-center">
+    Loading orders...
+  </div>
 
   <!-- Error Message -->
-  <div *ngIf="errorMessage" class="alert alert-danger text-center">{{ errorMessage }}</div>
+  <div *ngIf="errorMessage" class="alert alert-danger text-center">
+    {{ errorMessage }}
+  </div>
 
   <!-- No Orders Found -->
-  <div *ngIf="orders.length === 0 && !loading" class="alert alert-warning text-center">
+  <div
+    *ngIf="orders.length === 0 && !loading"
+    class="alert alert-warning text-center"
+  >
     No orders found for this table.
   </div>
 
@@ -38,14 +47,20 @@
         <div class="card-body">
           <h5 class="card-title">Order #{{ order.id }}</h5>
           <p><strong>Total:</strong> {{ order.getTotalAmount() | currency }}</p>
-          <p><strong>Created:</strong> {{ order.createdAt | date:'short' }}</p>
-          <p><strong>Updated:</strong> {{ order.updatedAt | date:'short' }}</p>
+          <p>
+            <strong>Created:</strong> {{ order.createdAt | date : "short" }}
+          </p>
+          <p>
+            <strong>Updated:</strong> {{ order.updatedAt | date : "short" }}
+          </p>
 
           <!-- Order Items -->
           <h6 class="mt-2">Items:</h6>
           <ul class="list-group">
             <li *ngFor="let item of order.items" class="list-group-item">
-              <strong>{{ item.product.name }}</strong> (x{{ item.quantity }}) - {{ item.product.price | currency }}
+              <strong>{{ item.product.name }}</strong>
+              (x{{ item.quantity }}) -
+              {{ item.product.price * item.quantity | currency }}
             </li>
           </ul>
         </div>
