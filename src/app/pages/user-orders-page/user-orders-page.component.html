@@ -34,7 +34,7 @@
             <span class="badge bg-secondary">{{ order.status }}</span>
           </p>
           <p class="card-text">
-            <strong>Total Amount:</strong> {{ order.totalAmount | currency }}
+            <strong>Total Amount:</strong> {{ order.getTotalAmount() | currency : "TRY" : "symbol" }}
           </p>
           <p class="card-text">
             <strong>Created At:</strong>
