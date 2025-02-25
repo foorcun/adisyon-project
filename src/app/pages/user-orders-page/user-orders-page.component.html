@@ -31,10 +31,14 @@
           <h5 class="card-title">Table: {{ order.tableName }}</h5>
           <p class="card-text">
             <strong>Status:</strong>
-            <span class="badge bg-secondary">{{ order.status }}</span>
+            <span class="badge" [ngClass]="getStatusClass(order.status)">
+              {{ order.status }}
+            </span>
           </p>
+
           <p class="card-text">
-            <strong>Total Amount:</strong> {{ order.getTotalAmount() | currency : "TRY" : "symbol" }}
+            <strong>Total Amount:</strong>
+            {{ order.getTotalAmount() | currency : "TRY" : "symbol" }}
           </p>
           <p class="card-text">
             <strong>Created At:</strong>

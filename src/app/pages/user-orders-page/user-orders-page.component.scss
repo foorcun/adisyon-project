@@ -38,3 +38,28 @@ $primary-color: #4C3398;
     }
   }
 }
+
+.status-pending {
+  background-color: #ffc107; // Yellow
+  color: black;
+}
+
+.status-in-progress {
+  background-color: #17a2b8; // Blue
+  color: white;
+}
+
+.status-completed {
+  background-color: #28a745; // Green
+  color: white;
+}
+
+.status-cancelled {
+  background-color: #dc3545; // Red
+  color: white;
+}
+
+.status-default {
+  background-color: #6c757d; // Gray
+  color: white;
+}
