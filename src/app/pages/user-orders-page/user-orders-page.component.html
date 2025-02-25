@@ -37,7 +37,8 @@
             <strong>Total Amount:</strong> {{ order.totalAmount | currency }}
           </p>
           <p class="card-text">
-            <strong>Created At:</strong> {{ order.createdAt | date : "short" }}
+            <strong>Created At:</strong>
+            {{ order.createdAt | date : "dd/MM/yyyy HH:mm" }}
           </p>
 
           <!-- Order Items -->
