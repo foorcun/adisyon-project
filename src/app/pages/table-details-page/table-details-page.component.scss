@@ -1,81 +1,18 @@
-.container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
+$content-padding: 20px;
+$navbar-height: 10vh; // Adjust according to actual navbar height
+$bottom-bar-height: 10vh; // Adjust according to actual bottom bar height
 
-  padding-bottom: 10vh;
+.content-body {
+  width: 100vw;
+  height: calc(100vh - $navbar-height - $bottom-bar-height);
+  padding: $content-padding;
+  border: 3px solid red;
+  box-sizing: border-box;
+  overflow-y: auto; // Ensures scrolling if content overflows
 }
 
-.header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 20px;
-}
 
-.back-btn {
-  background-color: #4C3398;
-  color: white;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background 0.2s;
-  
-  &:hover {
-    background-color: #372675;
-  }
-}
 
-.table-info {
-  text-align: center;
-  background: #f8f9fa;
-  padding: 15px;
-  border-radius: 10px;
-  margin-bottom: 20px;
-}
-
-.order-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 16px;
-}
-
-.order-card {
-  width: 100%;
-}
-
-.card {
-  border-radius: 10px;
-  text-align: center;
-  overflow: hidden;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s;
-
-  &:hover {
-    transform: scale(1.02);
-  }
-}
-
-.card-header {
-  background: #4C3398;
-  color: white;
-  padding: 10px;
-  font-size: 1rem;
-}
-
-.order-status {
-  font-size: 0.9rem;
-  padding: 5px 10px;
-  border-radius: 5px;
-  background: #ffcc00;
-  color: #333;
-}
-
-.list-group-item {
-  font-size: 0.9rem;
-  text-align: left;
-}
 
 
 $primary-color: #4c3398;
@@ -89,6 +26,7 @@ $primary-color: #4c3398;
   color: white;
   border-bottom: 3px solid #ccc;
   position: relative;
+  height: $navbar-height;
 
   .navbar-title {
     margin: 0;
