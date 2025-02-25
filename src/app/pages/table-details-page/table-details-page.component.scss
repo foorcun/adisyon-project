@@ -1,16 +1,43 @@
-$content-padding: 20px;
-$navbar-height: 10vh; // Adjust according to actual navbar height
-$bottom-bar-height: 10vh; // Adjust according to actual bottom bar height
+$navbar-height: 10vh;
+$bottom-bar-height: 10vh;
 
 .content-body {
   width: 100vw;
   height: calc(100vh - $navbar-height - $bottom-bar-height);
-  padding: $content-padding;
-  border: 3px solid red;
   box-sizing: border-box;
-  overflow-y: auto; // Ensures scrolling if content overflows
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: 1fr 6fr 1fr; /* Top: 1 portion, Middle (D, E, F): 7 portions, Bottom: 1 portion */
+  width: 100%;
+  height: 100%;
+  gap: 5px;
+}
+
+.grid-item {
+  border: 3px solid red;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  font-weight: bold;
+  color: #4C3398;
+}
+
+/* Merging Top row (full width) */
+.grid-item:nth-child(1) {
+  grid-column: span 3;
+}
+
+/* Merging Bottom row (full width) */
+.grid-item:nth-child(5) {
+  grid-column: span 3;
+}
 
 
 
