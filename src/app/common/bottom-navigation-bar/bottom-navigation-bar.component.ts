@@ -74,7 +74,7 @@ export class BottomNavigationBarComponent {
   }
   private updateNavItems() {
     if (this.userRole === UserRole.ADMIN) {
-      this.navItems[3] = { label: 'Orders', icon: 'fas fa-store', route: 'admin-orders-page' };
+      this.navItems[3] = { label: 'Sipariş Oluştur', icon: 'fas fa-store', route: 'admin-orders-page' };
     } else {
       this.navItems[3] = { label: 'My Orders', icon: 'fas fa-box', route: 'user-orders-page' };
     }
