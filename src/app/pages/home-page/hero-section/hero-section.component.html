@@ -1,8 +1,6 @@
-
-
 <div class="hero-background">
   <div class="dark-overlay"></div>
-  <div class="content" style="user-select: none;">
+  <div class="content" style="user-select: none">
     <header id="hero-first">
       <h1>RESTAURANT QR Menü</h1>
       <p>FOOD AND BEVERAGE</p>
@@ -12,7 +10,26 @@
     <!-- <section id="hero-fourth">
       <button>Hemen İncele</button>
     </section> -->
-    <footer id="hero-eighth" style="display: flex; gap: 10px">
+
+    <div class="message-body">
+      <h1 style="user-select: none">
+        <span>Bizi Tercih Ettiğiniz İçin</span>
+        <span>Teşekkür Ederiz</span>
+      </h1>
+
+      <div class="message-content">
+
+        <app-icon-button
+          iconClass="fas fa-utensils"
+          label="Menü"
+          (clicked)="handleClick()"
+        ></app-icon-button>
+
+        <p style="user-select: none">Açılış 08:00 - Kapanış 02:00</p>
+      </div>
+    </div>
+
+    <footer id="hero-eighth">
       <div>
         <app-icon-button
           iconClass="fas fa-utensils"
