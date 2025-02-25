@@ -5,14 +5,18 @@
   </button>
 </div>
 
-
 <div class="content-body">
   <div class="grid-container">
     <div class="grid-item">Top</div>
     <div class="grid-item">D</div>
     <div class="grid-item">E</div>
-    <div class="grid-item">F</div>
+
+    <!-- Use CategoryAreaComponent -->
+    <app-category-area
+      [categories]="(categories$ | async) ?? []"
+      [loading]="loading"
+    ></app-category-area>
+
     <div class="grid-item">Bottom</div>
   </div>
 </div>
-
