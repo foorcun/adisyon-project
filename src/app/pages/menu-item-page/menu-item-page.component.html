@@ -5,19 +5,18 @@
   </button>
 </div>
 
-<div class="menu-item-container">
-  <div class="menu-item-header">
-    <h1>{{ selectedMenuItem!.product.name }}</h1>
+<div class="card menu-item-card">
+  <div class="card-header">
+    <h1 class="card-title">{{ selectedMenuItem!.product.name }}</h1>
   </div>
 
-  <div class="menu-item-content">
-    <div class="menu-item-details">
-      <p>
-        <strong>Price:</strong>
-        {{ selectedMenuItem!.product.price | currency: "TRY": "symbol" }}
-      </p>
-    </div>
+  <div class="card-body">
+    <p class="card-text">
+      <strong>Price:</strong>
+      {{ selectedMenuItem!.product.price | currency: "TRY": "symbol" }}
+    </p>
   </div>
 </div>
+
 
 <app-menu-item-page-footer (addToCartClicked)="addToCart()"></app-menu-item-page-footer>
