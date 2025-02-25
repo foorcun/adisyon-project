@@ -49,8 +49,16 @@ export class AdminOrdersPageComponent implements OnInit {
   private fetchTables(): void {
     this.tableService.tables$.subscribe({
       next: (tables) => {
-        this.tables = Object.values(tables); // Convert object to array
-        this.tableMap = tables; // Keep table map for quick lookup
+        // Convert object to sorted array
+        const sortedEntries = Object.entries(tables).sort(([, a], [, b]) =>
+          a.name.localeCompare(b.name, undefined, { numeric: true })
+        );
+
+        // Convert back to an object
+        this.tableMap = Object.fromEntries(sortedEntries);
+
+        // Convert values to array for display
+        this.tables = Object.values(this.tableMap);
       },
       error: (error) => {
         this.errorMessage = 'Error fetching tables.';
@@ -58,6 +66,7 @@ export class AdminOrdersPageComponent implements OnInit {
       }
     });
   }
+
 
 
   /** ✅ Get table name from table ID */

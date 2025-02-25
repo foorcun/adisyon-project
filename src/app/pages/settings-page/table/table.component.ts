@@ -12,7 +12,8 @@ import { FormsModule } from '@angular/forms';
   imports: [CommonModule, FormsModule]
 })
 export class TableComponent implements OnInit {
-  tables: { [key: string]: Table } = {};
+  tables: Table[] = []; // ✅ Change from object to array
+
 
   newTableName = '';
   newTableCapacity = 4;
@@ -24,10 +25,21 @@ export class TableComponent implements OnInit {
 
   ngOnInit(): void {
     this.tableService.tables$.subscribe(tables => {
-      this.tables = tables;
+      if (!tables || Object.keys(tables).length === 0) {
+        this.tables = []; // ✅ Ensure an empty array instead of undefined
+        return;
+      }
+
+      // Convert object to sorted array
+      this.tables = Object.values(tables).sort((a, b) =>
+        a.name.localeCompare(b.name, undefined, { numeric: true })
+      );
+
       console.log('Tables:', this.tables);
     });
   }
+
+
 
   createTable() {
     if (!this.newTableName.trim()) return;
