@@ -11,7 +11,7 @@
       <div
         *ngFor="let category of categories"
         class="category-card"
-        (click)="heartBeat()"
+        (click)="setSelectedCategory(category.name)"
       >
         {{ category.name }}
       </div>

@@ -1,5 +1,5 @@
 <div id="sepetim-navbar">
-  <h2 class="navbar-title">{{ table!.name }} Detay</h2>
+  <h2 class="navbar-title">{{ table?.name }} Detay</h2>
   <button class="close-btn" (click)="goBack()">
     <i class="fas fa-times"></i>
   </button>
@@ -9,11 +9,13 @@
   <div class="grid-container">
     <div class="grid-item">Top</div>
     <div class="grid-item">D</div>
-    <div class="grid-item">E</div>
+    <div class="grid-item">
+      {{ this.selectedCategory?.name}}
+    </div>
 
-    <!-- Use CategoryAreaComponent -->
+    <!-- ✅ Pass categories and loading state -->
     <app-category-area
-      [categories]="(categories$ | async) ?? []"
+      [categories]="categories"
       [loading]="loading"
     ></app-category-area>
 

@@ -1,15 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { TableService } from '../../services/table.service';
-import { OrderService } from '../../services/order.service';
-import { MenuService } from '../../services/menu.service';
-import { Order } from '../../OrderFeature/domain/entities/order.entity';
 import { CommonModule } from '@angular/common';
-import { Table } from '../../OrderFeature/domain/entities/table.entity';
-import { Category } from '../../MenuFeature/domain/entity/category.entity';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 import { CategoryAreaComponent } from './category-area/category-area.component';
+import { Table } from '../../OrderFeature/domain/entities/table.entity';
+import { Order } from '../../OrderFeature/domain/entities/order.entity';
+import { Category } from '../../MenuFeature/domain/entity/category.entity';
 import { TableDetailsPageFacadeService } from '../../services/table-details-page.facade.service';
 
 @Component({
@@ -19,69 +15,74 @@ import { TableDetailsPageFacadeService } from '../../services/table-details-page
   standalone: true,
   imports: [CommonModule, CategoryAreaComponent]
 })
-export class TableDetailsPageComponent implements OnInit {
+export class TableDetailsPageComponent implements OnInit, OnDestroy {
   table: Table | null = null;
   orders: Order[] = [];
-  loading = true;
-  errorMessage = '';
+  categories: Category[] = [];
+  loading: boolean = true;
+  errorMessage: string = '';
 
-  // Convert categories object into an array of Category objects
-  categories$: Observable<Category[]> = new Observable<Category[]>();
+  selectedCategory: Category | null = null;
+
+  private tableSubscription!: Subscription;
+  private ordersSubscription!: Subscription;
+  private categoriesSubscription!: Subscription;
+  private loadingSubscription!: Subscription;
+  private errorSubscription!: Subscription;
+  private selectedCategorySubscription!: Subscription;
 
   constructor(
     private route: ActivatedRoute,
-    private tableService: TableService,
-    private orderService: OrderService,
-    private menuService: MenuService,
     private tableDetailsPageFacadeService: TableDetailsPageFacadeService
-  ) { 
+  ) {
     this.tableDetailsPageFacadeService.heartBeat();
   }
 
   ngOnInit(): void {
     const tableId = this.route.snapshot.paramMap.get('id');
     if (tableId) {
-      this.fetchTableDetails(tableId);
-    }
-    if (this.table === null) {
-      this.goBack();
+      this.tableDetailsPageFacadeService.fetchTableDetails(tableId);
     }
 
-    // Transform categories object into an array
-    this.categories$ = this.menuService.categories$.pipe(
-      map(categoriesObj =>
-        Object.entries(categoriesObj || {}).map(([id, category]) => ({
-          id: id,
-          name: category.name as string, // Ensure correct type
-          menuItems: category.menuItems || {},
-          imageUrl: category.imageUrl || ''
-        }))
-      )
-    );
-  }
+    this.tableDetailsPageFacadeService.fetchCategories();
 
-  private fetchTableDetails(tableId: string): void {
-    this.table = this.tableService.getTables()[tableId] || null;
-    if (this.table) {
-      this.fetchOrdersForTable(this.table.name);
-    }
-  }
+    // ✅ Manual subscriptions
+    this.tableSubscription = this.tableDetailsPageFacadeService.table$.subscribe(table => {
+      this.table = table;
+    });
 
-  private fetchOrdersForTable(tableName: string): void {
-    this.orderService.orders$.subscribe({
-      next: (orders) => {
-        this.orders = Object.values(orders).filter(order => order.tableName === tableName);
-        this.loading = false;
-      },
-      error: (error) => {
-        this.errorMessage = 'Error fetching orders.';
-        console.error(error);
-        this.loading = false;
-      }
+    this.ordersSubscription = this.tableDetailsPageFacadeService.orders$.subscribe(orders => {
+      this.orders = orders;
+    });
+
+    this.categoriesSubscription = this.tableDetailsPageFacadeService.categories$.subscribe(categories => {
+      this.categories = categories;
+    });
+
+    this.loadingSubscription = this.tableDetailsPageFacadeService.loading$.subscribe(loading => {
+      this.loading = loading;
+    });
+
+    this.errorSubscription = this.tableDetailsPageFacadeService.error$.subscribe(errorMessage => {
+      this.errorMessage = errorMessage;
+    });
+
+    this.selectedCategorySubscription = this.tableDetailsPageFacadeService.selectedCategory$.subscribe(selectedCategory => {
+      this.selectedCategory = selectedCategory;
     });
   }
 
+  /** ✅ Cleanup subscriptions */
+  ngOnDestroy(): void {
+    if (this.tableSubscription) this.tableSubscription.unsubscribe();
+    if (this.ordersSubscription) this.ordersSubscription.unsubscribe();
+    if (this.categoriesSubscription) this.categoriesSubscription.unsubscribe();
+    if (this.loadingSubscription) this.loadingSubscription.unsubscribe();
+    if (this.errorSubscription) this.errorSubscription.unsubscribe();
+    if (this.selectedCategorySubscription) this.selectedCategorySubscription.unsubscribe();
+  }
+
   goBack(): void {
-    window.history.back();
+    this.tableDetailsPageFacadeService.goBack();
   }
 }

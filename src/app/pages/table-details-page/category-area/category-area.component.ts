@@ -14,12 +14,28 @@ export class CategoryAreaComponent {
   @Input() categories: Category[] = [];
   @Input() loading: boolean = false;
 
+
   constructor(
     private tableDetailsPageFacadeService: TableDetailsPageFacadeService
   ) { }
 
-  heartBeat(){
-  console.log("[CategoryAreaComponent] - Heartbeat, I'm alive!");
-  this.tableDetailsPageFacadeService.heartBeat();
+  // heartBeat() {
+  //   console.log("[CategoryAreaComponent] - Heartbeat, I'm alive!");
+  //   this.tableDetailsPageFacadeService.heartBeat();
+  //   this.categories.forEach(category => {
+  //     console.log(`[CategoryAreaComponent] - Category: ${category.menuItems}`);
+  //   }
+  //   );
+  // }
+
+  setSelectedCategory(categoryName: string) {
+    const category = this.categories.find(category => category.name === categoryName);
+    if (category) {
+      // console.log(`[CategoryAreaComponent] - Category: ${category.name}`);
+      // console.log(`[CategoryAreaComponent] - Menu Items (JSON): ${JSON.stringify(category.menuItems, null, 2)}`);
+
+      this.tableDetailsPageFacadeService.setSelectedCategory(category);
+    }
   }
+
 }
