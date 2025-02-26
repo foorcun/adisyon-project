@@ -19,15 +19,6 @@ export class CategoryAreaComponent {
     private tableDetailsPageFacadeService: TableDetailsPageFacadeService
   ) { }
 
-  // heartBeat() {
-  //   console.log("[CategoryAreaComponent] - Heartbeat, I'm alive!");
-  //   this.tableDetailsPageFacadeService.heartBeat();
-  //   this.categories.forEach(category => {
-  //     console.log(`[CategoryAreaComponent] - Category: ${category.menuItems}`);
-  //   }
-  //   );
-  // }
-
   setSelectedCategory(categoryName: string) {
     const category = this.categories.find(category => category.name === categoryName);
     if (category) {
