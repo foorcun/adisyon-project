@@ -7,13 +7,14 @@ import { Table } from '../../OrderFeature/domain/entities/table.entity';
 import { Order } from '../../OrderFeature/domain/entities/order.entity';
 import { Category } from '../../MenuFeature/domain/entity/category.entity';
 import { TableDetailsPageFacadeService } from '../../services/table-details-page.facade.service';
+import { MenuItemAreaComponent } from './menu-item-area/menu-item-area.component';
 
 @Component({
   selector: 'app-table-details-page',
   templateUrl: './table-details-page.component.html',
   styleUrls: ['./table-details-page.component.scss'],
   standalone: true,
-  imports: [CommonModule, CategoryAreaComponent]
+  imports: [CommonModule, CategoryAreaComponent, MenuItemAreaComponent]
 })
 export class TableDetailsPageComponent implements OnInit, OnDestroy {
   table: Table | null = null;
@@ -22,14 +23,12 @@ export class TableDetailsPageComponent implements OnInit, OnDestroy {
   loading: boolean = true;
   errorMessage: string = '';
 
-  selectedCategory: Category | null = null;
 
   private tableSubscription!: Subscription;
   private ordersSubscription!: Subscription;
   private categoriesSubscription!: Subscription;
   private loadingSubscription!: Subscription;
   private errorSubscription!: Subscription;
-  private selectedCategorySubscription!: Subscription;
 
   constructor(
     private route: ActivatedRoute,
@@ -67,9 +66,6 @@ export class TableDetailsPageComponent implements OnInit, OnDestroy {
       this.errorMessage = errorMessage;
     });
 
-    this.selectedCategorySubscription = this.tableDetailsPageFacadeService.selectedCategory$.subscribe(selectedCategory => {
-      this.selectedCategory = selectedCategory;
-    });
   }
 
   /** ✅ Cleanup subscriptions */
@@ -79,7 +75,6 @@ export class TableDetailsPageComponent implements OnInit, OnDestroy {
     if (this.categoriesSubscription) this.categoriesSubscription.unsubscribe();
     if (this.loadingSubscription) this.loadingSubscription.unsubscribe();
     if (this.errorSubscription) this.errorSubscription.unsubscribe();
-    if (this.selectedCategorySubscription) this.selectedCategorySubscription.unsubscribe();
   }
 
   goBack(): void {

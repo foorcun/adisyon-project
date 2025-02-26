@@ -1,0 +1,86 @@
+.menu-item-area {
+  width: 100%;
+  height: 60vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 10px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+/* Keep the title and category name fixed */
+h3,
+.category-name {
+  margin: 0;
+  padding: 10px;
+  background: #f8f9fa;
+  width: 100%;
+  border-bottom: 2px solid #ddd;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+/* Scrollable menu items container */
+.menu-items-container {
+  flex: 1;
+  width: 100%;
+  overflow-y: auto;
+  padding: 10px;
+}
+
+/* Custom Scrollbar */
+.menu-items-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.menu-items-container::-webkit-scrollbar-thumb {
+  background-color: #4c3398;
+  border-radius: 6px;
+}
+
+/* Menu item cards */
+.menu-item-card {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  background: #f8f9fa;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px;
+  margin-bottom: 8px;
+  transition: transform 0.2s ease-in-out;
+
+  &:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  }
+}
+
+.menu-item-image {
+  width: 80px;
+  height: 80px;
+  border-radius: 8px;
+  object-fit: cover;
+  margin-right: 10px;
+}
+
+.menu-item-info {
+  text-align: left;
+  flex: 1;
+}
+
+.menu-item-info h4 {
+  margin: 0;
+  font-size: 1.2rem;
+  color: #4C3398;
+}
+
+.menu-item-info p {
+  margin: 4px 0;
+  font-size: 0.9rem;
+}

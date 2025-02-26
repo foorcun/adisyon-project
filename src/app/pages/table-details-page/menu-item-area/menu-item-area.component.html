@@ -1,0 +1,26 @@
+<div class="menu-item-area">
+  <h3>Menu Items</h3>
+
+  <ng-container *ngIf="selectedCategory; else noCategory">
+    <p class="category-name"><strong>Category:</strong> {{ selectedCategory.name }}</p>
+
+    <div class="menu-items-container" *ngIf="menuItems.length > 0; else noMenuItems">
+      <div class="menu-item-card" *ngFor="let menuItem of menuItems">
+        <img [src]="menuItem.imageUrl" alt="{{ menuItem.name }}" class="menu-item-image">
+        <div class="menu-item-info">
+          <h4>{{ menuItem.name }}</h4>
+          <p>{{ menuItem.description }}</p>
+          <p><strong>Price:</strong> {{ menuItem.price | currency: 'TRY' }}</p>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-template #noCategory>
+    <p class="alert alert-warning">No category selected.</p>
+  </ng-template>
+
+  <ng-template #noMenuItems>
+    <p class="alert alert-info">No menu items available for this category.</p>
+  </ng-template>
+</div>
