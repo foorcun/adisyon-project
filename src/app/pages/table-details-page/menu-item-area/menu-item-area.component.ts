@@ -4,6 +4,8 @@ import { Subscription } from 'rxjs';
 import { Category } from '../../../MenuFeature/domain/entity/category.entity';
 import { MenuItem } from '../../../MenuFeature/domain/entity/menuitem.entity';
 import { TableDetailsPageFacadeService } from '../../../services/table-details-page.facade.service';
+import { CartItem } from '../../../CartFeature/domain/entity/cart-item';
+import { Product } from '../../../CartFeature/domain/entity/product.entity';
 
 @Component({
   selector: 'app-menu-item-area',
@@ -18,7 +20,7 @@ export class MenuItemAreaComponent implements OnInit, OnDestroy {
 
   private selectedCategorySubscription!: Subscription;
 
-  constructor(private tableDetailsPageFacadeService: TableDetailsPageFacadeService) {}
+  constructor(private tableDetailsPageFacadeService: TableDetailsPageFacadeService) { }
 
   ngOnInit(): void {
     this.selectedCategorySubscription = this.tableDetailsPageFacadeService.selectedCategory$.subscribe(category => {
@@ -29,5 +31,23 @@ export class MenuItemAreaComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     if (this.selectedCategorySubscription) this.selectedCategorySubscription.unsubscribe();
+  }
+
+
+  addToCart(menuItem: MenuItem) {
+    // console.log(`[MenuItemAreaComponent] - Adding item to cart:`, menuItem);  
+    this.tableDetailsPageFacadeService.addItemToCart(
+      new CartItem(
+        new Product(
+          menuItem.id,
+          menuItem.name,
+          menuItem.description,
+          menuItem.price,
+          menuItem.imageUrl,
+          ""
+        ),
+        1)
+    );
+
   }
 }

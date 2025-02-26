@@ -8,13 +8,14 @@ import { Order } from '../../OrderFeature/domain/entities/order.entity';
 import { Category } from '../../MenuFeature/domain/entity/category.entity';
 import { TableDetailsPageFacadeService } from '../../services/table-details-page.facade.service';
 import { MenuItemAreaComponent } from './menu-item-area/menu-item-area.component';
+import { CartAreaComponent } from './cart-area/cart-area.component';
 
 @Component({
   selector: 'app-table-details-page',
   templateUrl: './table-details-page.component.html',
   styleUrls: ['./table-details-page.component.scss'],
   standalone: true,
-  imports: [CommonModule, CategoryAreaComponent, MenuItemAreaComponent]
+  imports: [CommonModule, CategoryAreaComponent, MenuItemAreaComponent, CartAreaComponent]
 })
 export class TableDetailsPageComponent implements OnInit, OnDestroy {
   table: Table | null = null;
@@ -42,6 +43,7 @@ export class TableDetailsPageComponent implements OnInit, OnDestroy {
     if (tableId) {
       this.tableDetailsPageFacadeService.fetchTableDetails(tableId);
     }
+
 
     this.tableDetailsPageFacadeService.fetchCategories();
 

@@ -5,5 +5,5 @@ export class MenuItem {
         public description: string,
         public price: number,
         public imageUrl: string = ''
-    ) {}
+    ) { }
 }

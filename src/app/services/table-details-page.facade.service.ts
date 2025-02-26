@@ -7,6 +7,8 @@ import { MenuService } from './menu.service';
 import { Table } from '../OrderFeature/domain/entities/table.entity';
 import { Order } from '../OrderFeature/domain/entities/order.entity';
 import { Category } from '../MenuFeature/domain/entity/category.entity';
+import { Cart } from '../CartFeature/domain/entity/cart';
+import { CartItem } from '../CartFeature/domain/entity/cart-item';
 
 @Injectable({
   providedIn: 'root'
@@ -30,12 +32,16 @@ export class TableDetailsPageFacadeService {
   private selectedCategorySubject = new BehaviorSubject<Category | null>(null);
   selectedCategory$ = this.selectedCategorySubject.asObservable(); // ✅ Expose as Observable
 
+  private activeCartSubject = new BehaviorSubject<Cart | null>(null);
+  activeCart$ = this.activeCartSubject.asObservable(); // ✅ Expose as Observable
+
   constructor(
     private tableService: TableService,
     private orderService: OrderService,
     private menuService: MenuService
   ) {
-    this.heartBeat();
+    // this.heartBeat();
+    this.activeCartSubject.next(new Cart('active-cart'));
   }
 
   /** ✅ Log a Heartbeat Message */
@@ -127,5 +133,15 @@ export class TableDetailsPageFacadeService {
   setSelectedCategory(category: Category): void {
     console.log(`[TableDetailsPageFacadeService] - Selected Category:`, category);
     this.selectedCategorySubject.next(category);
+  }
+
+  /** ✅ Add Item to Cart */
+  addItemToCart(cartItem: CartItem): void {
+    const activeCart = this.activeCartSubject.getValue();
+    if (activeCart) {
+      activeCart.addItem(cartItem);
+    } else {
+      console.error('Active cart is null.');
+    }
   }
 }
