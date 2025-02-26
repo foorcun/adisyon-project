@@ -1,0 +1,22 @@
+<div class="grid-item cart-area">
+  <h3>Cart</h3>
+
+  <!-- Scrollable Cart Items List -->
+  <div class="cart-list">
+    <div class="cart-item-card" *ngFor="let item of activeCart?.getItems(); let isLast = last">
+      <span class="cart-item-name">{{ item.product.name }}</span>
+      <span class="cart-item-quantity">(x {{ item.quantity }})</span>
+      <span class="cart-item-total">{{ item.getTotalPrice | currency: 'TRY' }}</span>
+    </div>
+
+    <!-- Show empty cart message if there are no items -->
+    <p class="alert alert-warning no-items" *ngIf="activeCart?.getItems()!.length === 0">
+      Cart is empty.
+    </p>
+  </div>
+
+  <!-- Total Cart Amount -->
+  <div class="cart-total">
+    <strong>Total: {{ activeCart?.totalAmount | currency: 'TRY' }}</strong>
+  </div>
+</div>
