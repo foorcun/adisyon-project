@@ -8,13 +8,18 @@
 
   <ng-template #content>
     <div class="category-list">
-      <div *ngFor="let category of categories" class="category-card">
+      <div
+        *ngFor="let category of categories"
+        class="category-card"
+        (click)="heartBeat()"
+      >
         {{ category.name }}
       </div>
     </div>
   </ng-template>
 
   <!-- No Categories Found -->
+
   <ng-template #noCategories>
     <p class="alert alert-warning">No categories found.</p>
   </ng-template>

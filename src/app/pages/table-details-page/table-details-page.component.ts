@@ -10,6 +10,7 @@ import { Category } from '../../MenuFeature/domain/entity/category.entity';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { CategoryAreaComponent } from './category-area/category-area.component';
+import { TableDetailsPageFacadeService } from '../../services/table-details-page.facade.service';
 
 @Component({
   selector: 'app-table-details-page',
@@ -31,15 +32,18 @@ export class TableDetailsPageComponent implements OnInit {
     private route: ActivatedRoute,
     private tableService: TableService,
     private orderService: OrderService,
-    private menuService: MenuService
-  ) {}
+    private menuService: MenuService,
+    private tableDetailsPageFacadeService: TableDetailsPageFacadeService
+  ) { 
+    this.tableDetailsPageFacadeService.heartBeat();
+  }
 
   ngOnInit(): void {
     const tableId = this.route.snapshot.paramMap.get('id');
     if (tableId) {
       this.fetchTableDetails(tableId);
     }
-    if (this.table === null) {  
+    if (this.table === null) {
       this.goBack();
     }
 
