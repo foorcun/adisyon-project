@@ -1,17 +1,17 @@
-<div class="grid-item">
+<div class="grid-item category-container">
   <h3>Categories</h3>
 
   <!-- Show loading message while fetching categories -->
-  <div *ngIf="loading; else content">
+  <div *ngIf="loading; else content" class="loading-container">
     <p class="alert alert-info">Loading categories...</p>
   </div>
 
   <ng-template #content>
-    <ul *ngIf="categories.length > 0; else noCategories">
-      <li *ngFor="let category of categories">
+    <div class="category-list">
+      <div *ngFor="let category of categories" class="category-card">
         {{ category.name }}
-      </li>
-    </ul>
+      </div>
+    </div>
   </ng-template>
 
   <!-- No Categories Found -->
