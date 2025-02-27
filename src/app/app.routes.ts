@@ -11,6 +11,7 @@ export const routes: Routes = [
     // {path: "admin-orders-page", loadComponent: () => import('./pages/order-page/order-page.component').then(m => m.OrderPageComponent)},
     { path: "admin-orders-page", loadComponent: () => import('./pages/admin-orders-page/admin-orders-page.component').then(m => m.AdminOrdersPageComponent) },
     { path: "table-details/:id", loadComponent: () => import('./pages/table-details-page/table-details-page.component').then(m => m.TableDetailsPageComponent) },
+    {path: "odeme-page/:id", loadComponent: () => import('./pages/odeme-page/odeme-page.component').then(m => m.OdemePageComponent)},
     { path: "user-orders-page", loadComponent: () => import('./pages/user-orders-page/user-orders-page.component').then(m => m.UserOrdersPageComponent) },
     { path: "cart-page", loadComponent: () => import('./pages/cart-page/cart-page.component').then(m => m.CartPageComponent) },
     { path: "home-page", redirectTo: "" },

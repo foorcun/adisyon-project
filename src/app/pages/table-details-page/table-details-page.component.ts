@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { CategoryAreaComponent } from './category-area/category-area.component';
@@ -33,7 +33,8 @@ export class TableDetailsPageComponent implements OnInit, OnDestroy {
 
   constructor(
     private route: ActivatedRoute,
-    private tableDetailsPageFacadeService: TableDetailsPageFacadeService
+    private tableDetailsPageFacadeService: TableDetailsPageFacadeService,
+    private router: Router
   ) {
     this.tableDetailsPageFacadeService.heartBeat();
   }
@@ -81,5 +82,9 @@ export class TableDetailsPageComponent implements OnInit, OnDestroy {
 
   goBack(): void {
     this.tableDetailsPageFacadeService.goBack();
+  }
+  goOdemePage(){
+    // this.router.navigate(['/odeme-page']);
+    this.router.navigate(['/odeme-page', this.table?.id]);
   }
 }

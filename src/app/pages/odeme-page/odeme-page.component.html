@@ -1,0 +1,32 @@
+<div class="odeme-page">
+  <h2 class="title">Ödeme Sayfası</h2>
+
+  <!-- Back Button -->
+  <button class="back-button" (click)="goBack()">Geri Dön</button>
+
+  <!-- Display Orders -->
+  <div *ngIf="orders.length > 0; else noOrders" class="order-list">
+    <div class="order-card" *ngFor="let order of orders">
+      <div class="order-info">
+        <h3>Sipariş #{{ order.id }}</h3>
+        <p><strong>Durum:</strong> {{ order.status }}</p>
+        <p><strong>Toplam Tutar:</strong> {{ order.totalAmount | currency: 'TRY' }}</p>
+      </div>
+
+      <!-- Order Items -->
+      <div class="order-items">
+        <h4>Ürünler:</h4>
+        <ul>
+          <li *ngFor="let item of order.items">
+            {{ item.product.name }} (x{{ item.quantity }}) - {{ item.getTotalPrice | currency: 'TRY' }}
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- No Orders Message -->
+  <ng-template #noOrders>
+    <p class="no-orders-message">Bu masa için sipariş bulunamadı.</p>
+  </ng-template>
+</div>

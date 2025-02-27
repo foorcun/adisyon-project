@@ -1,0 +1,90 @@
+.odeme-page {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  text-align: center;
+
+  .title {
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #4c3398;
+  }
+
+  .back-button {
+    background-color: #4c3398;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.2s ease-in-out;
+    margin-bottom: 15px;
+
+    &:hover {
+      background-color: #372675;
+    }
+  }
+
+  .order-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .order-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: left;
+  }
+
+  .order-info {
+    margin-bottom: 10px;
+
+    h3 {
+      margin: 0;
+      font-size: 1.4rem;
+      color: #4c3398;
+    }
+
+    p {
+      margin: 5px 0;
+      font-size: 1rem;
+      color: #333;
+    }
+  }
+
+  .order-items {
+    h4 {
+      margin-bottom: 8px;
+      font-size: 1.2rem;
+      color: #4c3398;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+
+      li {
+        background: #f8f9fa;
+        padding: 8px;
+        border-radius: 5px;
+        margin-bottom: 5px;
+        font-size: 0.95rem;
+        color: #333;
+      }
+    }
+  }
+
+  .no-orders-message {
+    font-size: 1.2rem;
+    color: #ff4d4d;
+    font-weight: bold;
+    margin-top: 20px;
+  }
+}
