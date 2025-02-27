@@ -5,7 +5,14 @@
   <div class="cart-list">
     <div class="cart-item-card" *ngFor="let item of activeCart?.getItems(); let isLast = last">
       <span class="cart-item-name">{{ item.product.name }}</span>
-      <span class="cart-item-quantity">(x {{ item.quantity }})</span>
+      
+      <!-- Quantity Control -->
+      <div class="cart-item-quantity">
+        <button class="quantity-btn" (click)="updateQuantity(item.product.id, item.quantity - 1)">-</button>
+        <span class="quantity-number">{{ item.quantity }}</span>
+        <button class="quantity-btn" (click)="updateQuantity(item.product.id, item.quantity + 1)">+</button>
+      </div>
+
       <span class="cart-item-total">{{ item.getTotalPrice | currency: 'TRY' }}</span>
     </div>
 

@@ -6,18 +6,18 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-cart-area',
+  standalone: true,
   imports: [CommonModule],
   templateUrl: './cart-area.component.html',
-  styleUrl: './cart-area.component.scss'
+  styleUrls: ['./cart-area.component.scss']
 })
 export class CartAreaComponent implements OnInit, OnDestroy {
   activeCart: Cart | null = null;
-
   private activeCartSubscription!: Subscription;
 
   constructor(
     private tableDetailsPageFacadeService: TableDetailsPageFacadeService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.activeCartSubscription = this.tableDetailsPageFacadeService.activeCart$.subscribe(cart => {
@@ -25,9 +25,17 @@ export class CartAreaComponent implements OnInit, OnDestroy {
     });
   }
 
-
   ngOnDestroy(): void {
-    if(this.activeCartSubscription) this.activeCartSubscription.unsubscribe();
+    if (this.activeCartSubscription) this.activeCartSubscription.unsubscribe();
+  }
+
+  updateQuantity(productId: string, newQuantity: number): void {
+    if (this.activeCart) {
+      if (newQuantity <= 0) {
+        this.activeCart.removeItem(productId);
+      } else {
+        this.activeCart.updateItemQuantity(productId, newQuantity);
+      }
+    }
   }
 }
-
