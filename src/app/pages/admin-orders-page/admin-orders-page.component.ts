@@ -95,21 +95,37 @@ export class AdminOrdersPageComponent implements OnInit {
   }
 
   getTableStatusClass(tableId: string): string {
-    // Get all orders for this table
-    const tableOrders = this.allOrders.filter(order => order.tableName === this.tableMap[tableId]?.name);
+    // console.log("[admin-orders-page] getTableStatusClass: ", tableId);
 
-    // Check for "PENDING" orders first
+    // console.log("[admin-orders-page] All Orders: ", this.allOrders);
+
+    if (!tableId) {
+      console.warn("[admin-orders-page] Warning: Invalid table ID.");
+      return 'status-default';
+    }
+
+    if (!Array.isArray(this.allOrders)) {
+      console.warn("[admin-orders-page] Warning: allOrders is not an array.");
+      return 'status-default';
+    }
+
+    // ✅ Filter orders directly using `tableUUID`
+    const tableOrders = this.allOrders.filter(order => order.tableUUID === tableId);
+    // console.log("[admin-orders-page] Table Orders: ", tableOrders);
+
+    // ✅ Check for "PENDING" orders first
     if (tableOrders.some(order => order.status === OrderStatus.PENDING)) {
       return 'status-pending';
     }
 
-    // If no "PENDING", check for "IN_PROGRESS"
+    // ✅ If no "PENDING", check for "IN_PROGRESS"
     if (tableOrders.some(order => order.status === OrderStatus.IN_PROGRESS)) {
       return 'status-in-progress';
     }
 
-    // Default class if no relevant orders
+    // ✅ Default class if no relevant orders
     return 'status-default';
   }
+
 
 }

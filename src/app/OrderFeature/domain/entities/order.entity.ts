@@ -5,7 +5,7 @@ export class Order {
   constructor(
     public id: string,
     public items: OrderItem[],
-    public tableName: string,
+    public tableUUID: string,
     public status: OrderStatus,
     public createdAt: Date,
     public updatedAt: Date,

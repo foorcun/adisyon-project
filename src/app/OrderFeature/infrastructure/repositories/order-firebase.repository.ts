@@ -90,7 +90,7 @@ createOrder(order: OrderDto): Observable<string> {
               return new Order(
                 key, // Use Firebase key as the order ID
                 order.items,
-                order.tableName,
+                order.tableUUID,
                 order.status,
                 new Date(order.createdAt),
                 new Date(order.updatedAt),

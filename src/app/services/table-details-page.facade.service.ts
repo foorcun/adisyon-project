@@ -62,11 +62,11 @@ export class TableDetailsPageFacadeService {
   }
 
   /** ✅ Fetch Orders for a Table */
-  fetchOrdersForTable(tableName: string): void {
+  fetchOrdersForTable(tableUUID: string): void {
     this.loadingSubject.next(true);
     this.orderService.orders$.subscribe({
       next: (orders) => {
-        const filteredOrders = Object.values(orders).filter(order => order.tableName === tableName);
+        const filteredOrders = Object.values(orders).filter(order => order.tableUUID === tableUUID);
         this.ordersSubject.next(filteredOrders);
         this.loadingSubject.next(false);
       },
