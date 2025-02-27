@@ -135,3 +135,38 @@ h3 {
   width: 100%;
   text-align: center;
 }
+
+
+/* Cart Footer */
+.cart-footer {
+  width: 100%;
+  display: flex;
+  justify-content: space-between; /* ✅ Aligns total & button side by side */
+  align-items: center;
+  padding: 12px;
+  background: #f8f9fa;
+  border-top: 2px solid #ddd;
+}
+
+
+/* Order Button */
+.order-btn {
+  background: #4c3398;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 5px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+
+  &:hover {
+    background: #372675;
+  }
+
+  &:disabled {
+    background: #aaa;
+    cursor: not-allowed;
+  }
+}

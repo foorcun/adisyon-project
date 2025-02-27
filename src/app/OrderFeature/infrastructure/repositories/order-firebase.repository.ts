@@ -24,6 +24,7 @@ export class OrderFirebaseRepository extends OrderRepository {
    */
 
 createOrder(order: OrderDto): Observable<string> {
+  console.log("[OrderFirebaseRepository] - Creating order...", order);
   return new Observable((observer) => {
     const orderRef = push(ref(this.database, this.basePath));
 
@@ -31,6 +32,7 @@ createOrder(order: OrderDto): Observable<string> {
       .then(() => {
         observer.next(orderRef.key as string); // Firebase-generated ID
         observer.complete();
+        console.log("[OrderFirebaseRepository] - Order created successfully.");
       })
       .catch((error) => observer.error(error));
   });

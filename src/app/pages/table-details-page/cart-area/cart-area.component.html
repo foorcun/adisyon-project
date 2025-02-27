@@ -22,8 +22,11 @@
     </p>
   </div>
 
-  <!-- Total Cart Amount -->
-  <div class="cart-total">
-    <strong>Total: {{ activeCart?.totalAmount | currency: 'TRY' }}</strong>
+ <!-- Total & Create Order Button -->
+  <div class="cart-footer">
+    <strong class="cart-total">Total: {{ activeCart?.totalAmount | currency: 'TRY' }}</strong>
+    <button class="order-btn" (click)="createOrder()" [disabled]="!activeCart || activeCart.getItems().length === 0">
+      Sipariş Oluştur
+    </button>
   </div>
 </div>
