@@ -120,8 +120,12 @@ export class CartPageComponent {
     // this.cartModalService.closeModal();
   }
 
-  createOrder(tableName: string) {
-    console.log("[CartPageComponent] createOrder: ", tableName);
+  createOrder(tableUUID: string) {
+    console.log("[CartPageComponent] createOrder: ", tableUUID);
+    if (!tableUUID) {
+      console.error("Table UUID is missing. Cannot create order.");
+      throw new Error("Table UUID is missing. Cannot create order.");
+    }
 
     this.cartService.cart$.pipe(take(1)).subscribe(cart => {
       if (cart.items && typeof cart.items === 'object') {
@@ -133,7 +137,7 @@ export class CartPageComponent {
         const orderDto: OrderDto = {
           id: '',
           items: orderItems,
-          tableName: tableName,
+          tableUUID: tableUUID,
           status: OrderStatus.PENDING,
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
@@ -159,10 +163,36 @@ export class CartPageComponent {
 
   onOrderNow(): void {
     if (this.selectedTable) {
-      this.createOrder(this.selectedTable);
+      this.createOrder(this.getSelectedTableUUID());
       this.errorMessage = null; // Clear error on successful order
     } else {
       this.errorMessage = 'Please select a table to create an order.'; // Set error message
     }
   }
+
+  getSelectedTableUUID(): string {
+    console.log("[CartPageComponent] getSelectedTableUUID: this.selectedTable", this.selectedTable);
+    console.log("[CartPageComponent] getSelectedTableUUID: this.tableMap", this.tableMap);
+
+    if (!this.selectedTable) {
+      console.warn("[CartPageComponent] Warning: No table name selected.");
+      return "";
+    }
+
+    // Convert tableMap (object) into an array of values (tables)
+    const tablesArray = Object.values(this.tableMap);
+
+    // Find the table where the name matches `this.selectedTable`
+    const selectedTableObj = tablesArray.find(table => table.name === this.selectedTable);
+
+    if (!selectedTableObj) {
+      console.warn(`[CartPageComponent] Warning: No table found with name '${this.selectedTable}'`);
+      return "";
+    }
+
+    console.log(`[CartPageComponent] Found Table ID: ${selectedTableObj.id}`);
+    return selectedTableObj.id;
+  }
+
+
 }

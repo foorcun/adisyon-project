@@ -87,8 +87,7 @@ export class CartAreaComponent implements OnInit, OnDestroy {
     const orderDto: OrderDto = {
       id: '',
       items: orderItems,
-      // tableName: tableName,
-      tableName: this.tableDetailsPageFacadeService.getTable()?.name || '',
+      tableUUID: this.tableDetailsPageFacadeService.getTable()?.id || '',
       status: OrderStatus.PENDING,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),

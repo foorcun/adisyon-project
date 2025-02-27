@@ -4,7 +4,8 @@ import { OrderStatus } from "./order-status";
 export interface OrderDto {
   id: string;
   items: OrderItem[];
-  tableName: string;
+  // tableName: string;
+  tableUUID: string;
   status: OrderStatus;
   createdAt: string; // ISO String format for Firestore
   updatedAt: string;
