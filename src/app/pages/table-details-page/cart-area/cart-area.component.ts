@@ -43,6 +43,7 @@ export class CartAreaComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     if (this.activeCartSubscription) this.activeCartSubscription.unsubscribe();
+      this.activeCart?.clearCart();
   }
 
   updateQuantity(productId: string, newQuantity: number): void {
