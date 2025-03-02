@@ -1,0 +1,38 @@
+.quantity-belt {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  white-space: nowrap;
+  padding: 10px;
+  height: 10vh;
+  align-items: center;
+  background-color: #f8f8f8;
+  border-top: 2px solid #ddd;
+
+  // Hide scrollbar but allow scrolling
+  &::-webkit-scrollbar {
+    height: 5px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 5px;
+  }
+}
+
+.quantity-option {
+  flex: 0 0 auto;
+  min-width: 60px; // Ensures a reasonable width
+  padding: 10px 15px;
+  font-size: 1.5rem;
+  text-align: center;
+  background-color: #4c3398;
+  color: white;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.2s ease-in-out;
+
+  &:hover {
+    // background-color: #362066;
+    background-color: #ffc107;
+  }
+}

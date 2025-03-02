@@ -9,13 +9,16 @@ import { Category } from '../../MenuFeature/domain/entity/category.entity';
 import { TableDetailsPageFacadeService } from '../../services/table-details-page.facade.service';
 import { MenuItemAreaComponent } from './menu-item-area/menu-item-area.component';
 import { CartAreaComponent } from './cart-area/cart-area.component';
+import { QuantityBeltComponent } from './mobile-size/quantity-belt/quantity-belt.component';
 
 @Component({
   selector: 'app-table-details-page',
   templateUrl: './table-details-page.component.html',
   styleUrls: ['./table-details-page.component.scss'],
   standalone: true,
-  imports: [CommonModule, CategoryAreaComponent, MenuItemAreaComponent, CartAreaComponent]
+  imports: [CommonModule, CategoryAreaComponent, MenuItemAreaComponent, CartAreaComponent,
+    QuantityBeltComponent
+  ]
 })
 export class TableDetailsPageComponent implements OnInit, OnDestroy {
   table: Table | null = null;
@@ -23,11 +26,6 @@ export class TableDetailsPageComponent implements OnInit, OnDestroy {
   categories: Category[] = [];
   loading: boolean = true;
   errorMessage: string = '';
-
-  quantities: number[] = [0.5, 1.5, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-
-
-
 
   private tableSubscription!: Subscription;
   private ordersSubscription!: Subscription;
@@ -92,8 +90,4 @@ export class TableDetailsPageComponent implements OnInit, OnDestroy {
     this.router.navigate(['/odeme-page', this.table?.id]);
   }
 
-  selectQuantity(quantity: number) {
-    console.log("Selected quantity:", quantity);
-    // You can store the selected quantity in a variable or pass it to a service
-  }
 }
