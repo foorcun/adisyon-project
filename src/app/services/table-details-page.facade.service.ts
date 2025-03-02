@@ -35,6 +35,8 @@ export class TableDetailsPageFacadeService {
   private activeCartSubject = new BehaviorSubject<Cart | null>(null);
   activeCart$ = this.activeCartSubject.asObservable(); // ✅ Expose as Observable
 
+  selectedQuantity: number | null = null;
+
   constructor(
     private tableService: TableService,
     private orderService: OrderService,
@@ -143,5 +145,13 @@ export class TableDetailsPageFacadeService {
     } else {
       console.error('Active cart is null.');
     }
+  }
+
+  selectQuantity(quantity: number) {
+    this.selectedQuantity = quantity;
+  }
+
+  clearSelectedQuantity() {
+    this.selectedQuantity = null;
   }
 }
