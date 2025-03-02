@@ -1,3 +1,6 @@
+$navbar-height: 10vh;
+$bottom-bar-height: 10vh;
+
 .odeme-page {
   width: 100%;
   max-width: 800px;
@@ -86,5 +89,47 @@
     color: #ff4d4d;
     font-weight: bold;
     margin-top: 20px;
+  }
+}
+
+
+$primary-color: #4c3398;
+
+#sepetim-navbar {
+  display: flex;
+  justify-content: center; // ✅ Center everything horizontally
+  align-items: center;
+  padding: 1rem;
+  background-color: $primary-color;
+  color: white;
+  border-bottom: 3px solid #ccc;
+  position: relative;
+  height: $navbar-height;
+
+  .navbar-title {
+    margin: 0;
+    font-size: 1.5rem; // ✅ Adjust font size
+    text-align: center;
+  }
+
+  .close-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    position: absolute;
+    right: 1rem; // ✅ Keep aligned to the right
+    top: 50%;
+    transform: translateY(-50%);
+    transition: color 0.2s ease-in-out;
+
+    i {
+      font-size: 1.5rem; // ✅ Font Awesome icon size
+    }
+
+    &:hover {
+      color: #ccc; // ✅ Hover effect
+    }
   }
 }

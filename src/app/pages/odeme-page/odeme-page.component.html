@@ -1,8 +1,13 @@
-<div class="odeme-page">
-  <h2 class="title">Ödeme Sayfası</h2>
 
-  <!-- Back Button -->
-  <button class="back-button" (click)="goBack()">Geri Dön</button>
+<div id="sepetim-navbar">
+  <h2 class="navbar-title">{{ table?.name }} Detay</h2>
+  <button class="close-btn" (click)="goBack()">
+    <i class="fas fa-times"></i>
+  </button>
+</div>
+
+<div class="odeme-page">
+
 
   <!-- Display Orders -->
   <div *ngIf="orders.length > 0; else noOrders" class="order-list">
