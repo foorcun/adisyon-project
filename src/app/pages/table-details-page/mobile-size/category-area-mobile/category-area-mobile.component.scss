@@ -1,13 +1,17 @@
+$primary-color: #4C3398;
+$secondary-color: #ffc107;
+
 :host {
   display: block;
-//   max-height: 200px; /* Adjust as needed */
+  //   max-height: 200px; /* Adjust as needed */
   height: 60dvh; /* Adjust as needed */
   overflow-y: auto;
 }
 
 .category-card {
   padding: 10px;
-  background-color: #f4f4f4;
+  background-color: $primary-color;
+  color: white;
   border-radius: 8px;
   margin-bottom: 8px;
   text-align: center;
@@ -18,7 +22,10 @@
   overflow: hidden;
   text-overflow: ellipsis; /* Adds "..." if text is too long */
 
-  &:hover {
-    background-color: #e0e0e0;
+  // &:hover {
+  //   background-color: #e0e0e0;
+  // }
+  &.selected {
+    background-color: $secondary-color;
   }
 }

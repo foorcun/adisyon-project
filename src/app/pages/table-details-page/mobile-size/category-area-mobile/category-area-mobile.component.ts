@@ -14,6 +14,8 @@ export class CategoryAreaMobileComponent implements OnInit, OnDestroy {
   categories: Category[] = [];
   private categoriesSubscription!: Subscription;
 
+  selectedCategory: string | null = null;
+
   constructor(
     private tableDetailsPageFacadeService: TableDetailsPageFacadeService,
   ) { }
@@ -35,6 +37,7 @@ export class CategoryAreaMobileComponent implements OnInit, OnDestroy {
       // console.log(`[CategoryAreaComponent] - Menu Items (JSON): ${JSON.stringify(category.menuItems, null, 2)}`);
 
       this.tableDetailsPageFacadeService.setSelectedCategory(category);
+      this.selectedCategory = categoryName;
     }
   }
 }
