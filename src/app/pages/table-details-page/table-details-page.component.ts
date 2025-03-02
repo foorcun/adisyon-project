@@ -59,6 +59,10 @@ export class TableDetailsPageComponent implements OnInit, OnDestroy {
     // ✅ Manual subscriptions
     this.tableSubscription = this.tableDetailsPageFacadeService.table$.subscribe(table => {
       this.table = table;
+      if (!table) {
+        this.goBack();
+      }
+
     });
 
     this.ordersSubscription = this.tableDetailsPageFacadeService.orders$.subscribe(orders => {
