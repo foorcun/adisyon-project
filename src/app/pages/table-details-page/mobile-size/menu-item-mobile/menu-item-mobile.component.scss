@@ -1,4 +1,4 @@
-$primary-color: #4C3398;
+$primary-color: #4c3398;
 $secondary-color: #ffc107;
 
 :host {
@@ -9,14 +9,14 @@ $secondary-color: #ffc107;
 
 .menu-items-list {
   display: grid;
-  grid-template-columns: repeat(1, 1fr); /* Two items per row */
+  grid-template-columns: repeat(2, 1fr); /* Two items per row */
   gap: 10px;
   padding: 10px;
 }
 
 .menu-item-card {
-  background-color: $primary-color;
-  color: white;
+  border: 3px solid $primary-color;
+  color: $primary-color;
   padding: 12px;
   border-radius: 8px;
   text-align: center;
@@ -24,12 +24,14 @@ $secondary-color: #ffc107;
   cursor: pointer;
   transition: background 0.3s ease;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  white-space: nowrap; /* Prevents text from wrapping */
-  overflow: hidden;
-  text-overflow: ellipsis;
+
+  // Ensures text wraps instead of shortening
+  white-space: normal;
+  overflow: visible;
+  text-overflow: unset;
+  word-wrap: break-word; // Ensures text breaks properly in small containers
 
   &:hover {
     background-color: $secondary-color;
   }
 }
-

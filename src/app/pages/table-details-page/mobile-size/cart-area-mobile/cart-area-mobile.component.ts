@@ -103,6 +103,7 @@ export class CartAreaMobileComponent {
         console.log(`[CartAreaComponent] Order created with ID: ${orderId}`);
         // this.tableDetailsPageFacadeService.resetCart();
         this.activeCart?.clearCart();
+        this.tableDetailsPageFacadeService.goBack();
       }
     });
   }
