@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { QuantityBeltComponent } from './quantity-belt.component';
+import { QuantityBeltComponent } from './quantity-belt-mobile.component';
 
 describe('QuantityBeltComponent', () => {
   let component: QuantityBeltComponent;

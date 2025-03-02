@@ -2,12 +2,12 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-quantity-belt',
+  selector: 'app-quantity-belt-mobile',
   imports: [CommonModule],
-  templateUrl: './quantity-belt.component.html',
-  styleUrl: './quantity-belt.component.scss'
+  templateUrl: './quantity-belt-mobile.component.html',
+  styleUrl: './quantity-belt-mobile.component.scss'
 })
-export class QuantityBeltComponent {
+export class QuantityBeltMobileComponent {
 
   quantities: number[] = [0.5, 1.5, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
