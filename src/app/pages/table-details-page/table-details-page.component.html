@@ -31,6 +31,9 @@
 
 <div class="table-details-page-mobile">
   <div id="sepetim-navbar">
+    <button class="odeme-btn" (click)="goOdemePage()">
+      <i class="fa-solid fa-shopping-cart"></i>
+    </button>
     <h2 class="navbar-title">{{ table?.name }} Detay</h2>
     <button class="close-btn" (click)="goBack()">
       <i class="fas fa-times"></i>
@@ -42,5 +45,4 @@
     <app-category-area-mobile></app-category-area-mobile>
   </div>
   <app-cart-area-mobile></app-cart-area-mobile>
-
 </div>

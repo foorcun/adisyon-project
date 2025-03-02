@@ -82,6 +82,27 @@ $primary-color: #4c3398;
         color: #ccc; // ✅ Hover effect
       }
     }
+
+    .odeme-btn {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.5rem;
+      cursor: pointer;
+      position: absolute;
+      left: 1rem; // ✅ Keep aligned to the right
+      top: 50%;
+      transform: translateY(-50%);
+      transition: color 0.2s ease-in-out;
+
+      i {
+        font-size: 1.5rem; // ✅ Font Awesome icon size
+      }
+
+      &:hover {
+        color: #ccc; // ✅ Hover effect
+      }
+    }
   }
 
   button {
@@ -123,6 +144,27 @@ $primary-color: #4c3398;
       cursor: pointer;
       position: absolute;
       right: 1rem; // ✅ Keep aligned to the right
+      top: 50%;
+      transform: translateY(-50%);
+      transition: color 0.2s ease-in-out;
+
+      i {
+        font-size: 1.5rem; // ✅ Font Awesome icon size
+      }
+
+      &:hover {
+        color: #ccc; // ✅ Hover effect
+      }
+    }
+
+    .odeme-btn {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.5rem;
+      cursor: pointer;
+      position: absolute;
+      left: 1rem; // ✅ Keep aligned to the right
       top: 50%;
       transform: translateY(-50%);
       transition: color 0.2s ease-in-out;
