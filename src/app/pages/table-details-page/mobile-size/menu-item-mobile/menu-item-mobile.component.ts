@@ -48,7 +48,7 @@ export class MenuItemMobileComponent {
         this.getSelectedQuantity()
       )
     );
-
+    this.tableDetailsPageFacadeService.clearSelectedQuantity();
   }
 
   getSelectedQuantity(): number {
