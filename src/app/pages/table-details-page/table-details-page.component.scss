@@ -3,7 +3,7 @@ $primary-color: #4c3398;
 @media (min-width: 768px) {
   $navbar-height: 10vh;
   $bottom-bar-height: 10vh;
-  
+
   .table-details-page-mobile {
     display: none;
   }
@@ -140,5 +140,19 @@ $primary-color: #4c3398;
   button {
     color: $primary-color;
     border: $primary-color 2px solid;
+  }
+
+  .category-menu-item-belt {
+    display: flex;
+    // direction
+    flex-direction: row;
+    div {
+      flex: 2;
+      border: 3px solid red;
+    }
+    app-category-area-mobile {
+      flex: 1;
+      border: 3px solid green;
+    }
   }
 }

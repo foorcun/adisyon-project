@@ -10,6 +10,7 @@ import { TableDetailsPageFacadeService } from '../../services/table-details-page
 import { MenuItemAreaComponent } from './menu-item-area/menu-item-area.component';
 import { CartAreaComponent } from './cart-area/cart-area.component';
 import { QuantityBeltComponent } from './mobile-size/quantity-belt/quantity-belt.component';
+import { CategoryAreaMobileComponent } from './mobile-size/category-area-mobile/category-area-mobile.component';
 
 @Component({
   selector: 'app-table-details-page',
@@ -17,7 +18,8 @@ import { QuantityBeltComponent } from './mobile-size/quantity-belt/quantity-belt
   styleUrls: ['./table-details-page.component.scss'],
   standalone: true,
   imports: [CommonModule, CategoryAreaComponent, MenuItemAreaComponent, CartAreaComponent,
-    QuantityBeltComponent
+    QuantityBeltComponent,
+    CategoryAreaMobileComponent
   ]
 })
 export class TableDetailsPageComponent implements OnInit, OnDestroy {

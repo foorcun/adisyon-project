@@ -1,0 +1,24 @@
+:host {
+  display: block;
+//   max-height: 200px; /* Adjust as needed */
+  height: 60dvh; /* Adjust as needed */
+  overflow-y: auto;
+}
+
+.category-card {
+  padding: 10px;
+  background-color: #f4f4f4;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  text-align: center;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  white-space: nowrap; /* Prevents text from breaking into multiple lines */
+  overflow: hidden;
+  text-overflow: ellipsis; /* Adds "..." if text is too long */
+
+  &:hover {
+    background-color: #e0e0e0;
+  }
+}
