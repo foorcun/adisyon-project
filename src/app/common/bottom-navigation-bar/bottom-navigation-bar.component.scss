@@ -1,4 +1,6 @@
 $primary-color: #4C3398;
+$default-color: #555;
+$background-color: #ffffff;
 
 .bottom-nav-bar {
   display: flex;
@@ -7,8 +9,8 @@ $primary-color: #4C3398;
   position: fixed;
   bottom: 0;
   width: 100%;
-  height: 10vh; // bottom-nav-bar height
-  background-color: #ffffff;
+  height: 10vh; // Ensures fixed height
+  background-color: $background-color;
   box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
   padding: 10px 0;
   z-index: 1000;
@@ -18,34 +20,64 @@ $primary-color: #4C3398;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    width: 60px; // Ensures square shape
+    height: 60px; // Ensures square shape
+    border-radius: 10px; // Slight rounding for a modern look
     border: none;
     background: none;
-    color: #555;
+    color: $default-color;
     font-size: 14px;
     cursor: pointer;
-    position: relative; // Add position relative to parent for badge positioning
-    transition: color 0.3s;
+    position: relative; // Needed for badge positioning
+    transition: color 0.3s, background 0.3s, transform 0.2s;
 
     i {
       font-size: 20px;
       margin-bottom: 4px;
+      transition: color 0.3s;
     }
 
     &:hover {
       color: $primary-color;
     }
 
+    &.active {
+      color: $primary-color !important;
+      background: rgba($primary-color, 0.2); // Slight background change for visibility
+    }
+
+    &.active i {
+      color: $primary-color !important;
+    }
+
     .badge {
-      position: absolute; // Position the badge relative to the parent
-      top: -5px; // Adjust position to appear near the icon
-      right: -10px; // Adjust horizontal position to align with the corner
-      background: red; // Badge background color
-      color: white; // Badge text color
-      border-radius: 50%; // Make the badge circular
-      padding: 2px 6px; // Adjust padding for the badge size
-      font-size: 12px; // Font size of the badge text
-      font-weight: bold; // Make the text bold
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); // Optional: Add a subtle shadow
+      position: absolute;
+      top: -5px;
+      right: -10px;
+      background: red;
+      color: white;
+      border-radius: 50%;
+      padding: 2px 6px;
+      font-size: 12px;
+      font-weight: bold;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+  }
+}
+
+/* Mobile Adjustments */
+@media (max-width: 768px) {
+  .bottom-nav-bar {
+    height: 12vh; // Slightly taller for better tapability
+
+    .nav-button {
+      width: 55px; // Slightly smaller on mobile
+      height: 55px;
+      font-size: 16px;
+
+      i {
+        font-size: 22px;
+      }
     }
   }
 }

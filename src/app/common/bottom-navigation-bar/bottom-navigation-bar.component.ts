@@ -24,6 +24,7 @@ import { CartService } from '../../services/cart.service';
 })
 export class BottomNavigationBarComponent {
 
+activeRoute: string = 'home-page'; // Default active route
 
   private itemCountSubject = new BehaviorSubject<number>(0); // Holds the cart state
   itemCount$ = this.itemCountSubject.asObservable(); // Observable for components to subscribe to
@@ -74,7 +75,7 @@ export class BottomNavigationBarComponent {
   }
   private updateNavItems() {
     if (this.userRole === UserRole.ADMIN) {
-      this.navItems[3] = { label: 'Sipariş Oluştur', icon: 'fas fa-store', route: 'admin-orders-page' };
+      this.navItems[3] = { label: 'Sipariş', icon: 'fas fa-store', route: 'admin-orders-page' };
     } else {
       this.navItems[3] = { label: 'My Orders', icon: 'fas fa-box', route: 'user-orders-page' };
     }
@@ -97,6 +98,7 @@ export class BottomNavigationBarComponent {
     //   this.myOrdersModalService.openModal();
     // }
     // else {
+    this.activeRoute = route; // Set the clicked route as active
     this.router.navigate([route]);
     // }
   }
