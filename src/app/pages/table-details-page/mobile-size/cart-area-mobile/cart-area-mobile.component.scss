@@ -1,0 +1,173 @@
+
+.cart-area {
+  width: 70vw; /* ✅ Fixed width for the cart */
+  height: 60vh; /* ✅ Fixed height */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 15px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+/* Keep the title fixed */
+h3 {
+  margin: 0;
+  padding: 12px;
+  background: #f8f9fa;
+  width: 100%;
+  border-bottom: 2px solid #ddd;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  text-align: center;
+}
+
+/* Scrollable Cart List */
+.cart-list {
+  flex: 1;
+  width: 100%;
+  max-height: 45vh; /* ✅ Ensures scrolling if many items */
+  overflow-y: auto; /* ✅ Enables scrolling */
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-right: 5px;
+  padding-bottom: 10px;
+}
+
+/* Custom Scrollbar */
+.cart-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.cart-list::-webkit-scrollbar-thumb {
+  background-color: #4c3398;
+  border-radius: 6px;
+}
+
+/* Horizontal Cart Item Card */
+.cart-item-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* ✅ Aligns text horizontally */
+  background: #f8f9fa;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px;
+  transition: transform 0.2s ease-in-out;
+  font-size: 1rem;
+  font-weight: bold;
+  width: 100%;
+  box-sizing: border-box;
+
+  &:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  }
+}
+
+/* Cart Item Text Formatting */
+.cart-item-name {
+  flex: 2;
+  text-align: left;
+  color: #333;
+}
+
+/* Quantity Controls */
+.cart-item-quantity {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.quantity-btn {
+  background: #4c3398;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: bold;
+  transition: background 0.2s;
+
+  &:hover {
+    background: #372675;
+  }
+}
+
+.quantity-number {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #4C3398;
+  min-width: 30px;
+  text-align: center;
+}
+
+/* Cart Item Total Price */
+.cart-item-total {
+  flex: 1;
+  text-align: right;
+  font-weight: bold;
+  color: #333;
+}
+
+/* Empty Cart Message */
+.no-items {
+  text-align: center;
+  width: 100%;
+  margin-top: 15px;
+}
+
+/* Cart Total */
+.cart-total {
+  margin-top: 10px;
+  padding: 12px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  background: #f8f9fa;
+  border-top: 2px solid #ddd;
+  width: 100%;
+  text-align: center;
+}
+
+
+/* Cart Footer */
+.cart-footer {
+  width: 100%;
+  display: flex;
+  justify-content: space-between; /* ✅ Aligns total & button side by side */
+  align-items: center;
+  padding: 12px;
+  background: #f8f9fa;
+  border-top: 2px solid #ddd;
+}
+
+
+/* Order Button */
+.order-btn {
+  background: #4c3398;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 5px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+
+  &:hover {
+    background: #372675;
+  }
+
+  &:disabled {
+    background: #aaa;
+    cursor: not-allowed;
+  }
+}
