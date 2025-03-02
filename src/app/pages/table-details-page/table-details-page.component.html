@@ -1,30 +1,48 @@
-<div id="sepetim-navbar">
-  <h2 class="navbar-title">{{ table?.name }} Detay</h2>
-  <button class="close-btn" (click)="goBack()">
-    <i class="fas fa-times"></i>
-  </button>
+<div class="table-details-page-wide">
+  <div id="sepetim-navbar">
+    <h2 class="navbar-title">{{ table?.name }} Detay</h2>
+    <button class="close-btn" (click)="goBack()">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+
+  <div class="content-body">
+    <div class="grid-container">
+      <div class="grid-item">Top</div>
+      <div class="grid-item">
+        <app-cart-area> </app-cart-area>
+      </div>
+      <div class="grid-item">
+        <app-menu-item-area> </app-menu-item-area>
+      </div>
+
+      <!-- ✅ Pass categories and loading state -->
+      <app-category-area
+        [categories]="categories"
+        [loading]="loading"
+      ></app-category-area>
+
+      <div class="grid-item">
+        <button (click)="goOdemePage()">Ödeme ekranı</button>
+      </div>
+    </div>
+  </div>
 </div>
 
-<div class="content-body">
-  <div class="grid-container">
-    <div class="grid-item">Top</div>
-    <div class="grid-item">
-      <app-cart-area>
-      </app-cart-area>
-    </div>
-    <div class="grid-item">
-      <app-menu-item-area>
-      </app-menu-item-area>
-    </div>
-
-    <!-- ✅ Pass categories and loading state -->
-    <app-category-area
-      [categories]="categories"
-      [loading]="loading"
-    ></app-category-area>
-
-    <div class="grid-item">
-      <button (click)="goOdemePage()">Ödeme ekranı</button>
+<div class="table-details-page-mobile">
+  <div id="sepetim-navbar">
+    <h2 class="navbar-title">{{ table?.name }} Detay</h2>
+    <button class="close-btn" (click)="goBack()">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+  <div class="quantity-belt">
+    <div
+      class="quantity-option"
+      *ngFor="let quantity of quantities"
+      (click)="selectQuantity(quantity)"
+    >
+      {{ quantity }}
     </div>
   </div>
 </div>

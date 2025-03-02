@@ -24,6 +24,10 @@ export class TableDetailsPageComponent implements OnInit, OnDestroy {
   loading: boolean = true;
   errorMessage: string = '';
 
+  quantities: number[] = [0.5, 1.5, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
+
+
 
   private tableSubscription!: Subscription;
   private ordersSubscription!: Subscription;
@@ -83,8 +87,13 @@ export class TableDetailsPageComponent implements OnInit, OnDestroy {
   goBack(): void {
     this.tableDetailsPageFacadeService.goBack();
   }
-  goOdemePage(){
+  goOdemePage() {
     // this.router.navigate(['/odeme-page']);
     this.router.navigate(['/odeme-page', this.table?.id]);
+  }
+
+  selectQuantity(quantity: number) {
+    console.log("Selected quantity:", quantity);
+    // You can store the selected quantity in a variable or pass it to a service
   }
 }

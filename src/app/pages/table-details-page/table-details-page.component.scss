@@ -1,89 +1,179 @@
-$navbar-height: 10vh;
-$bottom-bar-height: 10vh;
-
-.content-body {
-  width: 100vw;
-  height: calc(100vh - $navbar-height - $bottom-bar-height);
-  box-sizing: border-box;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.grid-container {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: 1fr 6fr 1fr; /* Top: 1 portion, Middle (D, E, F): 7 portions, Bottom: 1 portion */
-  width: 100%;
-  height: 100%;
-  gap: 5px;
-}
-
-.grid-item {
-  border: 3px solid red;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 2rem;
-  font-weight: bold;
-  color: #4C3398;
-}
-
-/* Merging Top row (full width) */
-.grid-item:nth-child(1) {
-  grid-column: span 3;
-}
-
-/* Merging Bottom row (full width) */
-.grid-item:nth-child(5) {
-  grid-column: span 3;
-}
-
-
-
-
 $primary-color: #4c3398;
 
-#sepetim-navbar {
-  display: flex;
-  justify-content: center; // ✅ Center everything horizontally
-  align-items: center;
-  padding: 1rem;
-  background-color: $primary-color;
-  color: white;
-  border-bottom: 3px solid #ccc;
-  position: relative;
-  height: $navbar-height;
-
-  .navbar-title {
-    margin: 0;
-    font-size: 1.5rem; // ✅ Adjust font size
-    text-align: center;
+@media (min-width: 768px) {
+  $navbar-height: 10vh;
+  $bottom-bar-height: 10vh;
+  .content-body {
+    width: 100vw;
+    height: calc(100vh - $navbar-height - $bottom-bar-height);
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
-  .close-btn {
-    background: none;
-    border: none;
+  .grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: 1fr 6fr 1fr; /* Top: 1 portion, Middle (D, E, F): 7 portions, Bottom: 1 portion */
+    width: 100%;
+    height: 100%;
+    gap: 5px;
+  }
+
+  .grid-item {
+    border: 3px solid red;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    font-weight: bold;
+    color: #4c3398;
+  }
+
+  /* Merging Top row (full width) */
+  .grid-item:nth-child(1) {
+    grid-column: span 3;
+  }
+
+  /* Merging Bottom row (full width) */
+  .grid-item:nth-child(5) {
+    grid-column: span 3;
+  }
+
+  #sepetim-navbar {
+    display: flex;
+    justify-content: center; // ✅ Center everything horizontally
+    align-items: center;
+    padding: 1rem;
+    background-color: $primary-color;
     color: white;
-    font-size: 1.5rem;
-    cursor: pointer;
-    position: absolute;
-    right: 1rem; // ✅ Keep aligned to the right
-    top: 50%;
-    transform: translateY(-50%);
-    transition: color 0.2s ease-in-out;
+    border-bottom: 3px solid #ccc;
+    position: relative;
+    height: $navbar-height;
 
-    i {
-      font-size: 1.5rem; // ✅ Font Awesome icon size
+    .navbar-title {
+      margin: 0;
+      font-size: 1.5rem; // ✅ Adjust font size
+      text-align: center;
     }
 
-    &:hover {
-      color: #ccc; // ✅ Hover effect
+    .close-btn {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.5rem;
+      cursor: pointer;
+      position: absolute;
+      right: 1rem; // ✅ Keep aligned to the right
+      top: 50%;
+      transform: translateY(-50%);
+      transition: color 0.2s ease-in-out;
+
+      i {
+        font-size: 1.5rem; // ✅ Font Awesome icon size
+      }
+
+      &:hover {
+        color: #ccc; // ✅ Hover effect
+      }
     }
+  }
+
+  button {
+    color: $primary-color;
+    border: $primary-color 2px solid;
   }
 }
 
-button{
-  color: $primary-color;
-  border: $primary-color 2px solid;
+@media (max-width: 768px) {
+  $navbar-height: 10vh;
+  $bottom-bar-height: 10vh;
+
+  .table-details-page-wide {
+    display: none;
+  }
+
+  #sepetim-navbar {
+    display: flex;
+    justify-content: center; // ✅ Center everything horizontally
+    align-items: center;
+    padding: 1rem;
+    background-color: $primary-color;
+    color: white;
+    border-bottom: 3px solid #ccc;
+    position: relative;
+    height: $navbar-height;
+
+    .navbar-title {
+      margin: 0;
+      font-size: 1.5rem; // ✅ Adjust font size
+      text-align: center;
+    }
+
+    .close-btn {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.5rem;
+      cursor: pointer;
+      position: absolute;
+      right: 1rem; // ✅ Keep aligned to the right
+      top: 50%;
+      transform: translateY(-50%);
+      transition: color 0.2s ease-in-out;
+
+      i {
+        font-size: 1.5rem; // ✅ Font Awesome icon size
+      }
+
+      &:hover {
+        color: #ccc; // ✅ Hover effect
+      }
+    }
+  }
+
+  button {
+    color: $primary-color;
+    border: $primary-color 2px solid;
+  }
+
+  .quantity-belt {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    white-space: nowrap;
+    padding: 10px;
+    height: 10vh;
+    align-items: center;
+    background-color: #f8f8f8;
+    border-top: 2px solid #ddd;
+
+    // Hide scrollbar but allow scrolling
+    &::-webkit-scrollbar {
+      height: 5px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: #ccc;
+      border-radius: 5px;
+    }
+  }
+
+  .quantity-option {
+    flex: 0 0 auto;
+    min-width: 60px; // Ensures a reasonable width
+    padding: 10px 15px;
+    font-size: 1.5rem;
+    text-align: center;
+    background-color: #4c3398;
+    color: white;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.2s ease-in-out;
+
+    &:hover {
+      // background-color: #362066;
+      background-color: #ffc107;
+    }
+  }
 }
