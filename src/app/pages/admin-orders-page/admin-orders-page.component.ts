@@ -28,7 +28,13 @@ export class AdminOrdersPageComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.fetchOrders();
+    // this.fetchOrders();
+    this.orderService.orders$.subscribe((orders) => {
+      // this.allOrders = Object.values(orders);
+      this.allOrders = orders;
+      console.log("[AdminOrdersPageComponent] Orders: ", this.allOrders);
+      this.loading = false;
+    });
     this.fetchTables();
   }
 
@@ -95,23 +101,28 @@ export class AdminOrdersPageComponent implements OnInit {
   }
 
   getTableStatusClass(tableId: string): string {
-    // console.log("[admin-orders-page] getTableStatusClass: ", tableId);
+    console.log("[AdminOrdersPageComponent] getTableStatusClass: ", tableId);
 
-    // console.log("[admin-orders-page] All Orders: ", this.allOrders);
+    // console.log("[AdminOrdersPageComponent] All Orders: ", this.allOrders);
 
     if (!tableId) {
-      console.warn("[admin-orders-page] Warning: Invalid table ID.");
+      console.warn("[AdminOrdersPageComponent] Warning: Invalid table ID.");
       return 'status-default';
     }
 
     if (!Array.isArray(this.allOrders)) {
-      console.warn("[admin-orders-page] Warning: allOrders is not an array.");
+      console.warn("[AdminOrdersPageComponent] Warning: allOrders is not an array.");
       return 'status-default';
     }
 
     // ✅ Filter orders directly using `tableUUID`
-    const tableOrders = this.allOrders.filter(order => order.tableUUID === tableId);
-    // console.log("[admin-orders-page] Table Orders: ", tableOrders);
+    const tableOrders = this.allOrders.filter(order => {
+      console.log("[AdminOrdersPageComponent-filter] Order: ", order);
+      console.log("[AdminOrdersPageComponent-filter] Order Table UUID: ", order.tableUUID);
+      console.log("[AdminOrdersPageComponent-filter] Table ID: ", tableId);
+      return order.tableUUID === tableId;
+    });
+    console.log("[AdminOrdersPageComponent] Table Orders: ", tableOrders);
 
     // ✅ Check for "PENDING" orders first
     if (tableOrders.some(order => order.status === OrderStatus.PENDING)) {

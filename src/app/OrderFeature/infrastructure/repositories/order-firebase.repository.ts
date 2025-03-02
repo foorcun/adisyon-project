@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Database, ref, push, set, update, remove, onValue, DataSnapshot } from '@angular/fire/database';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { OrderRepository } from '../../domain/repositories/order-repository';
 import { Order } from '../../domain/entities/order.entity';
@@ -13,6 +13,13 @@ import { OrderDto } from '../../domain/entities/order.dto';
 export class OrderFirebaseRepository extends OrderRepository {
   private basePath = 'orders';
 
+  // private cartSubject = new BehaviorSubject<Cart>(new Cart('', {}));
+  // cart$ = this.cartSubject.asObservable();
+
+  private ordersSubject = new BehaviorSubject<Order[]>([]); // Now it holds an array of orders
+  order$ = this.ordersSubject.asObservable();
+
+
   constructor(private database: Database) {
     super();
   }
@@ -23,20 +30,56 @@ export class OrderFirebaseRepository extends OrderRepository {
    * @returns An Observable emitting the generated order ID.
    */
 
-createOrder(order: OrderDto): Observable<string> {
-  console.log("[OrderFirebaseRepository] - Creating order...", order);
-  return new Observable((observer) => {
-    const orderRef = push(ref(this.database, this.basePath));
+  /** 
+    * Listens for changes to all orders in Firebase and updates the BehaviorSubject.
+    */
+  listenForAllOrdersChanges(): void {
+    const ordersRef = ref(this.database, this.basePath);
 
-    set(orderRef, order)
-      .then(() => {
-        observer.next(orderRef.key as string); // Firebase-generated ID
-        observer.complete();
-        console.log("[OrderFirebaseRepository] - Order created successfully.");
-      })
-      .catch((error) => observer.error(error));
-  });
-}
+    onValue(ordersRef, (snapshot: DataSnapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        const orders = Object.keys(data).map((key) => {
+          const order = data[key];
+          return new Order(
+            key, // Use Firebase key as the order ID
+            order.items,
+            order.tableUUID,
+            order.status,
+            new Date(order.createdAt),
+            new Date(order.updatedAt),
+            order.totalAmount,
+            order.userUid
+          );
+        });
+
+        console.log("[OrderFirebaseRepository] listenForAllOrdersChanges:", orders);
+        this.ordersSubject.next(orders);
+      } else {
+        console.warn("[OrderFirebaseRepository] - No orders found.");
+        this.ordersSubject.next([]);
+      }
+    }, (error) => {
+      console.error(`[OrderFirebaseRepository] - Error listening for all orders: ${error.message}`);
+    });
+  }
+
+
+
+  createOrder(order: OrderDto): Observable<string> {
+    console.log("[OrderFirebaseRepository] - Creating order...", order);
+    return new Observable((observer) => {
+      const orderRef = push(ref(this.database, this.basePath));
+
+      set(orderRef, order)
+        .then(() => {
+          observer.next(orderRef.key as string); // Firebase-generated ID
+          observer.complete();
+          console.log("[OrderFirebaseRepository] - Order created successfully.");
+        })
+        .catch((error) => observer.error(error));
+    });
+  }
 
 
   /**

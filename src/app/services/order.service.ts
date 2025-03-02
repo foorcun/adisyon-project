@@ -4,33 +4,47 @@ import { OrderFirebaseRepository } from '../OrderFeature/infrastructure/reposito
 import { Order } from '../OrderFeature/domain/entities/order.entity';
 import { OrderDto } from '../OrderFeature/domain/entities/order.dto';
 import { OrderStatus } from '../OrderFeature/domain/entities/order-status';
+import { UserService } from './user.service';
+import { UserWithRole } from '../UserFeature/domain/entities/user-with-role';
 
 @Injectable({
   providedIn: 'root',
 })
 export class OrderService {
-  private ordersSubject = new BehaviorSubject<{ [key: string]: Order }>({});
+  private ordersSubject = new BehaviorSubject<Order[]>([]); // Now it holds an array of orders
   orders$ = this.ordersSubject.asObservable();
 
-  constructor(private orderRepository: OrderFirebaseRepository) {
-    this.listenForOrdersChanges(); // 🔥 Start listening for order updates on service initialization
+  currentUserWithRole: UserWithRole | null = null;
+
+  constructor(
+    private orderRepository: OrderFirebaseRepository,
+    private userService: UserService
+  ) {
+
+    this.userService.currentUserWithRole$.subscribe(user => {
+      this.currentUserWithRole = user;
+      this.listenForOrdersChanges(); // 🔥 Start listening for order updates on service initialization
+    });
   }
 
   /** ✅ Listen for real-time updates on orders */
   private listenForOrdersChanges(): void {
-    this.orderRepository.getAllOrders().subscribe(orders => {
-      const ordersMap = orders.reduce((acc, order) => {
-        acc[order.id] = order;
-        return acc;
-      }, {} as { [key: string]: Order });
-      this.ordersSubject.next(ordersMap);
+    this.orderRepository.listenForAllOrdersChanges();
+    this.orderRepository.order$.subscribe(orders => {
+      if (orders) {
+        // this.ordersSubject.next(orders.reduce((acc, order) => {
+        //   acc[order.id] = order;
+        //   return acc;
+        // }, {} as { [key: string]: Order }));
+        this.ordersSubject.next(orders);
+      }
     });
   }
 
-  /** ✅ Get all orders as a dictionary */
-  getOrders(): { [key: string]: Order } {
-    return this.ordersSubject.getValue();
-  }
+  // /** ✅ Get all orders as a dictionary */
+  // getOrders(): { [key: string]: Order } {
+  //   return this.ordersSubject.getValue();
+  // }
 
   /** ✅ Get orders for a specific user */
   getUserOrders(userUid: string): Observable<Order[]> {

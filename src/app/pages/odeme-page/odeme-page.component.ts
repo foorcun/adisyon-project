@@ -28,10 +28,13 @@ export class OdemePageComponent implements OnInit {
     private route: ActivatedRoute,
   ) {
     this.tableId = this.route.snapshot.paramMap.get('id');
+    this.orderService.orders$.subscribe(orders => {
+      this.orders = orders.filter(order => order.tableUUID === this.tableId);
+    });
   }
 
   ngOnInit(): void {
-    this.orders = Object.values(this.orderService.getOrders()).filter(order => order.tableUUID === this.tableId);
+    // this.orders = Object.values(this.orderService.getOrders()).filter(order => order.tableUUID === this.tableId);
 
 
     // ✅ Manual subscriptions
