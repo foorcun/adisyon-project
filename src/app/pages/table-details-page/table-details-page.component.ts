@@ -60,7 +60,7 @@ export class TableDetailsPageComponent implements OnInit, OnDestroy {
     this.tableSubscription = this.tableDetailsPageFacadeService.table$.subscribe(table => {
       this.table = table;
       if (!table) {
-        this.goBack();
+        this.router.navigate(['/admin-orders-page']);
       }
 
     });

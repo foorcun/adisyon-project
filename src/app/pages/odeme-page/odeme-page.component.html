@@ -12,7 +12,7 @@
       <div class="order-info">
         <h3>Sipariş #{{ order.id }}</h3>
         <p><strong>Durum:</strong> {{ order.status }}</p>
-        <p><strong>Toplam Tutar:</strong>{{ order.totalAmount | currency : "TRY" }}</p>
+        <p><strong>Toplam Tutar:</strong>{{ order.getTotalAmount() | currency : "TRY" }}</p>
       </div>
 
       <!-- Order Items -->

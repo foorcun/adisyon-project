@@ -26,6 +26,7 @@ export class OdemePageComponent implements OnInit {
     private orderService: OrderService,
     private tableDetailsPageFacadeService: TableDetailsPageFacadeService,
     private route: ActivatedRoute,
+    private router: Router
   ) {
     this.tableId = this.route.snapshot.paramMap.get('id');
     this.orderService.orders$.subscribe(orders => {
@@ -40,6 +41,9 @@ export class OdemePageComponent implements OnInit {
     // ✅ Manual subscriptions
     this.tableSubscription = this.tableDetailsPageFacadeService.table$.subscribe(table => {
       this.table = table;
+      if (!table) {
+        this.router.navigate(['/admin-orders-page']);
+      }
     });
 
   }
