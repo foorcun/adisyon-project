@@ -1,21 +1,18 @@
-
 <div id="sepetim-navbar">
-  <h2 class="navbar-title">{{ table?.name }} Detay</h2>
+  <h2 class="navbar-title">{{ table?.name }} Odeme</h2>
   <button class="close-btn" (click)="goBack()">
     <i class="fas fa-times"></i>
   </button>
 </div>
 
 <div class="odeme-page">
-
-
   <!-- Display Orders -->
   <div *ngIf="orders.length > 0; else noOrders" class="order-list">
     <div class="order-card" *ngFor="let order of orders">
       <div class="order-info">
         <h3>Sipariş #{{ order.id }}</h3>
         <p><strong>Durum:</strong> {{ order.status }}</p>
-        <p><strong>Toplam Tutar:</strong> {{ order.totalAmount | currency: 'TRY' }}</p>
+        <p><strong>Toplam Tutar:</strong>{{ order.totalAmount | currency : "TRY" }}</p>
       </div>
 
       <!-- Order Items -->
@@ -23,7 +20,8 @@
         <h4>Ürünler:</h4>
         <ul>
           <li *ngFor="let item of order.items">
-            {{ item.product.name }} (x{{ item.quantity }}) - {{ item.getTotalPrice | currency: 'TRY' }}
+            {{ item.product.name }} (x{{ item.quantity }}) -
+            {{ item.getTotalPrice | currency : "TRY" }}
           </li>
         </ul>
       </div>

@@ -82,3 +82,8 @@ $primary-color: #4c3398;
     }
   }
 }
+
+button{
+  color: $primary-color;
+  border: $primary-color 2px solid;
+}
