@@ -3,3 +3,7 @@
 body {
   background-color: lightgray; /* Soft gray background */
 }
+
+* {
+  user-select: none;
+}
