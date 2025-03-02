@@ -1,6 +1,7 @@
 <div
   *ngFor="let category of categories"
   class="category-card"
+  (click)="setSelectedCategory(category.name)"
 >
   {{ category.name }}
 </div>

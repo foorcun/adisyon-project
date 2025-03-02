@@ -27,4 +27,14 @@ export class CategoryAreaMobileComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.categoriesSubscription.unsubscribe();
   }
+
+  setSelectedCategory(categoryName: string) {
+    const category = this.categories.find(category => category.name === categoryName);
+    if (category) {
+      // console.log(`[CategoryAreaComponent] - Category: ${category.name}`);
+      // console.log(`[CategoryAreaComponent] - Menu Items (JSON): ${JSON.stringify(category.menuItems, null, 2)}`);
+
+      this.tableDetailsPageFacadeService.setSelectedCategory(category);
+    }
+  }
 }

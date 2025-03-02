@@ -11,6 +11,8 @@ import { MenuItemAreaComponent } from './menu-item-area/menu-item-area.component
 import { CartAreaComponent } from './cart-area/cart-area.component';
 import { CategoryAreaMobileComponent } from './mobile-size/category-area-mobile/category-area-mobile.component';
 import { QuantityBeltMobileComponent } from './mobile-size/quantity-belt-mobile/quantity-belt-mobile.component';
+import { MenuItemMobileComponent } from './mobile-size/menu-item-mobile/menu-item-mobile.component';
+import { CartAreaMobileComponent } from './mobile-size/cart-area-mobile/cart-area-mobile.component';
 
 @Component({
   selector: 'app-table-details-page',
@@ -19,7 +21,9 @@ import { QuantityBeltMobileComponent } from './mobile-size/quantity-belt-mobile/
   standalone: true,
   imports: [CommonModule, CategoryAreaComponent, MenuItemAreaComponent, CartAreaComponent,
     QuantityBeltMobileComponent,
-    CategoryAreaMobileComponent
+    CategoryAreaMobileComponent,
+    MenuItemMobileComponent,
+    CartAreaMobileComponent
   ]
 })
 export class TableDetailsPageComponent implements OnInit, OnDestroy {

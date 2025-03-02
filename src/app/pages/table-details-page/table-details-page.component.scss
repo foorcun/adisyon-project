@@ -146,7 +146,7 @@ $primary-color: #4c3398;
     display: flex;
     // direction
     flex-direction: row;
-    div {
+    app-menu-item-mobile {
       flex: 2;
       border: 3px solid red;
     }

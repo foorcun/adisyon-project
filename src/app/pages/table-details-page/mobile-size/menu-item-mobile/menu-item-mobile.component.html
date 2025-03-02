@@ -1,0 +1,29 @@
+<div class="grid-item menu-item-container">
+  <ng-container *ngIf="selectedCategory; else noCategory">
+    <p class="category-name"><strong>Category:</strong> {{ selectedCategory.name }}</p>
+
+    <div class="menu-items-list" *ngIf="menuItems.length > 0; else noMenuItems">
+      <div class="menu-item-card" *ngFor="let menuItem of menuItems"
+        (click)="addToCart(menuItem)">
+        {{ menuItem.name }}
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-template #noCategory>
+    <p class="alert alert-warning">No category selected.</p>
+  </ng-template>
+
+  <ng-template #noMenuItems>
+    <p class="alert alert-info">No menu items available for this category.</p>
+  </ng-template>
+</div>
+
+
+
+
+<!-- <div class="menu-items-list">
+  <div class="menu-item-card" *ngFor="let menuItem of menuItems" (click)="addToCart(menuItem)">
+    {{ menuItem.name }}
+  </div>
+</div> -->
