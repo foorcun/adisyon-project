@@ -1,7 +1,7 @@
 
 .cart-area {
-  width: 70vw; /* ✅ Fixed width for the cart */
-  height: 60vh; /* ✅ Fixed height */
+  width: 100dvw; /* ✅ Fixed width for the cart */
+//   height: 60dvh; /* ✅ Fixed height */
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -30,8 +30,8 @@ h3 {
 .cart-list {
   flex: 1;
   width: 100%;
-  max-height: 45vh; /* ✅ Ensures scrolling if many items */
-  overflow-y: auto; /* ✅ Enables scrolling */
+//   max-height: 45vh; /* ✅ Ensures scrolling if many items */
+//   overflow-y: auto; /* ✅ Enables scrolling */
   display: flex;
   flex-direction: column;
   gap: 10px;
