@@ -68,4 +68,9 @@ export class CartService {
     // return this.cartRepository.createOrder(userKey, tableName);
     return this.orderRepository.createOrder(order);
   }
+
+  updateUrunNotu(uid: string, id: string, editedNote: string) {
+    // throw new Error('Method not implemented.');
+    return this.cartRepository.updateUrunNotu(uid, id, editedNote);
+  }
 }

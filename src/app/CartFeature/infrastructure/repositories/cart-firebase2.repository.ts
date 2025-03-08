@@ -66,4 +66,20 @@ export class CartFirebase2Repository {
         return from(update(itemRef, { quantity: newQuantity }));
     }
 
+
+    updateUrunNotu(userKey: string, productId: string, editedNote: string): Observable<void> {
+        console.log(`[CartFirebase2Repository] Updating Ürün Notu for ${productId}:`, editedNote);
+
+        const itemRef = ref(this.database, `carts/${userKey}/items/${productId}`);
+
+        return from(update(itemRef, { urunNotu: editedNote }))
+            .pipe(
+                tap(() => console.log(`[CartFirebase2Repository] Ürün Notu updated successfully for ${productId}`)),
+                catchError(error => {
+                    console.error('[CartFirebase2Repository] Error updating Ürün Notu:', error);
+                    return throwError(() => new Error('Error updating Ürün Notu'));
+                })
+            );
+    }
+
 }

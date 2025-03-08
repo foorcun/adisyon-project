@@ -215,12 +215,12 @@ export class CartPageComponent {
       console.log('[Updated Ürün Notu]:', this.editedNote);
       this.selectedCartItem.urunNotu = this.editedNote;
 
-      // // 🔹 Save the updated note to Firebase
-      // this.cartService.updateUrunNotu(
-      //   this.currentUserWithRole!.firebaseUser.uid,
-      //   this.selectedCartItem.product.id,
-      //   this.editedNote
-      // );
+      // 🔹 Save the updated note to Firebase
+      this.cartService.updateUrunNotu(
+        this.currentUserWithRole!.firebaseUser.uid,
+        this.selectedCartItem.product.id,
+        this.editedNote
+      );
 
       this.selectedCartItem = null; // Close popup
     }
