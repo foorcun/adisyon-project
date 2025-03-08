@@ -36,7 +36,7 @@ activeRoute: string = 'home-page'; // Default active route
     { label: 'Cart', icon: 'fas fa-shopping-cart', route: 'cart-page', badge: 3 },
     { label: 'Profile', icon: 'fas fa-user', route: 'profile-page' },
     // { label: 'Order', icon: 'fas fa-store', route: 'order-page' }
-    { label: 'My Orders', icon: 'fas fa-store', route: 'user-orders-page' }
+    { label: 'Siparişlerim', icon: 'fas fa-store', route: 'user-orders-page' }
   ];
 
   constructor(
@@ -77,7 +77,7 @@ activeRoute: string = 'home-page'; // Default active route
     if (this.userRole === UserRole.ADMIN) {
       this.navItems[3] = { label: 'Sipariş', icon: 'fas fa-store', route: 'admin-orders-page' };
     } else {
-      this.navItems[3] = { label: 'My Orders', icon: 'fas fa-box', route: 'user-orders-page' };
+      this.navItems[3] = { label: 'Siparişlerim', icon: 'fas fa-box', route: 'user-orders-page' };
     }
   }
   navigate(route: string) {

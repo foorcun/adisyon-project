@@ -1,9 +1,9 @@
 <div class="grid-item category-container">
-  <h3>Categories</h3>
+  <h3>Kategoriler</h3>
 
   <!-- Show loading message while fetching categories -->
   <div *ngIf="loading; else content" class="loading-container">
-    <p class="alert alert-info">Loading categories...</p>
+    <p class="alert alert-info">Kategoriler yükleniyor..</p>
   </div>
 
   <ng-template #content>
@@ -21,6 +21,6 @@
   <!-- No Categories Found -->
 
   <ng-template #noCategories>
-    <p class="alert alert-warning">No categories found.</p>
+    <p class="alert alert-warning">Kategoriler bulunamadı</p>
   </ng-template>
 </div>

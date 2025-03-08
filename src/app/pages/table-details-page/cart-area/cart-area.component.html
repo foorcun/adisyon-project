@@ -1,5 +1,5 @@
 <div class="grid-item cart-area">
-  <h3>Cart</h3>
+  <h3>Sepet</h3>
 
   <!-- Scrollable Cart Items List -->
   <div class="cart-list">
@@ -18,13 +18,13 @@
 
     <!-- Show empty cart message if there are no items -->
     <p class="alert alert-warning no-items" *ngIf="activeCart?.getItems()!.length === 0">
-      Cart is empty.
+      Sepette ürün bulunmamaktadır.
     </p>
   </div>
 
  <!-- Total & Create Order Button -->
   <div class="cart-footer">
-    <strong class="cart-total">Total: {{ activeCart?.totalAmount | currency: 'TRY' }}</strong>
+    <strong class="cart-total">Toplam: {{ activeCart?.totalAmount | currency: 'TRY' }}</strong>
     <button class="order-btn" (click)="createOrder()" [disabled]="!activeCart || activeCart.getItems().length === 0">
       Sipariş Oluştur
     </button>
