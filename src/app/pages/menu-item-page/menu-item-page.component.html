@@ -1,7 +1,8 @@
 <div id="sepetim-navbar">
   <h2 class="navbar-title">Sipariş Detay</h2>
   <button class="close-btn" (click)="goBackToMenuPage()">
-    <i class="fas fa-times"></i> <!-- ✅ Font Awesome Close Icon -->
+    <i class="fas fa-times"></i>
+    <!-- ✅ Font Awesome Close Icon -->
   </button>
 </div>
 
@@ -12,11 +13,17 @@
 
   <div class="card-body">
     <p class="card-text">
-      <strong>Price:</strong>
-      {{ selectedMenuItem!.product.price | currency: "TRY": "symbol" }}
+      <!-- <strong>Price:</strong> -->
+      {{ selectedMenuItem!.product.description }}
+    </p>
+    <p class="card-text">
+      <strong>
+        {{ selectedMenuItem!.product.price | currency : "TRY" : "symbol" }}
+      </strong>
     </p>
   </div>
 </div>
 
-
-<app-menu-item-page-footer (addToCartClicked)="addToCart()"></app-menu-item-page-footer>
+<app-menu-item-page-footer
+  (addToCartClicked)="addToCart()"
+></app-menu-item-page-footer>
