@@ -36,7 +36,7 @@ export class UserOrdersPageComponent {
 
         this.orderService.getUserOrders(user.firebaseUser.uid).subscribe({
           next: (orders) => {
-            this.userOrders = orders;
+            this.userOrders = orders.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
             this.loading = false;
           },
           error: (error) => {
