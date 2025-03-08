@@ -53,11 +53,14 @@
         ></app-icon-button>
       </div>
     </div>
+
+    <app-order-now-footer
+      *ngIf="cart.getItemsCount() > 0"
+      (orderNowClicked)="onOrderNow()"
+    ></app-order-now-footer>
   </div>
 
   <ng-template #loading>
     <p>Loading cart...</p>
   </ng-template>
-
-  <app-order-now-footer (orderNowClicked)="onOrderNow()"></app-order-now-footer>
 </div>
