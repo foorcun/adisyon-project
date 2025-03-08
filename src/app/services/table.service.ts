@@ -53,4 +53,9 @@ export class TableService {
   deleteTable(tableId: string): Observable<void> {
     return this.tableRepository.deleteTable(tableId);
   }
+
+  getTableNameforUUID(tableId: string): string | undefined {
+    const tables = this.tablesSubject.getValue();
+    return tables[tableId]?.name;
+  }
 }

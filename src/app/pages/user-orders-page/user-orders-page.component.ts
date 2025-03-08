@@ -6,6 +6,7 @@ import { Order } from '../../OrderFeature/domain/entities/order.entity';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { OrderStatus } from '../../OrderFeature/domain/entities/order-status';
+import { TableService } from '../../services/table.service';
 
 @Component({
   selector: 'app-user-orders-page',
@@ -22,7 +23,8 @@ export class UserOrdersPageComponent {
   constructor(
     private orderService: OrderService,
     private userService: UserService,
-    private router: Router
+    private router: Router,
+    private tableService: TableService
   ) {
     this.userService.currentUserWithRole$.subscribe({
       next: (user: UserWithRole | null) => {
@@ -70,6 +72,10 @@ export class UserOrdersPageComponent {
       default:
         return 'status-default';
     }
+  }
+
+  getTableName(tableUUID: string) {
+    return this.tableService.getTableNameforUUID(tableUUID);
   }
 
 }

@@ -28,7 +28,11 @@
     <div *ngFor="let order of userOrders" class="col-md-6 col-lg-4 mb-4">
       <div class="card shadow-sm">
         <div class="card-body">
-          <h5 class="card-title">Table: {{ order.tableUUID }}</h5>
+          <!-- <h5 class="card-title">Table: {{ order.tableUUID }}</h5> -->
+          <h5 class="card-title">OrderId: {{ order.id }}</h5>
+          <p>
+            <strong>Table no: {{ getTableName(order.tableUUID) | json }}</strong>
+          </p>
           <p class="card-text">
             <strong>Status:</strong>
             <span class="badge" [ngClass]="getStatusClass(order.status)">
