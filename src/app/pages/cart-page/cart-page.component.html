@@ -1,7 +1,10 @@
 <div class="page-container">
   <div *ngIf="cart$ | async as cart; else loading">
     <app-cart-page-navbar></app-cart-page-navbar>
+
+    <!-- Hide Table Selector if the cart is empty -->
     <app-table-name-selector
+      *ngIf="cart.getItemsCount() > 0"
       [tableNames]="availableTables"
       [selectedTableName]="selectedTable || ''"
       (tableNameSelected)="onTableNameSelected($event)"
@@ -30,7 +33,6 @@
         (remove)="removeItem($event)"
       ></app-quantity-button-group>
     </div>
-
   </div>
 
   <div *ngIf="cart$ | async as cart">
