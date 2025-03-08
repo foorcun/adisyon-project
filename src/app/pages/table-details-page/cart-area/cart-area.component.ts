@@ -43,7 +43,7 @@ export class CartAreaComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     if (this.activeCartSubscription) this.activeCartSubscription.unsubscribe();
-      this.activeCart?.clearCart();
+    this.activeCart?.clearCart();
   }
 
   updateQuantity(productId: string, newQuantity: number): void {
@@ -67,6 +67,7 @@ export class CartAreaComponent implements OnInit, OnDestroy {
     const orderItems: OrderItem[] = this.activeCart
       ? this.activeCart.getItems().map(cartItem => {
         const itemQuantity = cartItem.quantity;
+        const urunNotu = cartItem.urunNotu;
 
         // ✅ Create ProductOrder Object
         const productOrder = new ProductOrder(
@@ -78,7 +79,10 @@ export class CartAreaComponent implements OnInit, OnDestroy {
         );
 
         // ✅ Return OrderItem
-        return new OrderItem(productOrder, itemQuantity);
+        // return new OrderItem(productOrder, itemQuantity);
+        const newOrderItem = new OrderItem(productOrder, itemQuantity);
+        newOrderItem.urunNotu = urunNotu;
+        return newOrderItem;
       })
       : [];
 
@@ -103,7 +107,7 @@ export class CartAreaComponent implements OnInit, OnDestroy {
       next: (orderId) => {
         console.log(`[CartAreaComponent] Order created with ID: ${orderId}`);
         // this.tableDetailsPageFacadeService.resetCart();
-      this.activeCart?.clearCart();
+        this.activeCart?.clearCart();
       }
     });
   }

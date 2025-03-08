@@ -130,7 +130,10 @@ export class CartPageComponent {
     this.cartService.cart$.pipe(take(1)).subscribe(cart => {
       if (cart.items && typeof cart.items === 'object') {
         const orderItems = Object.values(cart.items).map(item => {
-          return new OrderItem(item.product, item.quantity);
+          // return new OrderItem(item.product, item.quantity);
+          var newOrderItem = new OrderItem(item.product, item.quantity);
+          newOrderItem.urunNotu = item.urunNotu;
+          return newOrderItem;
         });
 
         // Convert Order to Firestore-compatible DTO
