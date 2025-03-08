@@ -1,0 +1,9 @@
+<div class="quantity-belt">
+    <div
+      class="quantity-option"
+      *ngFor="let quantity of quantities"
+      (click)="selectQuantity(quantity)"
+    >
+      {{ quantity }}
+    </div>
+  </div>

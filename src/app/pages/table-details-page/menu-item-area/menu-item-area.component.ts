@@ -46,8 +46,16 @@ export class MenuItemAreaComponent implements OnInit, OnDestroy {
           menuItem.imageUrl,
           ""
         ),
-        1)
+        this.getSelectedQuantity()
+      )
     );
+  }
 
+  getSelectedQuantity(): number {
+    var selectedQuantity = this.tableDetailsPageFacadeService.selectedQuantity;
+    if (selectedQuantity == null) {
+      return 1;
+    }
+    return selectedQuantity;
   }
 }

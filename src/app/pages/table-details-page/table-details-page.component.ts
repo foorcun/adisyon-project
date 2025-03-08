@@ -13,6 +13,7 @@ import { CategoryAreaMobileComponent } from './mobile-size/category-area-mobile/
 import { QuantityBeltMobileComponent } from './mobile-size/quantity-belt-mobile/quantity-belt-mobile.component';
 import { MenuItemMobileComponent } from './mobile-size/menu-item-mobile/menu-item-mobile.component';
 import { CartAreaMobileComponent } from './mobile-size/cart-area-mobile/cart-area-mobile.component';
+import { QuantityBeltComponent } from './quantity-belt/quantity-belt.component';
 
 @Component({
   selector: 'app-table-details-page',
@@ -23,7 +24,8 @@ import { CartAreaMobileComponent } from './mobile-size/cart-area-mobile/cart-are
     QuantityBeltMobileComponent,
     CategoryAreaMobileComponent,
     MenuItemMobileComponent,
-    CartAreaMobileComponent
+    CartAreaMobileComponent,
+    QuantityBeltComponent
   ]
 })
 export class TableDetailsPageComponent implements OnInit, OnDestroy {
