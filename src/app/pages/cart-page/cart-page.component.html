@@ -24,6 +24,9 @@
         <p class="price">
           {{ item.value.product.price | currency : "TRY" : "symbol" }}
         </p>
+        <p>
+          {{ item.value.getUrunNotu() }}
+        </p>
       </div>
       <app-quantity-button-group
         [quantity]="item.value.quantity"

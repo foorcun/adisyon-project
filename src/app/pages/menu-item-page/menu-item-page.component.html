@@ -23,6 +23,16 @@
     </p>
   </div>
 </div>
+<!-- Ürün Notu Textarea -->
+<div class="urun-notu-container" *ngIf="selectedMenuItem">
+  <label for="urunNotu">Ürün Notu:</label>
+  <textarea
+    id="urunNotu"
+    [(ngModel)]="selectedMenuItem.urunNotu"
+    rows="3"
+    placeholder="Siparişinizle ilgili bir not ekleyin..."
+  ></textarea>
+</div>
 
 <app-menu-item-page-footer
   (addToCartClicked)="addToCart()"

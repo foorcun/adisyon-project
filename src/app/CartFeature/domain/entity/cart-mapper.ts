@@ -3,6 +3,11 @@ import { CartItem } from './cart-item';
 import { Product } from './product.entity';
 
 export class CartMapper {
+    /**
+     * Converts raw Firebase data to a `Cart` object.
+     * @param cartData Raw Firebase object
+     * @returns `Cart` instance
+     */
     static toCart(cartData: any): Cart {
         return new Cart(
             cartData?.id || '', // Ensure ID exists
@@ -14,8 +19,14 @@ export class CartMapper {
         );
     }
 
+    /**
+     * Converts raw Firebase data to a `CartItem` object.
+     * @param key Firebase document ID (used as item ID)
+     * @param item Raw Firebase item data
+     * @returns `CartItem` instance
+     */
     static toCartItem(key: string, item: any): CartItem {
-        return new CartItem(
+        var cand = new CartItem(
             new Product(
                 key, // Use Firebase Key as ID
                 item?.product?.name || "Unknown Product",
@@ -24,7 +35,9 @@ export class CartMapper {
                 item?.product?.imageUrl || "",
                 item?.product?.categoryId || ""
             ),
-            item?.quantity || 7 // Default quantity to 1 if missing
+            item?.quantity || 1, // Default quantity
         );
+        cand.urunNotu = item?.urunNotu || "" // ✅ Ensure urunNotu is correctly mapped
+        return cand;
     }
 }

@@ -1,7 +1,7 @@
 $primary-color: #4C3398;
 
 .menu-item-card {
-  max-width: 400px; // ✅ Adjust width if needed
+  max-width: 400px;
   margin: auto;
   border: 1px solid #ddd;
   border-radius: 8px;
@@ -21,7 +21,7 @@ $primary-color: #4C3398;
   }
 }
 
-// Sepetim Navbar (No Changes)
+// 🛒 Sepetim Navbar
 #sepetim-navbar {
   display: flex;
   justify-content: center;
@@ -56,6 +56,38 @@ $primary-color: #4C3398;
 
     &:hover {
       color: #ccc;
+    }
+  }
+}
+
+// 📝 Ürün Notu Section
+.urun-notu-container {
+  margin: 15px auto;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  
+  label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    font-size: 1rem;
+    color: #333;
+  }
+
+  textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    resize: none;
+    font-size: 1rem;
+    min-height: 80px;
+    outline: none;
+    transition: border-color 0.3s ease-in-out;
+
+    &:focus {
+      border-color: $primary-color;
+      box-shadow: 0 0 5px rgba($primary-color, 0.5);
     }
   }
 }

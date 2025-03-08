@@ -6,10 +6,11 @@ import { CartItem } from '../../CartFeature/domain/entity/cart-item';
 import { Product } from '../../CartFeature/domain/entity/product.entity';
 import { MenuItem } from '../../MenuFeature/domain/entity/menuitem.entity';
 import { Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-menu-item-page',
-  imports: [CommonModule, MenuItemPageFooterComponent],
+  imports: [CommonModule, MenuItemPageFooterComponent, FormsModule],
   templateUrl: './menu-item-page.component.html',
   styleUrl: './menu-item-page.component.scss'
 })
@@ -31,7 +32,8 @@ export class MenuItemPageComponent {
   }
 
   addToCart() {
-    if (this.selectedMenuItem && this.selectedMenuItem) {
+    if (this.selectedMenuItem) {
+      console.log('Adding to cart with note:', this.selectedMenuItem.urunNotu);
       this.menuPageFacadeService.addToCart(this.selectedMenuItem);
       // this.modalService.closeModal();
     } else {
