@@ -24,10 +24,19 @@
         <p class="price">
           {{ item.value.product.price | currency : "TRY" : "symbol" }}
         </p>
-        <p>
+        <!-- <p>
           {{ item.value.getUrunNotu() }}
-        </p>
+        </p> -->
+<!-- 🔹 Click to edit Ürün Notu -->
+<!-- 🔹 Click to edit Ürün Notu -->
+<p class="urun-notu" (click)="openNoteEditor(item.value)">
+  {{ item.value.getUrunNotu() || 'Not eklemek için tıklayın...' }}
+  <i class="fas fa-edit edit-icon"></i> <!-- ✅ FontAwesome Edit Icon -->
+</p>
+
+
       </div>
+
       <app-quantity-button-group
         [quantity]="item.value.quantity"
         [productId]="item.value.product.id"
@@ -66,4 +75,16 @@
   <ng-template #loading>
     <p>Loading cart...</p>
   </ng-template>
+</div>
+
+<!-- 🔹 Ürün Notu Popup -->
+<div *ngIf="selectedCartItem" class="note-popup-overlay">
+  <div class="note-popup">
+    <h3>Ürün Notu Güncelle</h3>
+    <textarea [(ngModel)]="editedNote" rows="4" placeholder="Sipariş notunuzu girin..."></textarea>
+    <div class="popup-actions">
+      <button (click)="saveUrunNotu()">OK</button>
+      <button (click)="closeNoteEditor()">İptal</button>
+    </div>
+  </div>
 </div>

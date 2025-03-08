@@ -20,6 +20,7 @@ import { OrderItem } from '../../OrderFeature/domain/entities/order-item.entity'
 import { OrderDto } from '../../OrderFeature/domain/entities/order.dto';
 import { TableService } from '../../services/table.service';
 import { Table } from '../../OrderFeature/domain/entities/table.entity';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-cart-page',
@@ -27,7 +28,8 @@ import { Table } from '../../OrderFeature/domain/entities/table.entity';
   styleUrls: ['./cart-page.component.scss'],
   imports: [CommonModule, CartPageNavbarComponent,
     QuantityButtonGroupComponent,
-    IconButtonComponent, TableNameSelectorComponent, OrderNowFooterComponent]
+    IconButtonComponent, TableNameSelectorComponent, OrderNowFooterComponent,
+    FormsModule]
 })
 export class CartPageComponent {
   cart$: Observable<Cart>;
@@ -40,6 +42,11 @@ export class CartPageComponent {
   errorMessage: string | null = null; // To display error messages
 
   currentUserWithRole: UserWithRole | null = null;
+
+  // 🔹 State for Ürün Notu popup
+  selectedCartItem: CartItem | null = null;
+  editedNote: string = '';
+
 
   constructor(
     // private cartPageFacadeService: CartPageFacadeService,
@@ -195,6 +202,31 @@ export class CartPageComponent {
 
     console.log(`[CartPageComponent] Found Table ID: ${selectedTableObj.id}`);
     return selectedTableObj.id;
+  }
+
+  openNoteEditor(item: CartItem) {
+    console.log("[CartPageComponent] openNoteEditor: ", item);
+    this.selectedCartItem = item;
+    this.editedNote = item.getUrunNotu(); // Load current note
+  }
+
+  saveUrunNotu() {
+    if (this.selectedCartItem) {
+      console.log('[Updated Ürün Notu]:', this.editedNote);
+      this.selectedCartItem.urunNotu = this.editedNote;
+
+      // // 🔹 Save the updated note to Firebase
+      // this.cartService.updateUrunNotu(
+      //   this.currentUserWithRole!.firebaseUser.uid,
+      //   this.selectedCartItem.product.id,
+      //   this.editedNote
+      // );
+
+      this.selectedCartItem = null; // Close popup
+    }
+  }
+  closeNoteEditor() {
+    this.selectedCartItem = null;
   }
 
 

@@ -1,10 +1,10 @@
 $primary-color: #4C3398;
+
 .page-container {
   background-color: lightgray; /* Light gray background */
   min-height: 100vh; /* Ensure it covers the entire viewport */
   padding-bottom: 10vh;
 }
-
 
 .card-item {
   display: flex;
@@ -58,4 +58,109 @@ $primary-color: #4C3398;
   color: red;
   font-size: 14px;
   font-weight: bold;
+}
+
+/* 🔹 Clickable Ürün Notu Text */
+.urun-notu {
+  color: $primary-color;
+  cursor: pointer;
+  text-decoration: underline;
+  transition: color 0.2s ease-in-out;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 5px; // ✅ Add space between text and icon
+
+  &:hover {
+    color: darken($primary-color, 10%);
+  }
+
+  .edit-icon {
+    font-size: 16px;
+    color: lighten($primary-color, 20%);
+    transition: color 0.2s ease-in-out;
+
+    &:hover {
+      color: darken($primary-color, 15%);
+    }
+  }
+}
+
+
+/* 🔹 Popup Overlay (Background) */
+.note-popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+/* 🔹 Popup Box */
+.note-popup {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 300px;
+  max-width: 90%;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  z-index: 1001;
+}
+
+/* 🔹 Textarea (Ürün Notu Input) */
+.note-popup textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  resize: none;
+  font-size: 14px;
+  min-height: 80px;
+  outline: none;
+  transition: border-color 0.3s ease-in-out;
+
+  &:focus {
+    border-color: $primary-color;
+    box-shadow: 0 0 5px rgba($primary-color, 0.5);
+  }
+}
+
+/* 🔹 Popup Buttons (OK & Cancel) */
+.popup-actions {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+
+  button {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.2s ease-in-out;
+
+    &:first-child {
+      background: $primary-color;
+      color: white;
+
+      &:hover {
+        background: darken($primary-color, 10%);
+      }
+    }
+
+    &:last-child {
+      background: #ccc;
+      color: black;
+
+      &:hover {
+        background: darken(#ccc, 10%);
+      }
+    }
+  }
 }
