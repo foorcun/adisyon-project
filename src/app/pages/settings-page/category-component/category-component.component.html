@@ -1,24 +1,26 @@
 <div class="category-settings">
   <h2><i class="fas fa-list"></i> Category Settings</h2>
 
-  <!-- Add Category Form -->
+  <!-- ✅ Add Category Form with Display Order -->
   <form [formGroup]="categoryForm" (ngSubmit)="addCategory()" class="add-category-form">
     <div class="input-group">
       <input formControlName="name" placeholder="Enter category name" />
+      <input formControlName="displayOrder" type="number" placeholder="Display Order (optional)" />
       <button type="submit" [disabled]="categoryForm.invalid">
         <i class="fas fa-plus-circle"></i> Add
       </button>
     </div>
   </form>
 
-  <!-- Display Existing Categories -->
+  <!-- ✅ Display Existing Categories -->
   <div class="category-list" *ngIf="getCategoryKeys().length">
     <h3><i class="fas fa-box"></i> Existing Categories:</h3>
     <div *ngFor="let categoryId of getCategoryKeys()" class="category-card">
       <div class="category-item">
         <span>{{ categories[categoryId].name }}</span>
+        <span>Order: {{ categories[categoryId].displayOrder ?? 'N/A' }}</span>
 
-        <!-- Update Category Name -->
+        <!-- ✅ Update Category Name -->
         <div class="input-group">
           <input #updatedName placeholder="New name" />
           <button (click)="updateCategoryName(categoryId, updatedName.value)" title="Update">
@@ -26,7 +28,15 @@
           </button>
         </div>
 
-        <!-- Delete Category -->
+        <!-- ✅ Update Display Order -->
+        <div class="input-group">
+          <input #updatedOrder type="number" placeholder="New Order" />
+          <button (click)="updateDisplayOrder(categoryId, updatedOrder.value)" title="Update Order">
+            <i class="fas fa-sort-numeric-up-alt"></i>
+          </button>
+        </div>
+
+        <!-- ✅ Delete Category -->
         <button (click)="deleteCategory(categoryId)" class="delete-btn" title="Delete">
           <i class="fas fa-trash"></i>
         </button>

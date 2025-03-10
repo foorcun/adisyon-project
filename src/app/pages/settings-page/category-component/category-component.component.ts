@@ -55,7 +55,7 @@ export class CategoryComponentComponent implements OnInit {
 
   // Update a category name
   updateCategoryName(categoryId: string, newName: string) {
-    this.menuRepository.updateCategoryName( categoryId, newName).subscribe(() => {
+    this.menuRepository.updateCategoryName(categoryId, newName).subscribe(() => {
       console.log(`Category ${categoryId} updated to ${newName}.`);
     });
   }
@@ -63,5 +63,12 @@ export class CategoryComponentComponent implements OnInit {
   // ✅ Helper method to get keys of categories
   getCategoryKeys(): string[] {
     return Object.keys(this.categories);
+  }
+  updateDisplayOrder(categoryId: string, newDisplayOrder: string) {
+    const orderValue = Number(newDisplayOrder);
+    if ((!isNaN(orderValue)) && orderValue >= 0) {
+      // this.categories[categoryId].displayOrder = orderValue;
+      this.menuRepository.updateDisplayOrder(categoryId, orderValue);
+    }
   }
 }

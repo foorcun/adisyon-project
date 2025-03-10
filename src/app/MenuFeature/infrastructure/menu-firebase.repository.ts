@@ -52,16 +52,23 @@ export class MenuFirebaseRepository {
             name: category.name
         }).then(() => { }));
     }
-    removeCategory( categoryId: string): Observable<void> {
+    removeCategory(categoryId: string): Observable<void> {
         const categoryRef = ref(this.database, `${this.basePath}/${this.menuKey}/category/${categoryId}`);
         return from(remove(categoryRef));
     }
 
     // ✅ Update Category Name
-    updateCategoryName( categoryId: string, newName: string): Observable<void> {
+    updateCategoryName(categoryId: string, newName: string): Observable<void> {
         const categoryRef = ref(this.database, `${this.basePath}/${this.menuKey}/category/${categoryId}`);
         return from(update(categoryRef, { name: newName }));
     }
+
+    // ✅ Update Category Display Order
+    updateDisplayOrder(categoryId: string, newDisplayOrder: number): Observable<void> {
+        const categoryRef = ref(this.database, `${this.basePath}/${this.menuKey}/category/${categoryId}`);
+        return from(update(categoryRef, { displayOrder: newDisplayOrder }));
+    }
+    
     // Add Menu Item
     addMenuItem(menuKey: string, categoryId: string, menuItem: MenuItem): Observable<void> {
         const menuItemRef = ref(this.database, `${this.basePath}/${menuKey}/category/${categoryId}/menuItem`);

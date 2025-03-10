@@ -20,7 +20,9 @@ export class CategoryMapper {
         return new Category(
             id,
             categoryData['name'] || '',
-            menuItems
+            menuItems,
+            categoryData['imageUrl'] || '', // Ensures imageUrl is mapped
+            categoryData['displayOrder'] !== undefined ? Number(categoryData['displayOrder']) : undefined // ✅ Includes displayOrder
         );
     }
 }

@@ -2,60 +2,59 @@
 
 <div class="pageContainer">
 
-<!-- 🏷️ Category Header -->
-<div class="categories-header" style="user-select: none">
-  <div class="dark-overlay">
-    <div class="categories-row">
-      <div
-        class="category-item"
-        *ngFor="let categoryId of categories | keyvalue"
-        (click)="scrollToCategory(categoryId.key)"
-        [style.backgroundImage]="'url(' + categoryId.value.imageUrl + ')'"
-      >
-        <div style="background-color: rgba(0, 0, 0, 0.5)">
-          {{ categoryId.value.name | uppercase }}
+  <!-- 🏷️ Category Header -->
+  <div class="categories-header" style="user-select: none">
+    <div class="dark-overlay">
+      <div class="categories-row">
+        <div
+          class="category-item"
+          *ngFor="let category of categories"
+          (click)="scrollToCategory(category.id)"
+          [style.backgroundImage]="'url(' + category.imageUrl + ')'"
+        >
+          <div style="background-color: rgba(0, 0, 0, 0.5)">
+            {{ category.name | uppercase }}
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 
-<!-- 🛒 Menu Items (Scrollable) -->
-<div class="menu-items-column" *ngIf="categoryProducts.length">
-  <div
-    class="category-group"
-    *ngFor="let categoryProduct of categoryProducts"
-    [id]="categoryProduct.category.id"
-  >
-    <h2 class="category-title">
-      {{ categoryProduct.category.name | uppercase }}
-    </h2>
-    <div class="menu-items-list">
-      <div
-        class="menu-item"
-        *ngFor="let menuItem of categoryProduct.menuItems"
-        (click)="selectMenuItem(menuItem, categoryProduct.category.id); navigateSiparisDetay()"
-        [ngClass]="{ 'selected-item': selectedMenuItem?.product!.id === menuItem.id }"
-      >
-        <div class="menu-item-image">
-          <img [src]="menuItem.imageUrl" [alt]="menuItem.name" />
-        </div>
-        <div class="menu-item-details">
-          <h3>{{ menuItem.name }}</h3>
-          <p class="description">{{ menuItem.description }}</p>
-          <p class="price">
-            {{ menuItem.price | currency : "TRY" : "symbol" }}
-          </p>
+  <!-- 🛒 Menu Items (Scrollable) -->
+  <div class="menu-items-column" *ngIf="categoryProducts.length">
+    <div
+      class="category-group"
+      *ngFor="let categoryProduct of categoryProducts"
+      [id]="categoryProduct.category.id"
+    >
+      <h2 class="category-title">
+        {{ categoryProduct.category.name | uppercase }}
+      </h2>
+      <div class="menu-items-list">
+        <div
+          class="menu-item"
+          *ngFor="let menuItem of categoryProduct.menuItems"
+          (click)="selectMenuItem(menuItem, categoryProduct.category.id); navigateSiparisDetay()"
+          [ngClass]="{ 'selected-item': selectedMenuItem?.product!.id === menuItem.id }"
+        >
+          <div class="menu-item-image">
+            <img [src]="menuItem.imageUrl" [alt]="menuItem.name" />
+          </div>
+          <div class="menu-item-details">
+            <h3>{{ menuItem.name }}</h3>
+            <p class="description">{{ menuItem.description }}</p>
+            <p class="price">
+              {{ menuItem.price | currency : "TRY" : "symbol" }}
+            </p>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 
-<!-- 🛑 Fallback Message -->
-<p *ngIf="!categoryProducts.length" class="text-center text-danger mt-3">
-  <i class="fas fa-exclamation-circle"></i> Menü yükleniyor...
-</p>
-
+  <!-- 🛑 Fallback Message -->
+  <p *ngIf="!categoryProducts.length" class="text-center text-danger mt-3">
+    <i class="fas fa-exclamation-circle"></i> Menü yükleniyor...
+  </p>
 
 </div>

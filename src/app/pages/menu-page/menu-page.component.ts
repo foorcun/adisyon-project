@@ -22,7 +22,8 @@ export interface CategoryProducts {
   styleUrl: './menu-page.component.scss'
 })
 export class MenuPageComponent implements OnInit, OnDestroy {
-  categories: { [key: string]: Category } = {};
+categories: Category[] = []; // ✅ Now an array instead of an object
+
   categoryProducts: CategoryProducts[] = [];
   selectedMenuItem: CartItem | null = null; // ✅ Correct type
 
@@ -39,7 +40,8 @@ export class MenuPageComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     // ✅ Subscribe to categories
     this.categoriesSubscription = this.menuService.categories$.subscribe(categories => {
-      this.categories = categories;
+      // this.categories = categories;
+      this.categories = this.sortCategories(categories); // ✅ Sort categories
     });
 
     // ✅ Subscribe to categoryProducts
@@ -80,5 +82,16 @@ export class MenuPageComponent implements OnInit, OnDestroy {
     this.categoryProductsSubscription?.unsubscribe();
     this.selectedMenuItemSubscription?.unsubscribe();
   }
+/** ✅ Sort categories by displayOrder */
+private sortCategories(categoriesObj: { [key: string]: Category }): Category[] {
+  return Object.entries(categoriesObj)
+    .map(([id, category]) => ({ ...category, id })) // ✅ Convert object to array & keep `id`
+    .sort((a, b) => {
+      const orderA = a.displayOrder ?? Number.MAX_SAFE_INTEGER;
+      const orderB = b.displayOrder ?? Number.MAX_SAFE_INTEGER;
+      return orderA - orderB;
+    });
+}
+
 }
 

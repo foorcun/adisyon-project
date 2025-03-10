@@ -5,6 +5,7 @@ export class Category {
         public id: string,
         public name: string,
         public menuItems: { [key: string]: MenuItem } = {},  // This expects `menuItems`, not `menuItem`
-        public imageUrl: string = '' // This expects `imageUrl`, not `image`
+        public imageUrl: string = '', // This expects `imageUrl`, not `image`
+        public displayOrder?: number,
     ) {}
 }
