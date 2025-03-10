@@ -22,7 +22,7 @@ export interface CategoryProducts {
   styleUrl: './menu-page.component.scss'
 })
 export class MenuPageComponent implements OnInit, OnDestroy {
-categories: Category[] = []; // ✅ Now an array instead of an object
+  categories: Category[] = []; // ✅ Now an array instead of an object
 
   categoryProducts: CategoryProducts[] = [];
   selectedMenuItem: CartItem | null = null; // ✅ Correct type
@@ -35,7 +35,7 @@ categories: Category[] = []; // ✅ Now an array instead of an object
     private router: Router,
     private menuService: MenuService,
     private menuPageFacadeService: MenuPageFacadeService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     // ✅ Subscribe to categories
@@ -47,6 +47,8 @@ categories: Category[] = []; // ✅ Now an array instead of an object
     // ✅ Subscribe to categoryProducts
     this.categoryProductsSubscription = this.menuService.categoryProducts$.subscribe(categoryProducts => {
       this.categoryProducts = categoryProducts;
+      // this.categoryProducts = this.sortCategoryProducts(categoryProducts);
+      this.sortCategoryProducts(); // ✅ Sort categoryProducts
     });
 
     // ✅ Subscribe to selected menu item
@@ -82,16 +84,32 @@ categories: Category[] = []; // ✅ Now an array instead of an object
     this.categoryProductsSubscription?.unsubscribe();
     this.selectedMenuItemSubscription?.unsubscribe();
   }
-/** ✅ Sort categories by displayOrder */
-private sortCategories(categoriesObj: { [key: string]: Category }): Category[] {
-  return Object.entries(categoriesObj)
-    .map(([id, category]) => ({ ...category, id })) // ✅ Convert object to array & keep `id`
-    .sort((a, b) => {
-      const orderA = a.displayOrder ?? Number.MAX_SAFE_INTEGER;
-      const orderB = b.displayOrder ?? Number.MAX_SAFE_INTEGER;
-      return orderA - orderB;
-    });
+  /** ✅ Sort categories by displayOrder */
+  private sortCategories(categoriesObj: { [key: string]: Category }): Category[] {
+    return Object.entries(categoriesObj)
+      .map(([id, category]) => ({ ...category, id })) // ✅ Convert object to array & keep `id`
+      .sort((a, b) => {
+        const orderA = a.displayOrder ?? Number.MAX_SAFE_INTEGER;
+        const orderB = b.displayOrder ?? Number.MAX_SAFE_INTEGER;
+        return orderA - orderB;
+      });
+  }
+
+/** ✅ Sort categoryProducts based on category.displayOrder */
+private sortCategoryProducts(): void {
+  if (!this.categoryProducts.length || !this.categories.length) return;
+
+  this.categoryProducts.sort((a, b) => {
+    const categoryA = this.categories.find(c => c.id === a.category.id);
+    const categoryB = this.categories.find(c => c.id === b.category.id);
+
+    const orderA = categoryA?.displayOrder ?? Number.MAX_SAFE_INTEGER;
+    const orderB = categoryB?.displayOrder ?? Number.MAX_SAFE_INTEGER;
+
+    return orderA - orderB;
+  });
 }
+
 
 }
 
