@@ -12,12 +12,13 @@ import { MenuFirebaseRepository } from '../../../MenuFeature/infrastructure/menu
   imports: [ReactiveFormsModule, CommonModule]
 })
 export class CategoryComponentComponent implements OnInit {
-  categories: { [key: string]: Category } = {};
+  categories: Category[] = []; // ✅ Now an array instead of an object
   categoryForm: FormGroup;
 
   constructor(private menuRepository: MenuFirebaseRepository, private fb: FormBuilder) {
     this.categoryForm = this.fb.group({
-      name: ['', Validators.required]
+      name: ['', Validators.required],
+      displayOrder: [null] // ✅ Added displayOrder to form
     });
   }
 
@@ -25,50 +26,79 @@ export class CategoryComponentComponent implements OnInit {
     this.loadCategories();
   }
 
-  // Load categories from Firebase
+  // ✅ Load categories from Firebase and sort them
   loadCategories() {
     this.menuRepository.listenForMenuChanges();
     this.menuRepository.menu$.subscribe(menu => {
       if (menu && menu.categories) {
-        this.categories = menu.categories;
-        console.log('Categories:', this.categories);
+        this.categories = this.sortCategories(menu.categories);
+        console.log('Sorted Categories:', this.categories);
       }
     });
   }
 
-  // Add a new category
+  // ✅ Sort categories by displayOrder
+  private sortCategories(categoriesObj: { [key: string]: Category }): Category[] {
+    return Object.entries(categoriesObj)
+      .map(([id, category]) => ({ ...category, id })) // Convert to array and preserve `id`
+      .sort((a, b) => {
+        const orderA = a.displayOrder ?? Number.MAX_SAFE_INTEGER;
+        const orderB = b.displayOrder ?? Number.MAX_SAFE_INTEGER;
+        return orderA - orderB;
+      });
+  }
+
+  // ✅ Add a new category with displayOrder
   addCategory() {
     if (this.categoryForm.valid) {
-      const newCategory = new Category('', this.categoryForm.value.name);
+      const newCategory = new Category(
+        '',
+        this.categoryForm.value.name,
+        {},
+        '',
+        this.categoryForm.value.displayOrder
+      );
       this.menuRepository.addCategory(newCategory).subscribe(() => {
         this.categoryForm.reset();
       });
     }
   }
 
-  // Delete a category
+  // ✅ Delete a category
   deleteCategory(categoryId: string) {
     this.menuRepository.removeCategory(categoryId).subscribe(() => {
       console.log(`Category ${categoryId} deleted.`);
+      this.categories = this.categories.filter(category => category.id !== categoryId);
     });
   }
 
-  // Update a category name
+  // ✅ Update a category name
   updateCategoryName(categoryId: string, newName: string) {
-    this.menuRepository.updateCategoryName(categoryId, newName).subscribe(() => {
-      console.log(`Category ${categoryId} updated to ${newName}.`);
-    });
+    if (newName.trim()) {
+      this.menuRepository.updateCategoryName(categoryId, newName.trim()).subscribe(() => {
+        console.log(`Category ${categoryId} updated to ${newName}.`);
+        const category = this.categories.find(c => c.id === categoryId);
+        if (category) {
+          category.name = newName.trim();
+        }
+      });
+    }
   }
 
-  // ✅ Helper method to get keys of categories
-  getCategoryKeys(): string[] {
-    return Object.keys(this.categories);
-  }
+  // ✅ Update category displayOrder
   updateDisplayOrder(categoryId: string, newDisplayOrder: string) {
     const orderValue = Number(newDisplayOrder);
-    if ((!isNaN(orderValue)) && orderValue >= 0) {
-      // this.categories[categoryId].displayOrder = orderValue;
-      this.menuRepository.updateDisplayOrder(categoryId, orderValue);
+    if (!isNaN(orderValue) && orderValue >= 0) {
+      this.menuRepository.updateDisplayOrder(categoryId, orderValue).subscribe(() => {
+        console.log(`Updated displayOrder for ${categoryId} to ${orderValue}`);
+        const category = this.categories.find(c => c.id === categoryId);
+        if (category) {
+          category.displayOrder = orderValue;
+          this.categories = this.sortCategories(
+            Object.fromEntries(this.categories.map(c => [c.id, c]))
+          ); // ✅ Re-sort after update
+        }
+      });
     }
   }
 }

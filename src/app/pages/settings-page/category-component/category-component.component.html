@@ -13,17 +13,17 @@
   </form>
 
   <!-- ✅ Display Existing Categories -->
-  <div class="category-list" *ngIf="getCategoryKeys().length">
+  <div class="category-list" *ngIf="categories.length">
     <h3><i class="fas fa-box"></i> Existing Categories:</h3>
-    <div *ngFor="let categoryId of getCategoryKeys()" class="category-card">
+    <div *ngFor="let category of categories" class="category-card">
       <div class="category-item">
-        <span>{{ categories[categoryId].name }}</span>
-        <span>Order: {{ categories[categoryId].displayOrder ?? 'N/A' }}</span>
+        <span>{{ category.name }}</span>
+        <span>Order: {{ category.displayOrder ?? 'N/A' }}</span>
 
         <!-- ✅ Update Category Name -->
         <div class="input-group">
           <input #updatedName placeholder="New name" />
-          <button (click)="updateCategoryName(categoryId, updatedName.value)" title="Update">
+          <button (click)="updateCategoryName(category.id, updatedName.value)" title="Update">
             <i class="fas fa-edit"></i>
           </button>
         </div>
@@ -31,20 +31,20 @@
         <!-- ✅ Update Display Order -->
         <div class="input-group">
           <input #updatedOrder type="number" placeholder="New Order" />
-          <button (click)="updateDisplayOrder(categoryId, updatedOrder.value)" title="Update Order">
+          <button (click)="updateDisplayOrder(category.id, updatedOrder.value)" title="Update Order">
             <i class="fas fa-sort-numeric-up-alt"></i>
           </button>
         </div>
 
         <!-- ✅ Delete Category -->
-        <button (click)="deleteCategory(categoryId)" class="delete-btn" title="Delete">
+        <button (click)="deleteCategory(category.id)" class="delete-btn" title="Delete">
           <i class="fas fa-trash"></i>
         </button>
       </div>
     </div>
   </div>
 
-  <p *ngIf="getCategoryKeys().length === 0" class="no-categories">
+  <p *ngIf="categories.length === 0" class="no-categories">
     <i class="fas fa-exclamation-circle"></i> No categories available.
   </p>
 </div>
