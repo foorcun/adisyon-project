@@ -49,6 +49,8 @@ export class MenuItemAreaComponent implements OnInit, OnDestroy {
         this.getSelectedQuantity()
       )
     );
+
+    this.tableDetailsPageFacadeService.clearSelectedQuantity();
   }
 
   getSelectedQuantity(): number {

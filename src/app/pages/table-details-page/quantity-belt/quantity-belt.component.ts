@@ -14,7 +14,7 @@ export class QuantityBeltComponent {
   quantities: number[] = [0.5, 1.5, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
   constructor(
-    private tableDetailsPageFacadeService: TableDetailsPageFacadeService
+    public tableDetailsPageFacadeService: TableDetailsPageFacadeService
   ) {}
 
   selectQuantity(quantity: number) {

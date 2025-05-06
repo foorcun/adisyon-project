@@ -35,7 +35,7 @@ export class TableDetailsPageFacadeService {
   private activeCartSubject = new BehaviorSubject<Cart | null>(null);
   activeCart$ = this.activeCartSubject.asObservable(); // ✅ Expose as Observable
 
-  selectedQuantity: number | null = null;
+  public selectedQuantity: number | null = null;
 
   constructor(
     private tableService: TableService,
