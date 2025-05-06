@@ -55,4 +55,41 @@ export class OdemePageComponent implements OnInit {
   goBack(): void {
     window.history.back();
   }
+
+  getAllItems(): any[] {
+    return this.orders.flatMap(order =>
+      order.items.flatMap(item => {
+        const quantity = Number(item.quantity);
+
+        // Ensure quantity is a positive integer
+        if (!Number.isFinite(quantity) || quantity <= 0) {
+          return [];
+        }
+
+        const unitPrice = item.getTotalPrice / quantity;
+
+        return Array.from({ length: quantity }, () => ({
+          product: item.product,
+          price: unitPrice
+        }));
+      })
+    );
+  }
+
+
+
+  getTotalAmount(): number {
+    return this.orders.reduce((sum, order) => sum + order.getTotalAmount(), 0);
+  }
+
+  getCombinedStatuses(): string {
+    const uniqueStatuses = [...new Set(this.orders.map(order => order.status))];
+    return uniqueStatuses.join(', ');
+  }
+
+  getOrderIdsString(): string {
+    return this.orders.map(o => o.id).join(', ');
+  }
+
+
 }

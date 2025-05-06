@@ -6,25 +6,33 @@
 </div>
 
 <div class="odeme-page">
-  <!-- Display Orders -->
-  <div *ngIf="orders.length > 0; else noOrders" class="order-list">
-    <div class="order-card" *ngFor="let order of orders">
-      <div class="order-info">
-        <h3>Sipariş #{{ order.id }}</h3>
-        <p><strong>Durum:</strong> {{ order.status }}</p>
-        <p><strong>Toplam Tutar:</strong>{{ order.getTotalAmount() | currency : "TRY" }}</p>
-      </div>
+  <!-- Grouped Orders View -->
+  <div *ngIf="orders.length > 0; else noOrders" class="order-group">
 
-      <!-- Order Items -->
-      <div class="order-items">
-        <h4>Ürünler:</h4>
-        <ul>
-          <li *ngFor="let item of order.items">
-            {{ item.product.name }} (x{{ item.quantity }}) -
-            {{ item.getTotalPrice | currency : "TRY" }}
-          </li>
-        </ul>
-      </div>
+    <div class="order-info">
+      <h3>Siparişler (Toplam {{ orders.length }})</h3>
+
+      <p><strong>Toplam Tutar:</strong> 
+        {{ getTotalAmount() | currency : "TRY" }}
+      </p>
+
+      <p><strong>Sipariş Durumları:</strong>
+        {{ getCombinedStatuses() }}
+      </p>
+
+      <p><strong>Sipariş Numaraları:</strong>
+        {{ getOrderIdsString() }}
+      </p>
+    </div>
+
+    <!-- Split Items -->
+    <div class="order-items">
+      <h4>Tüm Ürünler:</h4>
+      <ul>
+        <li *ngFor="let item of getAllItems()">
+          {{ item.product.name }} - {{ item.price | currency : "TRY" }}
+        </li>
+      </ul>
     </div>
   </div>
 
