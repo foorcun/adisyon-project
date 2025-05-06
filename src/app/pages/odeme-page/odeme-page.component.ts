@@ -7,6 +7,7 @@ import { CommonModule } from '@angular/common';
 import { Table } from '../../OrderFeature/domain/entities/table.entity';
 import { Subscription } from 'rxjs';
 import { TableDetailsPageFacadeService } from '../../services/table-details-page.facade.service';
+import { OrderStatus } from '../../OrderFeature/domain/entities/order-status';
 
 @Component({
   selector: 'app-odeme-page',
@@ -30,7 +31,11 @@ export class OdemePageComponent implements OnInit {
   ) {
     this.tableId = this.route.snapshot.paramMap.get('id');
     this.orderService.orders$.subscribe(orders => {
-      this.orders = orders.filter(order => order.tableUUID === this.tableId);
+      this.orders = orders.filter(order =>
+        order.tableUUID === this.tableId &&
+        (order.status === OrderStatus.PENDING || order.status === OrderStatus.IN_PROGRESS)
+      );
+
     });
   }
 
