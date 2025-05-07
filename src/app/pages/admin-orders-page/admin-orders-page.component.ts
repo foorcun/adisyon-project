@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { Table } from '../../OrderFeature/domain/entities/table.entity';
 import { OrderStatus } from '../../OrderFeature/domain/entities/order-status';
+import { AdminOrdersPageFacadeService } from '../../services/admin-orders-page-facade.service';
 
 @Component({
   selector: 'app-admin-orders-page',
@@ -24,7 +25,8 @@ export class AdminOrdersPageComponent implements OnInit {
   constructor(
     private orderService: OrderService,
     private tableService: TableService,
-    private router: Router
+    private router: Router,
+    private adminOrdersPageFacadeService: AdminOrdersPageFacadeService
   ) { }
 
   ngOnInit(): void {
@@ -96,8 +98,10 @@ export class AdminOrdersPageComponent implements OnInit {
   goBackToMenuPage(): void {
     this.router.navigate(['/menu-page']);
   }
-  navigateToTableDetails(tableId: string): void {
-    this.router.navigate(['/table-details', tableId]);
+  navigateToTableDetails(table: Table): void {
+    this.adminOrdersPageFacadeService.setSelectedTable(table);
+    // this.router.navigate(['/table-details', table.id]);
+    this.router.navigate(['/table-details', this.adminOrdersPageFacadeService.selectedTable!.id]);
   }
 
   getTableStatusClass(tableId: string): string {
