@@ -1,7 +1,11 @@
 <div class="odeme-page-area2">
   <div class="area2-section area2-section1">
     <!-- Section 1 content -->
-    <h4>Section 1</h4>
+    <!-- <h4>Section 1</h4> -->
+    <div style="display: flex; flex-direction: row; justify-content: space-between; width: 100%;">
+      <div>Toplam:</div>
+      <p>{{ odemePageFacadeService.total$ | async | currency : "TRY" }}</p>
+    </div>
   </div>
   <div class="area2-section area2-section2">
     <!-- Section 2 content -->
@@ -12,5 +16,3 @@
     <h4>Section 3</h4>
   </div>
 </div>
-
-

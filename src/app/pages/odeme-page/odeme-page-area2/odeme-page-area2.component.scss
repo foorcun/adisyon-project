@@ -2,27 +2,29 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  width: 100%; // ✅ Ensures full width
+  width: 100%;
 
   .area2-section {
-    flex: 1;
     padding: 1rem;
     border: 1px solid #ddd;
     box-sizing: border-box;
     display: flex;
     align-items: center;
-    justify-content: center; // ✅ Center content
+    justify-content: center;
 
     &.area2-section1 {
-      background-color: #ffe6e6; // Light red / pink
+      flex: 1; // Smaller
+      background-color: #ffe6e6;
     }
 
     &.area2-section2 {
-      background-color: #e6ffe6; // Light green
+      flex: 5; // Bigger
+      background-color: #e6ffe6;
     }
 
     &.area2-section3 {
-      background-color: #e6f0ff; // Light blue
+      flex: 10; // Medium
+      background-color: #e6f0ff;
     }
   }
 }
