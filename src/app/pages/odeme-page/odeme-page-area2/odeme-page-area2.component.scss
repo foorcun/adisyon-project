@@ -1,0 +1,28 @@
+.odeme-page-area2 {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%; // ✅ Ensures full width
+
+  .area2-section {
+    flex: 1;
+    padding: 1rem;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center; // ✅ Center content
+
+    &.area2-section1 {
+      background-color: #ffe6e6; // Light red / pink
+    }
+
+    &.area2-section2 {
+      background-color: #e6ffe6; // Light green
+    }
+
+    &.area2-section3 {
+      background-color: #e6f0ff; // Light blue
+    }
+  }
+}
