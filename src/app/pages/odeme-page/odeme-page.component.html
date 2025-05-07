@@ -1,5 +1,7 @@
 <div id="sepetim-navbar">
-  <h2 class="navbar-title">{{ table?.name }} Sipariş Detayları</h2>
+  <h2 class="navbar-title">
+    {{ (odemePageFacadeService.table$ | async)?.name }} Sipariş Detayları
+  </h2>
   <button class="close-btn" (click)="goBack()">
     <i class="fas fa-times"></i>
   </button>
@@ -8,14 +10,13 @@
 <div class="page">
   <div class="main-content">
     <div class="area area-1">
-
-        <app-odeme-page-area1></app-odeme-page-area1>
+      <app-odeme-page-area1></app-odeme-page-area1>
     </div>
     <div class="area area-2">
       <app-odeme-page-area2></app-odeme-page-area2>
     </div>
     <div class="area area-3">
       <app-odeme-page-area3></app-odeme-page-area3>
-</div>
+    </div>
   </div>
 </div>

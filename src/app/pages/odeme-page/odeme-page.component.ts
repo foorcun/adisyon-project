@@ -11,6 +11,8 @@ import { OrderStatus } from '../../OrderFeature/domain/entities/order-status';
 import { OdemePageArea2Component } from "./odeme-page-area2/odeme-page-area2.component";
 import { OdemePageArea3Component } from "./odeme-page-area3/odeme-page-area3.component";
 import { OdemePageArea1Component } from "./odeme-page-area1/odeme-page-area1.component";
+import { AdminOrdersPageFacadeService } from '../../services/admin-orders-page-facade.service';
+import { OdemePageFacadeService } from '../../services/odeme-page-facade.service';
 
 @Component({
   selector: 'app-odeme-page',
@@ -18,63 +20,11 @@ import { OdemePageArea1Component } from "./odeme-page-area1/odeme-page-area1.com
   templateUrl: './odeme-page.component.html',
   styleUrl: './odeme-page.component.scss'
 })
-export class OdemePageComponent implements OnInit {
-  tableId: string | null = null;
-  orders: Order[] = [];
+export class OdemePageComponent {
+  constructor(public odemePageFacadeService: OdemePageFacadeService) { }
 
-  table: Table | null = null;
-
-  private tableSubscription!: Subscription;
-
-  constructor(
-    private orderService: OrderService,
-    private tableDetailsPageFacadeService: TableDetailsPageFacadeService,
-    private route: ActivatedRoute,
-    private router: Router
-  ) {
-    this.tableId = this.route.snapshot.paramMap.get('id');
-    this.orderService.orders$.subscribe(orders => {
-      this.orders = orders.filter(order =>
-        order.tableUUID === this.tableId &&
-        (order.status === OrderStatus.PENDING || order.status === OrderStatus.IN_PROGRESS)
-      );
-
-    });
-  }
-
-  ngOnInit(): void {
-    // this.orders = Object.values(this.orderService.getOrders()).filter(order => order.tableUUID === this.tableId);
-
-
-    // ✅ Manual subscriptions
-    this.tableSubscription = this.tableDetailsPageFacadeService.table$.subscribe(table => {
-      this.table = table;
-      if (!table) {
-        this.router.navigate(['/admin-orders-page']);
-      }
-    });
-
-  }
   goBack(): void {
     window.history.back();
   }
-
-
-
-
-  getTotalAmount(): number {
-    return this.orders.reduce((sum, order) => sum + order.getTotalAmount(), 0);
-  }
-
-  getCombinedStatuses(): string {
-    const uniqueStatuses = [...new Set(this.orders.map(order => order.status))];
-    return uniqueStatuses.join(', ');
-  }
-
-  getOrderIdsString(): string {
-    return this.orders.map(o => o.id).join(', ');
-  }
-
-
 
 }
