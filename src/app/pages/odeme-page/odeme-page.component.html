@@ -5,39 +5,20 @@
   </button>
 </div>
 
-<div class="odeme-page">
-  <!-- Grouped Orders View -->
-  <div *ngIf="orders.length > 0; else noOrders" class="order-group">
+<div class="page">
 
-    <div class="order-info">
-      <h3>Siparişler (Toplam {{ orders.length }})</h3>
-
-      <p><strong>Toplam Tutar:</strong> 
-        {{ getTotalAmount() | currency : "TRY" }}
-      </p>
-
-      <p><strong>Sipariş Durumları:</strong>
-        {{ getCombinedStatuses() }}
-      </p>
-
-      <p><strong>Sipariş Numaraları:</strong>
-        {{ getOrderIdsString() }}
-      </p>
+  <div class="main-content">
+    <div class="area area-1">
+      Area 1
     </div>
-
-    <!-- Split Items -->
-    <div class="order-items">
-      <h4>Tüm Ürünler:</h4>
-      <ul>
-        <li *ngFor="let item of getAllItems()">
-          {{ item.product.name }} - {{ item.price | currency : "TRY" }}
-        </li>
-      </ul>
+    <div class="area area-2">
+      Area 2
+    </div>
+    <div class="area area-3">
+      Area 3
     </div>
   </div>
 
-  <!-- No Orders Message -->
-  <ng-template #noOrders>
-    <p class="no-orders-message">Bu masa için sipariş bulunamadı.</p>
-  </ng-template>
 </div>
+
+
