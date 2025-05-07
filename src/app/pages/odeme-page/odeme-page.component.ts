@@ -8,10 +8,13 @@ import { Table } from '../../OrderFeature/domain/entities/table.entity';
 import { Subscription } from 'rxjs';
 import { TableDetailsPageFacadeService } from '../../services/table-details-page.facade.service';
 import { OrderStatus } from '../../OrderFeature/domain/entities/order-status';
+import { OdemePageArea2Component } from "./odeme-page-area2/odeme-page-area2.component";
+import { OdemePageArea3Component } from "./odeme-page-area3/odeme-page-area3.component";
+import { OdemePageArea1Component } from "./odeme-page-area1/odeme-page-area1.component";
 
 @Component({
   selector: 'app-odeme-page',
-  imports: [CommonModule],
+  imports: [CommonModule, OdemePageArea2Component, OdemePageArea3Component, OdemePageArea1Component],
   templateUrl: './odeme-page.component.html',
   styleUrl: './odeme-page.component.scss'
 })
@@ -56,25 +59,6 @@ export class OdemePageComponent implements OnInit {
     window.history.back();
   }
 
-  getAllItems(): any[] {
-    return this.orders.flatMap(order =>
-      order.items.flatMap(item => {
-        const quantity = Number(item.quantity);
-
-        // Ensure quantity is a positive integer
-        if (!Number.isFinite(quantity) || quantity <= 0) {
-          return [];
-        }
-
-        const unitPrice = item.getTotalPrice / quantity;
-
-        return Array.from({ length: quantity }, () => ({
-          product: item.product,
-          price: unitPrice
-        }));
-      })
-    );
-  }
 
 
 
@@ -92,17 +76,5 @@ export class OdemePageComponent implements OnInit {
   }
 
 
-  selectedItems: number[] = [];
-
-  toggleItemSelection(index: number): void {
-    const itemPos = this.selectedItems.indexOf(index);
-    if (itemPos > -1) {
-      // Already selected -> deselect
-      this.selectedItems.splice(itemPos, 1);
-    } else {
-      // Not selected -> select
-      this.selectedItems.push(index);
-    }
-  }
 
 }

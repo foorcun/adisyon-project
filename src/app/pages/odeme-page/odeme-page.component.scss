@@ -78,7 +78,8 @@ $primary-color: #4c3398;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: white;
+      // color: white;
+      color: black;
       font-size: 1.5rem;
 
       &-1 {
@@ -87,35 +88,14 @@ $primary-color: #4c3398;
       }
 
       &-2 {
-        background-color: #e67e22;
+        // background-color: #e67e22;
+        border: 1px solid black;
       }
 
       &-3 {
-        background-color: #e74c3c;
+        // background-color: #e74c3c;
+        border: 1px solid black;
       }
-    }
-  }
-}
-
-.order-items ul {
-  list-style: none;
-  padding: 0;
-
-  li {
-    cursor: pointer;
-    padding: 0.5rem;
-    border: 1px solid #ccc;
-    margin-bottom: 0.5rem;
-    border-radius: 4px;
-    transition: background-color 0.2s ease;
-
-    &:hover {
-      background-color: #f0f0f0;
-    }
-
-    &.selected {
-      background-color: #4c3398;
-      color: white;
     }
   }
 }
