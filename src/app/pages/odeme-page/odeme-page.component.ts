@@ -92,4 +92,17 @@ export class OdemePageComponent implements OnInit {
   }
 
 
+  selectedItems: number[] = [];
+
+  toggleItemSelection(index: number): void {
+    const itemPos = this.selectedItems.indexOf(index);
+    if (itemPos > -1) {
+      // Already selected -> deselect
+      this.selectedItems.splice(itemPos, 1);
+    } else {
+      // Not selected -> select
+      this.selectedItems.push(index);
+    }
+  }
+
 }
