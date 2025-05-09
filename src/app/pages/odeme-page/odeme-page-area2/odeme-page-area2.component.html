@@ -1,18 +1,38 @@
 <div class="odeme-page-area2">
   <div class="area2-section area2-section1">
     <!-- Section 1 content -->
-    <!-- <h4>Section 1</h4> -->
     <div style="display: flex; flex-direction: row; justify-content: space-between; width: 100%;">
       <div>Toplam:</div>
       <p>{{ odemePageFacadeService.total$ | async | currency : "TRY" }}</p>
     </div>
   </div>
+
   <div class="area2-section area2-section2">
     <!-- Section 2 content -->
     <h4>Section 2</h4>
+    <p>{{ odemePageFacadeService.getSelectedTotal() | currency : "TRY" }}</p>
   </div>
+
   <div class="area2-section area2-section3">
-    <!-- Section 3 content -->
-    <h4>Section 3</h4>
+
+    <!-- 🔥 4x4 GRID goes here -->
+    <div class="grid-container">
+      <div class="grid-item">1</div>
+      <div class="grid-item">2</div>
+      <div class="grid-item">3</div>
+      <div class="grid-item">4</div>
+      <div class="grid-item">5</div>
+      <div class="grid-item">6</div>
+      <div class="grid-item">7</div>
+      <div class="grid-item">8</div>
+      <div class="grid-item">9</div>
+      <div class="grid-item">10</div>
+      <div class="grid-item">11</div>
+      <div class="grid-item">12</div>
+      <div class="grid-item">13</div>
+      <div class="grid-item">14</div>
+      <div class="grid-item">15</div>
+      <div class="grid-item">16</div>
+    </div>
   </div>
 </div>

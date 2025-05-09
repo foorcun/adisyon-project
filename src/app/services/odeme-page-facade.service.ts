@@ -23,6 +23,9 @@ export class OdemePageFacadeService {
   combinedStatuses$: Observable<string>;
   orderIdsString$: Observable<string>;
 
+
+  selectedItems: number[] = [];
+
   constructor(
     private orderService: OrderService,
     private tableDetailsPageFacadeService: TableDetailsPageFacadeService,
@@ -69,5 +72,16 @@ export class OdemePageFacadeService {
     this.orderIdsString$ = this.orders$.pipe(
       map(orders => orders.map(o => o.id).join(', '))
     );
+  }
+
+  getSelectedTotal(): number {
+    let total = 0;
+    this.orders$.subscribe(orders => {
+      total = this.selectedItems.reduce((sum, index) => {
+        const order = orders[index];
+        return sum + (order ? order.getTotalAmount() : 0);
+      }, 0);
+    }).unsubscribe();
+    return total;
   }
 }

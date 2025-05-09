@@ -8,7 +8,7 @@
               <li
                 *ngFor="let item of getAllItems(); let i = index"
                 (click)="toggleItemSelection(i)"
-                [class.selected]="selectedItems.includes(i)"
+                [class.selected]="odemePageFacadeService.selectedItems.includes(i)"
               >
                 {{ item.product.name }} - {{ item.product.price | currency : "TRY" }}
               </li>
