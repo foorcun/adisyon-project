@@ -10,7 +10,7 @@
       "
     >
       <div>Toplam:</div>
-      <p>{{ odemePageFacadeService.total$ | async | currency : "TRY" }}</p>
+      <p>{{ odemePageFacadeService.getSelectedTotal() |  currency : "TRY" }}</p>
     </div>
   </div>
 

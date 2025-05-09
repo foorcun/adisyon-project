@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { Order } from '../OrderFeature/domain/entities/order.entity';
 import { OrderService } from './order.service';
 import { TableDetailsPageFacadeService } from './table-details-page.facade.service';
@@ -14,22 +14,23 @@ import { map } from 'rxjs/operators';
 })
 export class OdemePageFacadeService {
 
-  // ✅ Observables
-  orders$: Observable<Order[]>;
-  table$: Observable<Table | null>;
-
-  // ✅ Derived data
-  total$: Observable<number>;
-  combinedStatuses$: Observable<string>;
-  orderIdsString$: Observable<string>;
-
-
+  // ✅ State
+  orders: Order[] = [];
+  table: Table | null = null;
   selectedItems: number[] = [];
 
-  // Holds the payment amount as a string (to handle decimals)
+  // ✅ Observables (optional)
+  private _orders$ = new BehaviorSubject<Order[]>([]);
+  orders$ = this._orders$.asObservable();
+
+  total$: Observable<number> = of(0);
+  combinedStatuses$: Observable<string> = of('');
+  orderIdsString$: Observable<string> = of('');
+
   private _paymentAmount$ = new BehaviorSubject<string>('');
   paymentAmount$ = this._paymentAmount$.asObservable();
 
+  private tableId: string | null = null;
 
   constructor(
     private orderService: OrderService,
@@ -40,32 +41,38 @@ export class OdemePageFacadeService {
     console.log('[OdemePageFacadeService] Service initialized');
 
     const selectedTable = this.adminOrdersPageFacadeService.selectedTable;
-    const tableId = selectedTable?.id;
+    this.tableId = selectedTable!.id;
 
-    if (!tableId) {
+    if (!this.tableId) {
       console.warn('[OdemePageFacadeService] No table ID found, redirecting...');
       this.router.navigate(['/admin-orders-page']);
+      return;
     }
 
-    // ✅ Subscribe & filter orders
-    this.orders$ = this.orderService.orders$.pipe(
+    // ✅ Subscribe & populate orders array
+    this.orderService.orders$.pipe(
       map(orders =>
         orders.filter(order =>
-          order.tableUUID === tableId &&
+          order.tableUUID === this.tableId &&
           (order.status === OrderStatus.PENDING || order.status === OrderStatus.IN_PROGRESS)
         )
       )
-    );
+    ).subscribe(filteredOrders => {
+      this.orders = filteredOrders;
+      this._orders$.next(filteredOrders); // still push into BehaviorSubject if needed
+      console.log('[OdemePageFacadeService] Orders updated:', this.orders);
+    });
 
-    // ✅ Track table
-    this.table$ = this.tableDetailsPageFacadeService.table$;
+    // ✅ Track table (if needed)
+    this.tableDetailsPageFacadeService.table$.subscribe(table => {
+      this.table = table;
+    });
 
-    // ✅ Total amount
+    // ✅ Derived Observables
     this.total$ = this.orders$.pipe(
       map(orders => orders.reduce((sum, order) => sum + order.getTotalAmount(), 0))
     );
 
-    // ✅ Combined statuses
     this.combinedStatuses$ = this.orders$.pipe(
       map(orders => {
         const uniqueStatuses = [...new Set(orders.map(order => order.status))];
@@ -73,7 +80,6 @@ export class OdemePageFacadeService {
       })
     );
 
-    // ✅ Order IDs string
     this.orderIdsString$ = this.orders$.pipe(
       map(orders => orders.map(o => o.id).join(', '))
     );
@@ -81,39 +87,38 @@ export class OdemePageFacadeService {
 
   getSelectedTotal(): number {
     let total = 0;
-    this.orders$.subscribe(orders => {
-      total = this.selectedItems.reduce((sum, index) => {
-        const order = orders[index];
-        return sum + (order ? order.getTotalAmount() : 0);
-      }, 0);
-    }).unsubscribe();
+    console.log('[OdemePageFacadeService] Selected items:', this.selectedItems);
+
+    this.selectedItems.forEach(index => {
+      const order = this.orders[index];
+      if (order) {
+        total += order.getTotalAmount();
+      }
+    });
+
+    console.log('[OdemePageFacadeService] Selected total:', total);
     return total;
   }
 
   updatePaymentAmount(value: string): void {
-    let current = this._paymentAmount$.getValue();
+    const current = this._paymentAmount$.getValue();
 
     if (value === 'sil') {
       // Clear/reset
       this._paymentAmount$.next('');
     } else if (value === 'tumu') {
       // Set to the full total amount (as string)
-      this.total$.subscribe(total => {
-        this._paymentAmount$.next(total.toFixed(2));
-      }).unsubscribe();
+      const totalAmount = this.getSelectedTotal();
+      this._paymentAmount$.next(totalAmount.toFixed(2));
     } else {
-      // Validate and append numbers/dot
-
       // Prevent multiple dots
       if (value === '.' && current.includes('.')) {
         return;
       }
-
-      // Append new digit or dot
+      // Append digit/dot
       this._paymentAmount$.next(current + value);
     }
 
     console.log('[OdemePageFacadeService] Ödenecek Tutar:', this._paymentAmount$.getValue());
   }
-
 }
