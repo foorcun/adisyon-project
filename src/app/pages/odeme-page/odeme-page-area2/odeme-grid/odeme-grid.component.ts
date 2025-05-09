@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { OdemePageFacadeService } from '../../../../services/odeme-page-facade.service';
 
 @Component({
   selector: 'app-odeme-grid',
@@ -8,8 +9,13 @@ import { Component } from '@angular/core';
 })
 export class OdemeGridComponent {
 
+  constructor(
+    private odemePageFacadeService: OdemePageFacadeService
+  ) { }
+
   handleClick(value: string): void {
-    console.log('Clicked button:', value);
+    this.odemePageFacadeService.updatePaymentAmount(value);
   }
+
 
 }

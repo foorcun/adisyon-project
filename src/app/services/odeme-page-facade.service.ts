@@ -26,6 +26,11 @@ export class OdemePageFacadeService {
 
   selectedItems: number[] = [];
 
+  // Holds the payment amount as a string (to handle decimals)
+  private _paymentAmount$ = new BehaviorSubject<string>('');
+  paymentAmount$ = this._paymentAmount$.asObservable();
+
+
   constructor(
     private orderService: OrderService,
     private tableDetailsPageFacadeService: TableDetailsPageFacadeService,
@@ -84,4 +89,31 @@ export class OdemePageFacadeService {
     }).unsubscribe();
     return total;
   }
+
+  updatePaymentAmount(value: string): void {
+    let current = this._paymentAmount$.getValue();
+
+    if (value === 'sil') {
+      // Clear/reset
+      this._paymentAmount$.next('');
+    } else if (value === 'tumu') {
+      // Set to the full total amount (as string)
+      this.total$.subscribe(total => {
+        this._paymentAmount$.next(total.toFixed(2));
+      }).unsubscribe();
+    } else {
+      // Validate and append numbers/dot
+
+      // Prevent multiple dots
+      if (value === '.' && current.includes('.')) {
+        return;
+      }
+
+      // Append new digit or dot
+      this._paymentAmount$.next(current + value);
+    }
+
+    console.log('[OdemePageFacadeService] Ödenecek Tutar:', this._paymentAmount$.getValue());
+  }
+
 }
