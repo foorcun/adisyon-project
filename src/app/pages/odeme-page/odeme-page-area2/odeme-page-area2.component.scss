@@ -35,29 +35,7 @@
   background-color: #e6f0ff;
   display: flex;
   flex-direction: column;
-
-  .grid-container {
-    flex: 1; // 🆕 this allows it to stretch vertically
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: repeat(4, 1fr);
-    gap: 10px;
-    width: 100%;
-    height: 100%; // ✅ fills parent fully
-    box-sizing: border-box;
-  }
-
-  .grid-item {
-    background-color: #f0f0f0;
-    border: 1px solid #ccc;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.5rem;
-    width: 100%;
-    height: 100%; // 🆕 this is the key: **no aspect-ratio this time**
-    // REMOVE: aspect-ratio: 1 / 1;
-  }
 }
+
 
 
