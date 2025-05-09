@@ -8,4 +8,8 @@ import { Component } from '@angular/core';
 })
 export class OdemeGridComponent {
 
+  handleClick(value: string): void {
+    console.log('Clicked button:', value);
+  }
+
 }
