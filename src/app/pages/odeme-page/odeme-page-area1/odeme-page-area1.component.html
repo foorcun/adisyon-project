@@ -18,7 +18,7 @@
 
     <!-- {{ (odemePageFacadeService.orders$ | async)?.length }} -->
     <div *ngFor="let order of odemePageFacadeService.orders$ | async">
-      <div *ngFor="let item of order.items">{{ item.product.name }}-</div>
+      <div *ngFor="let item of order.items">{{ item.product.name }}- {{item.product.price}}</div>
     </div>
   </div>
 
