@@ -4,15 +4,37 @@
     <div
       style="
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
         justify-content: space-between;
         width: 100%;
       "
     >
-      <!-- <div>Toplam:</div> -->
-      <!-- <p>{{ odemePageFacadeService.getSelectedTotal() | currency : "TRY" }}</p> -->
-      <div>Toplam Tutar:</div>
-      <div>{{ totalPrice$ | async }} ₺</div>
+      <div
+        style="
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          width: 100%;
+        "
+      >
+        <!-- <div>Toplam:</div> -->
+        <!-- <p>{{ odemePageFacadeService.getSelectedTotal() | currency : "TRY" }}</p> -->
+        <div>Toplam Tutar:</div>
+        <div>{{ totalPrice$ | async }} ₺</div>
+      </div>
+      <div
+        style="
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          width: 100%;
+        "
+      >
+        <!-- <div>Toplam:</div> -->
+        <!-- <p>{{ odemePageFacadeService.getSelectedTotal() | currency : "TRY" }}</p> -->
+        <h6>Kalan Tutar:</h6>
+        <h6>{{ totalPrice$ | async }} ₺</h6>
+      </div>
     </div>
   </div>
 
@@ -32,8 +54,7 @@
       <!-- Top Section -->
       <div style="flex: 5"></div>
       <!-- Sub-payments list -->
-<app-subpayment></app-subpayment>
-      
+      <app-subpayment></app-subpayment>
 
       <!-- Bottom Section -->
       <div
