@@ -1,6 +1,6 @@
 <div class="odeme-page-area2">
+  <!-- Top Total Section -->
   <div class="area2-section area2-section1">
-    <!-- Section 1 content -->
     <div
       style="
         display: flex;
@@ -9,6 +9,7 @@
         width: 100%;
       "
     >
+      <!-- Toplam Tutar -->
       <div
         style="
           display: flex;
@@ -17,12 +18,13 @@
           width: 100%;
         "
       >
-        <!-- <div>Toplam:</div> -->
-        <!-- <p>{{ odemePageFacadeService.getSelectedTotal() | currency : "TRY" }}</p> -->
         <div>Toplam Tutar:</div>
         <div>{{ totalPrice$ | async }} ₺</div>
       </div>
+
+      <!-- Kalan Tutar / Para Üstü / Tam Ödendi -->
       <div
+        *ngIf="remainingInfo$ | async as info"
         style="
           display: flex;
           flex-direction: row;
@@ -30,18 +32,14 @@
           width: 100%;
         "
       >
-        <!-- <div>Toplam:</div> -->
-        <!-- <p>{{ odemePageFacadeService.getSelectedTotal() | currency : "TRY" }}</p> -->
-        <h6>Kalan Tutar:</h6>
-        <h6>{{ remainingAmount$ | async }} ₺</h6>
+        <h6>{{ info.label }}:</h6>
+        <h6>{{ info.amount | currency : "TRY" }}</h6>
       </div>
     </div>
   </div>
 
+  <!-- Sub-Payment & Payment Amount Section -->
   <div class="area2-section area2-section2">
-    <!-- Section 2 content -->
-    <!-- <h4>Section 2</h4> -->
-    <!-- <p>{{ odemePageFacadeService.getSelectedTotal() | currency : "TRY" }}</p> -->
     <div
       style="
         display: flex;
@@ -51,12 +49,13 @@
         height: 100%;
       "
     >
-      <!-- Top Section -->
-      <div style="flex: 5"></div>
-      <!-- Sub-payments list -->
-      <app-subpayment></app-subpayment>
+      <!-- Top space (optional) -->
+      <div style="flex: 5">
+        <!-- Sub-payments list -->
+        <app-subpayment></app-subpayment>
+      </div>
 
-      <!-- Bottom Section -->
+      <!-- Payment amount input -->
       <div
         style="
           flex: 1;
@@ -74,6 +73,7 @@
     </div>
   </div>
 
+  <!-- Grid -->
   <div class="area2-section area2-section3">
     <app-odeme-grid></app-odeme-grid>
   </div>
