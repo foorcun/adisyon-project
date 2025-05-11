@@ -3,9 +3,11 @@
     <!-- {{ (odemePageFacadeService.table )?.name }} Sipariş Detayları -->
     {{ (tableDetailsPageFacadeService.table$ | async)?.name }} Sipariş Detayları
     (tableDetailsPageFacadeService den)
-    {{ (odemePageFacadeService.orders$ | async)?.length }}
-    <!-- <div *ngFor="let order of odemePageFacadeService.orders$ | async">
-      {{ order.tableUUID}} adet
+    <!-- {{ (odemePageFacadeService.orders$ | async)?.length }}
+    <div *ngFor="let order of odemePageFacadeService.orders$ | async">
+      {{ order.tableUUID }} adet
+
+      <div *ngFor="let item of order.items">{{ item.product.name }}-</div>
     </div> -->
   </h2>
 

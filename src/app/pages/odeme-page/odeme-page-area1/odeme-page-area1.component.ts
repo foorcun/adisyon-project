@@ -16,8 +16,8 @@ export class OdemePageArea1Component {
 
 
 
-  tableId: string | null = null;
-  orders: Order[] = [];
+  // tableId: string | null = null;
+  // orders: Order[] = [];
 
   constructor(
     private orderService: OrderService,
@@ -25,36 +25,36 @@ export class OdemePageArea1Component {
     public odemePageFacadeService: OdemePageFacadeService
   ) {
 
-    this.tableId = this.route.snapshot.paramMap.get('id');
-    this.orderService.orders$.subscribe(orders => {
-      this.orders = orders.filter(order =>
-        order.tableUUID === this.tableId &&
-        (order.status === OrderStatus.PENDING || order.status === OrderStatus.IN_PROGRESS)
-      );
+    // this.tableId = this.route.snapshot.paramMap.get('id');
+    // this.orderService.orders$.subscribe(orders => {
+    //   this.orders = orders.filter(order =>
+    //     order.tableUUID === this.tableId &&
+    //     (order.status === OrderStatus.PENDING || order.status === OrderStatus.IN_PROGRESS)
+    //   );
 
-    });
+    // });
   }
 
 
-  getAllItems(): any[] {
-    return this.orders.flatMap(order =>
-      order.items.flatMap(item => {
-        const quantity = Number(item.quantity);
+  // getAllItems(): any[] {
+  //   return this.orders.flatMap(order =>
+  //     order.items.flatMap(item => {
+  //       const quantity = Number(item.quantity);
 
-        // Ensure quantity is a positive integer
-        if (!Number.isFinite(quantity) || quantity <= 0) {
-          return [];
-        }
+  //       // Ensure quantity is a positive integer
+  //       if (!Number.isFinite(quantity) || quantity <= 0) {
+  //         return [];
+  //       }
 
-        const unitPrice = item.getTotalPrice / quantity;
+  //       const unitPrice = item.getTotalPrice / quantity;
 
-        return Array.from({ length: quantity }, () => ({
-          product: item.product,
-          price: unitPrice
-        }));
-      })
-    );
-  }
+  //       return Array.from({ length: quantity }, () => ({
+  //         product: item.product,
+  //         price: unitPrice
+  //       }));
+  //     })
+  //   );
+  // }
 
 
 
