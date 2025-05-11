@@ -21,7 +21,11 @@ import { OdemePageFacadeService } from '../../services/odeme-page-facade.service
   styleUrl: './odeme-page.component.scss'
 })
 export class OdemePageComponent {
-  constructor(public odemePageFacadeService: OdemePageFacadeService) { }
+  constructor(public odemePageFacadeService: OdemePageFacadeService,
+    public tableDetailsPageFacadeService: TableDetailsPageFacadeService,
+  ) {
+    this.tableDetailsPageFacadeService.heartBeat();
+  }
 
   goBack(): void {
     window.history.back();

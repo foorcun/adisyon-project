@@ -1,6 +1,7 @@
 <div id="sepetim-navbar">
   <h2 class="navbar-title">
-    {{ (odemePageFacadeService.table )?.name }} Sipariş Detayları
+    <!-- {{ (odemePageFacadeService.table )?.name }} Sipariş Detayları -->
+    {{ (tableDetailsPageFacadeService.table$ | async)?.name }} Sipariş Detayları
   </h2>
   <button class="close-btn" (click)="goBack()">
     <i class="fas fa-times"></i>
