@@ -1,9 +1,7 @@
 <ng-container *ngIf="currentPayment$ | async as payment">
   <div
-    *ngIf="
-      payment.subPayments && objectKeys(payment.subPayments).length > 0;
-      else noSubPayments
-    "
+    *ngIf="payment.subPayments && objectKeys(payment.subPayments).length > 0; else noSubPayments"
+    style="max-height: 200px; overflow-y: auto; padding-right: 8px;"
   >
     <div
       *ngFor="let key of objectKeys(payment.subPayments)"
@@ -12,11 +10,12 @@
         justify-content: space-between;
         align-items: center;
         gap: 1rem;
+        padding: 4px 0;
       "
     >
       <div>{{ payment.subPayments[key].method | titlecase }}</div>
       <div>
-        {{ payment.subPayments[key].amount | currency : "TRY" : "symbol" }}
+        {{ payment.subPayments[key].amount | currency : 'TRY' : 'symbol' }}
       </div>
       <button class="btn btn-sm btn-danger" (click)="deleteSubPayment(key)">
         <i class="fas fa-trash-alt"></i>
@@ -25,6 +24,6 @@
   </div>
 
   <ng-template #noSubPayments>
-    <p style="font-style: italic; opacity: 0.6">Henüz ödeme yapılmadı.</p>
+    <p style="font-style: italic; opacity: 0.6;">Henüz ödeme yapılmadı.</p>
   </ng-template>
 </ng-container>
