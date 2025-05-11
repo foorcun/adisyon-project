@@ -31,4 +31,6 @@ export abstract class PaymentRepository {
    * @returns An Observable indicating the close completion.
    */
   abstract closePayment(tableId: string): Observable<void>;
+
+  abstract deleteSubPayment(tableId: string, subPaymentKey: string): Observable<void>;
 }

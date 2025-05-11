@@ -42,4 +42,9 @@ export class PaymentService {
     closePayment(tableId: string): Observable<void> {
         return this.paymentRepository.closePayment(tableId);
     }
+    deleteSubPayment(tableId: string, subPaymentKey: string): Observable<void> {
+        console.log("[PaymentService]2 deleteSubPayment", tableId, subPaymentKey);
+        return this.paymentRepository.deleteSubPayment(tableId, subPaymentKey);
+    }
+
 }

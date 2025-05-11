@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Database, ref, push, set, update, onValue, DataSnapshot } from '@angular/fire/database';
+import { Database, ref, push, set, update, onValue, DataSnapshot,remove } from '@angular/fire/database';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { PaymentRepository } from '../domain/repositories/payment-repository';
 import { Payment } from '../domain/entities/payment.entity';
@@ -129,4 +129,18 @@ export class PaymentFirebaseRepository extends PaymentRepository {
                 .catch((error) => observer.error(error));
         });
     }
+
+    override deleteSubPayment(tableId: string, subPaymentKey: string): Observable<void> {
+        console.log("[PaymentFirebaseRepository]3 deleteSubPayment", tableId, subPaymentKey);
+        const subRef = ref(this.database, `payments/${tableId}/subPayments/${subPaymentKey}`);
+        return new Observable(observer => {
+            remove(subRef)
+                .then(() => {
+                    observer.next();
+                    observer.complete();
+                })
+                .catch(error => observer.error(error));
+        });
+    }
+
 }

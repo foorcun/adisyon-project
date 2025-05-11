@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 import { OrderStatus } from '../OrderFeature/domain/entities/order-status';
 import { Table } from '../OrderFeature/domain/entities/table.entity';
 import { AdminOrdersPageFacadeService } from './admin-orders-page-facade.service';
-import { filter, map, switchMap, tap } from 'rxjs/operators';
+import { filter, map, switchMap, take, tap, withLatestFrom } from 'rxjs/operators';
 import { PaymentRepository } from '../PaymentFeature/domain/repositories/payment-repository';
 import { Payment } from '../PaymentFeature/domain/entities/payment.entity';
 import { PaymentService } from './payment.service';
@@ -97,7 +97,7 @@ export class OdemePageFacadeService {
     // this.orderIdsString$ = this.orders$.pipe(
     //   map(orders => orders.map(o => o.id).join(', '))
     // );
-    
+
     // ✅ safe to use now
     this.currentPayment$ = this.tableDetailsPageFacadeService.table$.pipe(
       filter((table): table is Table => !!table),
@@ -164,5 +164,37 @@ export class OdemePageFacadeService {
       }
     });
   }
+
+
+  deleteSubPaymentAtIndex(index: string): void {
+    this.currentPayment$.pipe(
+      take(1),
+      withLatestFrom(this.tableDetailsPageFacadeService.table$)
+    ).subscribe({
+      next: ([payment, table]) => {
+        if (!table) {
+          console.warn('[OdemePageFacadeService] Table not found.');
+          return;
+        }
+
+        const tableId = table.id;
+        const subPaymentKeys = Object.keys(payment.subPayments || {});
+        // const keyToDelete = subPaymentKeys[index];
+        const keyToDelete = index;
+
+        if (!keyToDelete) {
+          console.warn('[OdemePageFacadeService] Subpayment key not found at index:', index);
+          return;
+        }
+
+        this.paymentService.deleteSubPayment(tableId, index).subscribe({
+          next: () => console.log(`[OdemePageFacadeService]son SubPayment ${index} deleted.`),
+          error: err => console.error('[OdemePageFacadeService] Failed to delete subpayment:', err)
+        });
+      },
+      error: err => console.error('[OdemePageFacadeService] Failed to resolve table or payment:', err)
+    });
+  }
+
 
 }
