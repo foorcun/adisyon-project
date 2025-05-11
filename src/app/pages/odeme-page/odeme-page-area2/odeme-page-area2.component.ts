@@ -5,10 +5,11 @@ import { OdemeGridComponent } from './odeme-grid/odeme-grid.component';
 import { map, Observable } from 'rxjs';
 import { OrderItem } from '../../../OrderFeature/domain/entities/order-item.entity';
 import { Payment } from '../../../PaymentFeature/domain/entities/payment.entity';
+import { SubpaymentComponent } from './subpayment/subpayment.component';
 
 @Component({
   selector: 'app-odeme-page-area2',
-  imports: [CommonModule, OdemeGridComponent],
+  imports: [CommonModule, OdemeGridComponent, SubpaymentComponent],
   templateUrl: './odeme-page-area2.component.html',
   styleUrl: './odeme-page-area2.component.scss'
 })
@@ -16,7 +17,6 @@ export class OdemePageArea2Component {
 
 
   public totalPrice$: Observable<number>;
-  public currentPayment$: Observable<Payment>;
 
   constructor(public odemePageFacadeService: OdemePageFacadeService) {
 
@@ -53,6 +53,5 @@ export class OdemePageArea2Component {
       })
     );
 
-    this.currentPayment$ = this.odemePageFacadeService.currentPayment$;
   }
 }
