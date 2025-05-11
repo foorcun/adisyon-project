@@ -9,8 +9,10 @@
         width: 100%;
       "
     >
-      <div>Toplam:</div>
-      <p>{{ odemePageFacadeService.getSelectedTotal() |  currency : "TRY" }}</p>
+      <!-- <div>Toplam:</div> -->
+      <!-- <p>{{ odemePageFacadeService.getSelectedTotal() | currency : "TRY" }}</p> -->
+      <div>Toplam Tutar: </div>
+      <div>{{ totalPrice$ | async }} ₺</div>
     </div>
   </div>
 

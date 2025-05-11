@@ -1,9 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { Order } from '../../../OrderFeature/domain/entities/order.entity';
-import { OrderService } from '../../../services/order.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { OrderStatus } from '../../../OrderFeature/domain/entities/order-status';
 import { OdemePageFacadeService } from '../../../services/odeme-page-facade.service';
 
 @Component({
