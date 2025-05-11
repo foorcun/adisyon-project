@@ -1,7 +1,12 @@
 <ng-container *ngIf="currentPayment$ | async as payment">
-  <div *ngIf="payment.subPayments.length > 0; else noSubPayments">
+  <div
+    *ngIf="
+      payment.subPayments && objectKeys(payment.subPayments).length > 0;
+      else noSubPayments
+    "
+  >
     <div
-      *ngFor="let sub of payment.subPayments; let i = index"
+      *ngFor="let key of objectKeys(payment.subPayments)"
       style="
         display: flex;
         justify-content: space-between;
@@ -9,11 +14,14 @@
         gap: 1rem;
       "
     >
-      <div>{{ sub.method | titlecase }}</div>
-      <div>{{ sub.amount | currency : "TRY" : "symbol" }}</div>
-      <button (click)="deleteSubPayment()">🗑</button>
+      <div>{{ payment.subPayments[key].method | titlecase }}</div>
+      <div>
+        {{ payment.subPayments[key].amount | currency : "TRY" : "symbol" }}
+      </div>
+      <button (click)="deleteSubPayment(key)">🗑</button>
     </div>
   </div>
+
   <ng-template #noSubPayments>
     <p style="font-style: italic; opacity: 0.6">Henüz ödeme yapılmadı.</p>
   </ng-template>

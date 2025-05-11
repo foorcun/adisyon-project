@@ -1,5 +1,14 @@
 import { Injectable } from '@angular/core';
-import { Database, ref, push, set, update, onValue, DataSnapshot,remove } from '@angular/fire/database';
+import {
+    Database,
+    ref,
+    push,
+    set,
+    update,
+    onValue,
+    DataSnapshot,
+    remove
+} from '@angular/fire/database';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { PaymentRepository } from '../domain/repositories/payment-repository';
 import { Payment } from '../domain/entities/payment.entity';
@@ -28,9 +37,12 @@ export class PaymentFirebaseRepository extends PaymentRepository {
                 if (data) {
                     const payments = Object.keys(data).map((key) => {
                         const payment = data[key];
-                        const subPayments: SubPayment[] = payment.subPayments
-                            ? Object.values(payment.subPayments).map((sp: any) => SubPayment.fromPlainObject(sp))
-                            : [];
+                        const subPayments: Record<string, SubPayment> = payment.subPayments
+                            ? Object.entries(payment.subPayments).reduce((acc, [subKey, sp]) => {
+                                acc[subKey] = SubPayment.fromPlainObject(sp);
+                                return acc;
+                            }, {} as Record<string, SubPayment>)
+                            : {};
 
                         return new Payment(
                             payment.tableId,
@@ -56,7 +68,7 @@ export class PaymentFirebaseRepository extends PaymentRepository {
         const payment = {
             tableId,
             totalAmount,
-            subPayments: [],
+            subPayments: {},
             isClosed: false,
             createdAt: new Date().toISOString(),
         };
@@ -95,9 +107,12 @@ export class PaymentFirebaseRepository extends PaymentRepository {
                 (snapshot: DataSnapshot) => {
                     const data = snapshot.val();
                     if (data) {
-                        const subPayments: SubPayment[] = data.subPayments
-                            ? Object.values(data.subPayments).map((sp: any) => SubPayment.fromPlainObject(sp))
-                            : [];
+                        const subPayments: Record<string, SubPayment> = data.subPayments
+                            ? Object.entries(data.subPayments).reduce((acc, [subKey, sp]) => {
+                                acc[subKey] = SubPayment.fromPlainObject(sp);
+                                return acc;
+                            }, {} as Record<string, SubPayment>)
+                            : {};
 
                         const payment = new Payment(
                             data.tableId,
@@ -142,5 +157,4 @@ export class PaymentFirebaseRepository extends PaymentRepository {
                 .catch(error => observer.error(error));
         });
     }
-
 }

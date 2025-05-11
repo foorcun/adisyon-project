@@ -34,10 +34,15 @@ export class SubpaymentComponent {
     );
   }
 
+  objectKeys = Object.keys;
+
   /**
    * Delete subpayment by its Firebase key
    */
   deleteSubPayment(key: string): void {
-    this.odemePageFacadeService.deleteSubPaymentByKey(key);
+    // this.odemePageFacadeService.deleteSubPaymentByKey(key);
+    this.odemePageFacadeService.deleteSubPaymentAtIndex(key)
   }
+
+
 }

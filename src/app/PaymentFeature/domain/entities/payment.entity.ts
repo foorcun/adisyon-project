@@ -4,44 +4,26 @@ export class Payment {
   constructor(
     public tableId: string,
     public totalAmount: number,
-    public subPayments: SubPayment[] = [],
+    public subPayments: Record<string, SubPayment> = {}, // ✅ fix here
     public isClosed: boolean = false,
     public createdAt: Date = new Date()
   ) {}
 
-  /**
-   * Returns the total amount paid so far.
-   */
   get paidAmount(): number {
-    return this.subPayments.reduce((sum, sp) => sum + sp.amount, 0);
+    return Object.values(this.subPayments).reduce((sum, sp) => sum + sp.amount, 0);
   }
 
-  /**
-   * Returns the remaining amount to be paid.
-   */
   get remainingAmount(): number {
     return this.totalAmount - this.paidAmount;
   }
 
-  /**
-   * Adds a sub-payment to the payment.
-   */
-  addSubPayment(sub: SubPayment): void {
-    if (this.isClosed) {
-      throw new Error('Cannot add sub-payment: Payment is already closed.');
-    }
-
-    this.subPayments.push(sub);
+  addSubPayment(id: string, sub: SubPayment): void {
+    if (this.isClosed) throw new Error('Payment already closed.');
+    this.subPayments[id] = sub;
   }
 
-  /**
-   * Finalizes the payment if fully paid.
-   */
   close(): void {
-    if (this.remainingAmount > 0) {
-      throw new Error(`Cannot close payment: ${this.remainingAmount} remaining.`);
-    }
-
+    if (this.remainingAmount > 0) throw new Error('Payment not complete.');
     this.isClosed = true;
   }
 }
