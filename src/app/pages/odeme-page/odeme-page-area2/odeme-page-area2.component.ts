@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { OdemeGridComponent } from './odeme-grid/odeme-grid.component';
 import { map, Observable } from 'rxjs';
 import { OrderItem } from '../../../OrderFeature/domain/entities/order-item.entity';
+import { Payment } from '../../../PaymentFeature/domain/entities/payment.entity';
 
 @Component({
   selector: 'app-odeme-page-area2',
@@ -15,6 +16,7 @@ export class OdemePageArea2Component {
 
 
   public totalPrice$: Observable<number>;
+  public currentPayment$: Observable<Payment>;
 
   constructor(public odemePageFacadeService: OdemePageFacadeService) {
 
@@ -51,6 +53,6 @@ export class OdemePageArea2Component {
       })
     );
 
-
+    this.currentPayment$ = this.odemePageFacadeService.currentPayment$;
   }
 }

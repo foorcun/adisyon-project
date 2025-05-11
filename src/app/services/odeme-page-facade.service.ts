@@ -37,6 +37,8 @@ export class OdemePageFacadeService {
 
   private tableId: string | null = null;
 
+  public currentPayment$!: Observable<Payment>;
+
 
   constructor(
     private orderService: OrderService,
@@ -95,7 +97,14 @@ export class OdemePageFacadeService {
     // this.orderIdsString$ = this.orders$.pipe(
     //   map(orders => orders.map(o => o.id).join(', '))
     // );
+    
+    // ✅ safe to use now
+    this.currentPayment$ = this.tableDetailsPageFacadeService.table$.pipe(
+      filter((table): table is Table => !!table),
+      switchMap(table => this.paymentService.getPaymentByTableId(table.id))
+    );
   }
+
 
   getSelectedTotal(): number {
     let total = 0;
@@ -134,26 +143,26 @@ export class OdemePageFacadeService {
     console.log('[OdemePageFacadeService] Ödenecek Tutar:', this._paymentAmount$.getValue());
   }
 
-payWithCurrentAmount(method: PaymentMethod): void {
-  const tableId = this.tableId;
-  const rawAmount = this._paymentAmount$.getValue();
-  const amount = Number(rawAmount);
+  payWithCurrentAmount(method: PaymentMethod): void {
+    const tableId = this.tableId;
+    const rawAmount = this._paymentAmount$.getValue();
+    const amount = Number(rawAmount);
 
-  if (!tableId || isNaN(amount) || amount <= 0) {
-    console.warn('[OdemePageFacadeService] Invalid payment attempt.', { tableId, rawAmount });
-    return;
-  }
-
-  const command = new PaymentCommand(tableId, method, amount);
-  this.paymentService.addSubPayment(command).subscribe({
-    next: () => {
-      console.log('[OdemePageFacadeService] SubPayment successful:', command);
-      this._paymentAmount$.next(''); // reset input after payment
-    },
-    error: err => {
-      console.error('[OdemePageFacadeService] SubPayment failed:', err);
+    if (!tableId || isNaN(amount) || amount <= 0) {
+      console.warn('[OdemePageFacadeService] Invalid payment attempt.', { tableId, rawAmount });
+      return;
     }
-  });
-}
+
+    const command = new PaymentCommand(tableId, method, amount);
+    this.paymentService.addSubPayment(command).subscribe({
+      next: () => {
+        console.log('[OdemePageFacadeService] SubPayment successful:', command);
+        this._paymentAmount$.next(''); // reset input after payment
+      },
+      error: err => {
+        console.error('[OdemePageFacadeService] SubPayment failed:', err);
+      }
+    });
+  }
 
 }

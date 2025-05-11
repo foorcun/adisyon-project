@@ -31,6 +31,23 @@
     >
       <!-- Top Section -->
       <div style="flex: 5"></div>
+      <!-- subpayments will be here as list -->
+
+      <!-- Sub-payments list -->
+      <ng-container *ngIf="currentPayment$ | async as payment">
+        <div *ngIf="payment.subPayments.length > 0; else noSubPayments">
+          <div
+            *ngFor="let sub of payment.subPayments"
+            style="display: flex; justify-content: space-between"
+          >
+            <div>{{ sub.method | titlecase }}</div>
+            <div>{{ sub.amount | currency : "TRY" : "symbol" }}</div>
+          </div>
+        </div>
+        <ng-template #noSubPayments>
+          <p style="font-style: italic; opacity: 0.6">Henüz ödeme yapılmadı.</p>
+        </ng-template>
+      </ng-container>
 
       <!-- Bottom Section -->
       <div

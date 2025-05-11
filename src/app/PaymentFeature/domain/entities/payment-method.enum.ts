@@ -1,5 +1,5 @@
 export enum PaymentMethod {
-    CASH = 'cash',
-    CARD = 'card',
+    CASH = 'Nakit',
+    CARD = 'Kredi Kartı',
     QR = 'qr'
 }
