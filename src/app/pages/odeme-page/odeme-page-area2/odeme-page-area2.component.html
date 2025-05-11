@@ -11,7 +11,7 @@
     >
       <!-- <div>Toplam:</div> -->
       <!-- <p>{{ odemePageFacadeService.getSelectedTotal() | currency : "TRY" }}</p> -->
-      <div>Toplam Tutar: </div>
+      <div>Toplam Tutar:</div>
       <div>{{ totalPrice$ | async }} ₺</div>
     </div>
   </div>
@@ -20,7 +20,34 @@
     <!-- Section 2 content -->
     <!-- <h4>Section 2</h4> -->
     <!-- <p>{{ odemePageFacadeService.getSelectedTotal() | currency : "TRY" }}</p> -->
-    <p>Ödenecek Tutar: {{ odemePageFacadeService.paymentAmount$ | async }} ₺</p>
+    <div
+      style="
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 100%;
+        height: 100%;
+      "
+    >
+      <!-- Top Section -->
+      <div style="flex: 5"></div>
+
+      <!-- Bottom Section -->
+      <div
+        style="
+          flex: 1;
+          display: flex;
+          flex-direction: row;
+          justify-content: flex-end;
+          align-items: center;
+        "
+      >
+        <p>
+          Ödenecek Tutar:
+          {{ odemePageFacadeService.paymentAmount$ | async }} ₺
+        </p>
+      </div>
+    </div>
   </div>
 
   <div class="area2-section area2-section3">

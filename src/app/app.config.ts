@@ -10,6 +10,8 @@ import { RoleRepository } from './UserFeature/domain/repositories/role.repositor
 import { provideHttpClient } from '@angular/common/http';
 import { OrderFirebaseRepository } from './OrderFeature/infrastructure/repositories/order-firebase.repository';
 import { OrderRepository } from './OrderFeature/domain/repositories/order-repository';
+import { PaymentRepository } from './PaymentFeature/domain/repositories/payment-repository';
+import { PaymentFirebaseRepository } from './PaymentFeature/infrastructure/payment-firebase-repository';
 
 const firebaseConfig = {
   apiKey: "AIzaSyCEbHghNUSZ6juY9bPRWdrmH0xK_FDk5hY",
@@ -30,5 +32,6 @@ export const appConfig: ApplicationConfig = {
   provideDatabase(() => getDatabase()),
   { provide: RoleRepository, useClass: FirestoreRoleRepository },
   { provide: OrderRepository, useClass: OrderFirebaseRepository },
+  { provide: PaymentRepository, useClass: PaymentFirebaseRepository },
   ]
 };

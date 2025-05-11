@@ -8,6 +8,11 @@ import { OrderStatus } from '../OrderFeature/domain/entities/order-status';
 import { Table } from '../OrderFeature/domain/entities/table.entity';
 import { AdminOrdersPageFacadeService } from './admin-orders-page-facade.service';
 import { filter, map, switchMap, tap } from 'rxjs/operators';
+import { PaymentRepository } from '../PaymentFeature/domain/repositories/payment-repository';
+import { Payment } from '../PaymentFeature/domain/entities/payment.entity';
+import { PaymentService } from './payment.service';
+import { PaymentMethod } from '../PaymentFeature/domain/entities/payment-method.enum';
+import { PaymentCommand } from '../PaymentFeature/domain/entities/payment-command';
 
 @Injectable({
   providedIn: 'root'
@@ -32,11 +37,13 @@ export class OdemePageFacadeService {
 
   private tableId: string | null = null;
 
+
   constructor(
     private orderService: OrderService,
     private tableDetailsPageFacadeService: TableDetailsPageFacadeService,
     // private adminOrdersPageFacadeService: AdminOrdersPageFacadeService,
-    private router: Router
+    private router: Router,
+    private paymentService: PaymentService
   ) {
     console.log('[OdemePageFacadeService] Service initialized');
 
@@ -126,4 +133,27 @@ export class OdemePageFacadeService {
 
     console.log('[OdemePageFacadeService] Ödenecek Tutar:', this._paymentAmount$.getValue());
   }
+
+payWithCurrentAmount(method: PaymentMethod): void {
+  const tableId = this.tableId;
+  const rawAmount = this._paymentAmount$.getValue();
+  const amount = Number(rawAmount);
+
+  if (!tableId || isNaN(amount) || amount <= 0) {
+    console.warn('[OdemePageFacadeService] Invalid payment attempt.', { tableId, rawAmount });
+    return;
+  }
+
+  const command = new PaymentCommand(tableId, method, amount);
+  this.paymentService.addSubPayment(command).subscribe({
+    next: () => {
+      console.log('[OdemePageFacadeService] SubPayment successful:', command);
+      this._paymentAmount$.next(''); // reset input after payment
+    },
+    error: err => {
+      console.error('[OdemePageFacadeService] SubPayment failed:', err);
+    }
+  });
+}
+
 }
