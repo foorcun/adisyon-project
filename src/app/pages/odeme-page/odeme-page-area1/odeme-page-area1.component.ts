@@ -14,48 +14,10 @@ import { OdemePageFacadeService } from '../../../services/odeme-page-facade.serv
 })
 export class OdemePageArea1Component {
 
-
-
-  // tableId: string | null = null;
-  // orders: Order[] = [];
-
   constructor(
-    private orderService: OrderService,
-    private route: ActivatedRoute,
     public odemePageFacadeService: OdemePageFacadeService
   ) {
-
-    // this.tableId = this.route.snapshot.paramMap.get('id');
-    // this.orderService.orders$.subscribe(orders => {
-    //   this.orders = orders.filter(order =>
-    //     order.tableUUID === this.tableId &&
-    //     (order.status === OrderStatus.PENDING || order.status === OrderStatus.IN_PROGRESS)
-    //   );
-
-    // });
   }
-
-
-  // getAllItems(): any[] {
-  //   return this.orders.flatMap(order =>
-  //     order.items.flatMap(item => {
-  //       const quantity = Number(item.quantity);
-
-  //       // Ensure quantity is a positive integer
-  //       if (!Number.isFinite(quantity) || quantity <= 0) {
-  //         return [];
-  //       }
-
-  //       const unitPrice = item.getTotalPrice / quantity;
-
-  //       return Array.from({ length: quantity }, () => ({
-  //         product: item.product,
-  //         price: unitPrice
-  //       }));
-  //     })
-  //   );
-  // }
-
 
 
   toggleItemSelection(index: number): void {
