@@ -18,7 +18,9 @@
       <div>
         {{ payment.subPayments[key].amount | currency : "TRY" : "symbol" }}
       </div>
-      <button (click)="deleteSubPayment(key)">🗑</button>
+      <button class="btn btn-sm btn-danger" (click)="deleteSubPayment(key)">
+        <i class="fas fa-trash-alt"></i>
+      </button>
     </div>
   </div>
 

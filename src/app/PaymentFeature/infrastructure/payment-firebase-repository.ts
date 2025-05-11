@@ -124,13 +124,16 @@ export class PaymentFirebaseRepository extends PaymentRepository {
 
                         observer.next(payment);
                     } else {
-                        observer.error(new Error(`No payment found for table ${tableId}`));
+                        console.warn(`[PaymentFirebaseRepository] No payment found for table ${tableId}, returning empty Payment.`);
+                        const fallback = new Payment(tableId, 0, {}, false, new Date());
+                        observer.next(fallback); // ✅ emit empty payment instead of error
                     }
                 },
                 (error) => observer.error(error)
             );
         });
     }
+
 
     override closePayment(tableId: string): Observable<void> {
         const refPath = ref(this.database, `${this.basePath}/${tableId}`);
