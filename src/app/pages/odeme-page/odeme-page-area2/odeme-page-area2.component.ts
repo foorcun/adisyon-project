@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { OdemePageFacadeService } from '../../../services/odeme-page-facade.service';
 import { CommonModule } from '@angular/common';
 import { OdemeGridComponent } from './odeme-grid/odeme-grid.component';
-import { map, Observable } from 'rxjs';
+import { combineLatest, map, Observable } from 'rxjs';
 import { OrderItem } from '../../../OrderFeature/domain/entities/order-item.entity';
 import { Payment } from '../../../PaymentFeature/domain/entities/payment.entity';
 import { SubpaymentComponent } from './subpayment/subpayment.component';
@@ -17,41 +17,19 @@ export class OdemePageArea2Component {
 
 
   public totalPrice$: Observable<number>;
+  public subPaymentTotal$: Observable<number>;
+
+  public remainingAmount$: Observable<number>;
 
   constructor(public odemePageFacadeService: OdemePageFacadeService) {
+    this.totalPrice$ = this.odemePageFacadeService.totalPrice$;
+    this.subPaymentTotal$ = this.odemePageFacadeService.subPaymentTotal$;
 
-    console.log("[OdemePageArea2Component] init..")
-    this.totalPrice$ = this.odemePageFacadeService.orders$.pipe(
-      map(orders => {
-        console.log("[OdemePageArea2Component] Received orders:", orders);
-
-        if (!orders || orders.length === 0) {
-          console.warn("[OdemePageArea2Component] No orders found.");
-          return 0;
-        }
-
-        const allItems = orders.flatMap((order, orderIndex) => {
-          console.log(`[OdemePageArea2Component] Order[${orderIndex}] items:`, order.items);
-
-          return order.items.map((item, itemIndex) => {
-            const reconstructed = new OrderItem(item.product, item.quantity);
-            reconstructed.urunNotu = item.urunNotu;
-            console.log(`[OdemePageArea2Component] Rehydrated Item[${itemIndex}]`, reconstructed);
-            return reconstructed;
-          });
-        });
-
-        allItems.forEach((item, itemIndex) => {
-          const totalPrice = item.getTotalPrice;
-          console.log(`[OdemePageArea2Component] Item[${itemIndex}] Total Price: ${totalPrice}`);
-        });
-
-        const total = allItems.reduce((sum, item) => sum + item.getTotalPrice, 0);
-        console.log("[OdemePageArea2Component] Calculated total price:", total);
-
-        return total;
-      })
+    this.remainingAmount$ = combineLatest([
+      this.totalPrice$,
+      this.subPaymentTotal$
+    ]).pipe(
+      map(([total, paid]) => Math.max(total - paid, 0))
     );
-
   }
 }

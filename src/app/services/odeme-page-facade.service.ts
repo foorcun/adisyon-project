@@ -13,6 +13,7 @@ import { Payment } from '../PaymentFeature/domain/entities/payment.entity';
 import { PaymentService } from './payment.service';
 import { PaymentMethod } from '../PaymentFeature/domain/entities/payment-method.enum';
 import { PaymentCommand } from '../PaymentFeature/domain/entities/payment-command';
+import { OrderItem } from '../OrderFeature/domain/entities/order-item.entity';
 
 @Injectable({
   providedIn: 'root'
@@ -28,7 +29,9 @@ export class OdemePageFacadeService {
   private _orders$ = new BehaviorSubject<Order[]>([]);
   orders$ = this._orders$.asObservable();
 
-  total$: Observable<number> = of(0);
+  public totalPrice$: Observable<number>;
+  public subPaymentTotal$: Observable<number>;
+
   combinedStatuses$: Observable<string> = of('');
   orderIdsString$: Observable<string> = of('');
 
@@ -102,6 +105,27 @@ export class OdemePageFacadeService {
     this.currentPayment$ = this.tableDetailsPageFacadeService.table$.pipe(
       filter((table): table is Table => !!table),
       switchMap(table => this.paymentService.getPaymentByTableId(table.id))
+    );
+
+    this.totalPrice$ = this.orders$.pipe(
+      map(orders => {
+        if (!orders || orders.length === 0) return 0;
+
+        const allItems = orders.flatMap(order =>
+          order.items.map(item => {
+            const hydrated = new OrderItem(item.product, item.quantity);
+            hydrated.urunNotu = item.urunNotu;
+            return hydrated;
+          })
+        );
+
+        return allItems.reduce((sum, item) => sum + item.getTotalPrice, 0);
+      })
+    );
+    this.subPaymentTotal$ = this.currentPayment$.pipe(
+      map(payment => {
+        return Object.values(payment.subPayments).reduce((sum, sub) => sum + sub.amount, 0);
+      })
     );
   }
 
@@ -198,3 +222,4 @@ export class OdemePageFacadeService {
 
 
 }
+
