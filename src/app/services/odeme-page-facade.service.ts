@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 import { OrderStatus } from '../OrderFeature/domain/entities/order-status';
 import { Table } from '../OrderFeature/domain/entities/table.entity';
 import { AdminOrdersPageFacadeService } from './admin-orders-page-facade.service';
-import { map } from 'rxjs/operators';
+import { filter, map, switchMap, tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -15,8 +15,8 @@ import { map } from 'rxjs/operators';
 export class OdemePageFacadeService {
 
   // ✅ State
-  orders: Order[] = [];
-  table: Table | null = null;
+  // orders: Order[] = [];
+  // table: Table | null = null;
   selectedItems: number[] = [];
 
   // ✅ Observables (optional)
@@ -35,66 +35,71 @@ export class OdemePageFacadeService {
   constructor(
     private orderService: OrderService,
     private tableDetailsPageFacadeService: TableDetailsPageFacadeService,
-    private adminOrdersPageFacadeService: AdminOrdersPageFacadeService,
+    // private adminOrdersPageFacadeService: AdminOrdersPageFacadeService,
     private router: Router
   ) {
     console.log('[OdemePageFacadeService] Service initialized');
 
-    const selectedTable = this.adminOrdersPageFacadeService.selectedTable;
-    this.tableId = selectedTable!.id;
+    // const selectedTable = this.adminOrdersPageFacadeService.selectedTable;
+    this.tableDetailsPageFacadeService.table$.pipe(
+      tap(table => {
+        console.log('[OdemePageFacadeService] Table:', table);
+        if (!table) {
+          console.warn('[OdemePageFacadeService] No table ID found, redirecting...');
+          this.router.navigate(['/admin-orders-page']);
+        }
+      }),
+      filter((table): table is Table => !!table), // ensure table is non-null
+      switchMap(table => {
+        this.tableId = table.id;
+        console.log('[OdemePageFacadeService] Table ID:', this.tableId);
 
-    if (!this.tableId) {
-      console.warn('[OdemePageFacadeService] No table ID found, redirecting...');
-      this.router.navigate(['/admin-orders-page']);
-      return;
-    }
-
-    // ✅ Subscribe & populate orders array
-    this.orderService.orders$.pipe(
-      map(orders =>
-        orders.filter(order =>
-          order.tableUUID === this.tableId &&
-          (order.status === OrderStatus.PENDING || order.status === OrderStatus.IN_PROGRESS)
-        )
-      )
+        return this.orderService.orders$.pipe(
+          map(orders =>
+            orders.filter(order =>
+              order.tableUUID === table.id &&
+              (order.status === OrderStatus.PENDING || order.status === OrderStatus.IN_PROGRESS)
+            )
+          )
+        );
+      })
     ).subscribe(filteredOrders => {
-      this.orders = filteredOrders;
-      this._orders$.next(filteredOrders); // still push into BehaviorSubject if needed
-      console.log('[OdemePageFacadeService] Orders updated:', this.orders);
+      console.log('[OdemePageFacadeService] Orders updated:', filteredOrders);
+      this._orders$.next(filteredOrders);
     });
 
     // ✅ Track table (if needed)
-    this.tableDetailsPageFacadeService.table$.subscribe(table => {
-      this.table = table;
-    });
+    // this.tableDetailsPageFacadeService.table$.subscribe(table => {
+    //   this.table = table;
+    // });
 
     // ✅ Derived Observables
-    this.total$ = this.orders$.pipe(
-      map(orders => orders.reduce((sum, order) => sum + order.getTotalAmount(), 0))
-    );
+    // this.total$ = this.orders$.pipe(
+    //   map(orders => orders.reduce((sum, order) => sum + order.getTotalAmount(), 0))
+    // );
 
-    this.combinedStatuses$ = this.orders$.pipe(
-      map(orders => {
-        const uniqueStatuses = [...new Set(orders.map(order => order.status))];
-        return uniqueStatuses.join(', ');
-      })
-    );
+    // this.combinedStatuses$ = this.orders$.pipe(
+    //   map(orders => {
+    //     const uniqueStatuses = [...new Set(orders.map(order => order.status))];
+    //     return uniqueStatuses.join(', ');
+    //   })
+    // );
 
-    this.orderIdsString$ = this.orders$.pipe(
-      map(orders => orders.map(o => o.id).join(', '))
-    );
+    // this.orderIdsString$ = this.orders$.pipe(
+    //   map(orders => orders.map(o => o.id).join(', '))
+    // );
   }
 
   getSelectedTotal(): number {
     let total = 0;
     console.log('[OdemePageFacadeService] Selected items:', this.selectedItems);
 
-    this.selectedItems.forEach(index => {
-      const order = this.orders[index];
-      if (order) {
-        total += order.getTotalAmount();
-      }
-    });
+    // this.selectedItems.forEach(index => {
+    //   const order = this.orders[index];
+    //   if (order) {
+    //     total += order.getTotalAmount();
+    //   }
+    // });
 
     console.log('[OdemePageFacadeService] Selected total:', total);
     return total;

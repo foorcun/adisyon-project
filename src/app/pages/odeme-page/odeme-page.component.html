@@ -2,7 +2,13 @@
   <h2 class="navbar-title">
     <!-- {{ (odemePageFacadeService.table )?.name }} Sipariş Detayları -->
     {{ (tableDetailsPageFacadeService.table$ | async)?.name }} Sipariş Detayları
+    (tableDetailsPageFacadeService den)
+    {{ (odemePageFacadeService.orders$ | async)?.length }}
+    <!-- <div *ngFor="let order of odemePageFacadeService.orders$ | async">
+      {{ order.tableUUID}} adet
+    </div> -->
   </h2>
+
   <button class="close-btn" (click)="goBack()">
     <i class="fas fa-times"></i>
   </button>
