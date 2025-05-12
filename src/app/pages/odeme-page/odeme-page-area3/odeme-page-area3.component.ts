@@ -18,7 +18,8 @@ export class OdemePageArea3Component {
 
   payNakit(): void {
     console.log("[OdemePageArea3Component] payNakit() tiklandi")
-    this.odemePageFacadeService.payWithCurrentAmount(PaymentMethod.CASH);
+    // this.odemePageFacadeService.payWithCurrentAmount(PaymentMethod.CASH);
+    this.
   }
 
   payKredikarti(): void {
