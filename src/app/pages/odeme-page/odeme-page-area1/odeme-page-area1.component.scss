@@ -1,28 +1,39 @@
-.order-items ul {
-  list-style: none;
-  padding: 0;
+.odeme-page {
+  .order-group {
+    margin-bottom: 2rem;
 
-  li {
-    cursor: pointer;
-    padding: 0.5rem;
-    border: 1px solid #ccc;
-    margin-bottom: 0.5rem;
-    border-radius: 4px;
-    transition: background-color 0.2s ease;
+    .order-items {
+      ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
 
-    &:hover {
-      background-color: #f0f0f0;
-    }
+        li {
+          cursor: pointer;
+          padding: 0.75rem 1rem;
+          border: 1px solid #dee2e6;
+          border-radius: 0.375rem;
+          margin-bottom: 0.5rem;
+          transition: background-color 0.2s ease, color 0.2s ease;
 
-    &.selected {
-      background-color: #4c3398;
-      color: white;
+          &:hover {
+            background-color: #f8f9fa;
+          }
+
+          &.selected {
+            background-color: #4c3398;
+            color: #fff;
+            border-color: #4c3398;
+          }
+        }
+      }
     }
   }
-}
 
-.clickable-item {
-  cursor: pointer;
-  color: blue; // optional for visual cue
-  text-decoration: underline; // optional
+  .no-orders-message {
+    font-style: italic;
+    color: #6c757d;
+    text-align: center;
+    margin-top: 2rem;
+  }
 }
