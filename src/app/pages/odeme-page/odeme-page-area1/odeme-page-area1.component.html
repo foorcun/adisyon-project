@@ -1,4 +1,5 @@
-<div class="odeme-page">
+<div class="odeme-page" >
+<!-- <div class="odeme-page" style="background-color: red; width: 100%"> -->
   <!-- Orders exist -->
   <div
     *ngIf="odemePageFacadeService.orders$ | async as orders; else noOrders"
@@ -12,9 +13,13 @@
             [class.selected]="isSelected(item)"
             (click)="!isSelected(item) && selectItem(item)"
           >
-            <div class="item-wrapper d-flex justify-content-between align-items-center">
+            <div
+              class="item-wrapper d-flex justify-content-between align-items-center"
+            >
               <span class="item-content">
-                {{ item.product.name }} - {{ item.product.price }}₺ - x{{ item.quantity }}
+                {{ item.product.name }} - {{ item.product.price }}₺ - x{{
+                  item.quantity
+                }}
               </span>
 
               <!-- Deselect button (only clickable when visible) -->
@@ -39,7 +44,7 @@
     <div *ngIf="selectedItems.length > 0" class="mt-4 text-end">
       <h5>
         Seçilen Ürünlerin Toplamı:
-        <strong>{{ selectedTotal | number: '1.2-2' }}₺</strong>
+        <strong>{{ selectedTotal | number : "1.2-2" }}₺</strong>
       </h5>
     </div>
   </div>
