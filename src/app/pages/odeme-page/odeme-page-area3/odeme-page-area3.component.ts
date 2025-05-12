@@ -3,6 +3,7 @@ import { combineLatest, take, filter } from 'rxjs';
 import { OdemePageFacadeService } from '../../../services/odeme-page-facade.service';
 import { TableDetailsPageFacadeService } from '../../../services/table-details-page.facade.service';
 import { PaymentMethod } from '../../../PaymentFeature/domain/entities/payment-method.enum';
+import { Cart } from '../../../CartFeature/domain/entity/cart';
 
 @Component({
   selector: 'app-odeme-page-area3',
@@ -22,15 +23,18 @@ export class OdemePageArea3Component {
       this.odemePageFacadeService.pay(this.odemePageFacadeService.getPaymentAmount(), PaymentMethod.CASH);
     }
     else {
-      // console.log("[OdemePageArea3Component] odemePageFacadeService.getPaymentAmount() 0 geldi");
-      // console.log("[OdemePageArea3Component] selectedTotal: ", this.odemePageFacadeService.selectedTotal);
       this.odemePageFacadeService.pay(this.odemePageFacadeService.selectedTotal, PaymentMethod.CASH);
     }
   }
 
   payKredikarti(): void {
-    console.log("[OdemePageArea3Component] payNakit() tiklandi")
-    // this.odemePageFacadeService.payWithCurrentAmount(PaymentMethod.CARD);
-    this.odemePageFacadeService.pay(this.odemePageFacadeService.getPaymentAmount(), PaymentMethod.CARD);
+    console.log("[OdemePageArea3Component] payKredikarti() tiklandi")
+
+    if (this.odemePageFacadeService.getPaymentAmount() != 0) {
+      this.odemePageFacadeService.pay(this.odemePageFacadeService.getPaymentAmount(), PaymentMethod.CARD);
+    }
+    else {
+      this.odemePageFacadeService.pay(this.odemePageFacadeService.selectedTotal, PaymentMethod.CARD);
+    }
   }
 }
