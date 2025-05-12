@@ -147,27 +147,30 @@ export class OdemePageFacadeService {
     console.log('[OdemePageFacadeService] Ödenecek Tutar:', this._paymentAmount$.getValue());
   }
 
-  payWithCurrentAmount(method: PaymentMethod): void {
-    const tableId = this.tableId;
-    const rawAmount = this._paymentAmount$.getValue();
-    const amount = Number(rawAmount);
-
-    if (!tableId || isNaN(amount) || amount <= 0) {
-      console.warn('[OdemePageFacadeService] Invalid payment attempt.', { tableId, rawAmount });
+  pay(amount: number, method: PaymentMethod): void {
+    if (!this.tableId) {
+      console.warn('[OdemePageFacadeService] Cannot process payment — no table ID.');
       return;
     }
 
-    const command = new PaymentCommand(tableId, method, amount);
+    if (isNaN(amount) || amount <= 0) {
+      console.warn('[OdemePageFacadeService] Invalid payment amount:', amount);
+      return;
+    }
+
+    const command = new PaymentCommand(this.tableId, method, amount);
+
     this.paymentService.addSubPayment(command).subscribe({
       next: () => {
         console.log('[OdemePageFacadeService] SubPayment successful:', command);
-        this._paymentAmount$.next('');
+        this._paymentAmount$.next(''); // Clear input after payment
       },
       error: err => {
         console.error('[OdemePageFacadeService] SubPayment failed:', err);
       }
     });
   }
+
 
   deleteSubPaymentAtIndex(index: string): void {
     this.currentPayment$.pipe(
@@ -195,5 +198,9 @@ export class OdemePageFacadeService {
       },
       error: err => console.error('[OdemePageFacadeService] Failed to resolve table or payment:', err)
     });
+  }
+
+  getPaymentAmount(): number {
+    return this._paymentAmount$.getValue() ? parseFloat(this._paymentAmount$.getValue()) : 0;
   }
 }

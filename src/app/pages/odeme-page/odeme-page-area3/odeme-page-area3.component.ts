@@ -14,16 +14,23 @@ export class OdemePageArea3Component {
   constructor(
     private odemePageFacadeService: OdemePageFacadeService,
     private tableDetailsPageFacadeService: TableDetailsPageFacadeService,
-  ) {}
+  ) { }
 
   payNakit(): void {
     console.log("[OdemePageArea3Component] payNakit() tiklandi")
-    // this.odemePageFacadeService.payWithCurrentAmount(PaymentMethod.CASH);
-    this.
+    if (this.odemePageFacadeService.getPaymentAmount() != 0) {
+      this.odemePageFacadeService.pay(this.odemePageFacadeService.getPaymentAmount(), PaymentMethod.CASH);
+    }
+    else {
+      // console.log("[OdemePageArea3Component] odemePageFacadeService.getPaymentAmount() 0 geldi");
+      // console.log("[OdemePageArea3Component] selectedTotal: ", this.odemePageFacadeService.selectedTotal);
+      this.odemePageFacadeService.pay(this.odemePageFacadeService.selectedTotal, PaymentMethod.CASH);
+    }
   }
 
   payKredikarti(): void {
     console.log("[OdemePageArea3Component] payNakit() tiklandi")
-    this.odemePageFacadeService.payWithCurrentAmount(PaymentMethod.CARD);
+    // this.odemePageFacadeService.payWithCurrentAmount(PaymentMethod.CARD);
+    this.odemePageFacadeService.pay(this.odemePageFacadeService.getPaymentAmount(), PaymentMethod.CARD);
   }
 }
