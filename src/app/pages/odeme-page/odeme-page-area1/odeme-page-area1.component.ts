@@ -4,27 +4,35 @@ import { OdemePageFacadeService } from '../../../services/odeme-page-facade.serv
 
 @Component({
   selector: 'app-odeme-page-area1',
+  standalone: true,
   imports: [CommonModule],
   templateUrl: './odeme-page-area1.component.html',
-  styleUrl: './odeme-page-area1.component.scss'
+  styleUrl: './odeme-page-area1.component.scss',
 })
 export class OdemePageArea1Component {
-  selectedItems: any[] = [];
+  // Tracks item: quantity selected
+  selectedCountMap = new Map<any, number>();
 
-  constructor(public odemePageFacadeService: OdemePageFacadeService) { }
+  constructor(public odemePageFacadeService: OdemePageFacadeService) {}
 
-  selectItem(item: any): void {
-    if (!this.isSelected(item)) {
-      this.selectedItems.push(item);
+  selectItem(item: any, order: any): void {
+    const selectedCount = this.selectedCountMap.get(item) ?? 0;
+
+    if (selectedCount < item.quantity) {
+      this.selectedCountMap.set(item, selectedCount + 1);
+    } else {
+      console.log('Already selected max quantity of this item.');
     }
   }
 
   deselectItem(item: any): void {
-    this.selectedItems = this.selectedItems.filter(i => i !== item);
-  }
+    const selectedCount = this.selectedCountMap.get(item) ?? 0;
 
-  isSelected(item: any): boolean {
-    return this.selectedItems.includes(item);
+    if (selectedCount > 1) {
+      this.selectedCountMap.set(item, selectedCount - 1);
+    } else {
+      this.selectedCountMap.delete(item);
+    }
   }
 
   onDeselectClick(event: MouseEvent, item: any): void {
@@ -32,11 +40,20 @@ export class OdemePageArea1Component {
     this.deselectItem(item);
   }
 
+  isSelected(item: any): boolean {
+    return this.selectedCountMap.has(item);
+  }
+
+  getSelectedCount(item: any): number {
+    return this.selectedCountMap.get(item) ?? 0;
+  }
+
   get selectedTotal(): number {
-    return this.selectedItems.reduce((total, item) => {
-      const itemTotal = item.product?.price * item.quantity;
-      return total + (itemTotal || 0);
-    }, 0);
+    let total = 0;
+    this.selectedCountMap.forEach((count, item) => {
+      const unitPrice = item.product?.price ?? 0;
+      total += unitPrice * count;
+    });
+    return total;
   }
 }
-
