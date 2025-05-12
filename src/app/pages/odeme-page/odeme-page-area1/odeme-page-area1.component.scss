@@ -28,6 +28,19 @@
         }
       }
     }
+
+    .total-price {
+      margin-top: 1.5rem;
+      text-align: right;
+
+      h5 {
+        font-weight: 500;
+
+        strong {
+          font-weight: 700;
+        }
+      }
+    }
   }
 
   .no-orders-message {

@@ -26,5 +26,12 @@ export class OdemePageArea1Component {
   isSelected(item: any): boolean {
     return this.selectedItems.includes(item);
   }
+  get selectedTotal(): number {
+    return this.selectedItems.reduce((total, item) => {
+      const itemTotal = item.product?.price * item.quantity;
+      return total + (itemTotal || 0);
+    }, 0);
+  }
+
 }
 
