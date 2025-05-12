@@ -10,24 +10,26 @@
           <li
             *ngFor="let item of order.items"
             [class.selected]="isSelected(item)"
+            (click)="!isSelected(item) && selectItem(item)"
           >
-            <button
-              class="item-button"
-              (click)="selectItem(item)"
-              [disabled]="isSelected(item)"
-            >
-              {{ item.product.name }} - {{ item.product.price }}₺ - x{{
-                item.quantity
-              }}
-            </button>
+            <div class="item-wrapper d-flex justify-content-between align-items-center">
+              <span class="item-content">
+                {{ item.product.name }} - {{ item.product.price }}₺ - x{{ item.quantity }}
+              </span>
 
-            <button
-              *ngIf="isSelected(item)"
-              class="btn btn-sm btn-outline-light deselect-btn d-flex align-items-center gap-1"
-              (click)="deselectItem(item)"
-            >
-              <i class="fas fa-rotate-left"></i>
-            </button>
+              <!-- Deselect button (only clickable when visible) -->
+              <button
+                *ngIf="isSelected(item)"
+                class="btn btn-sm btn-outline-light deselect-btn"
+                (click)="onDeselectClick($event, item)"
+                aria-label="Geri al"
+              >
+                <i class="fas fa-rotate-left"></i>
+              </button>
+
+              <!-- Empty spacer to preserve layout when not selected -->
+              <span *ngIf="!isSelected(item)" class="deselect-spacer"></span>
+            </div>
           </li>
         </ul>
       </div>
@@ -37,7 +39,7 @@
     <div *ngIf="selectedItems.length > 0" class="mt-4 text-end">
       <h5>
         Seçilen Ürünlerin Toplamı:
-        <strong>{{ selectedTotal | number : "1.2-2" }}₺</strong>
+        <strong>{{ selectedTotal | number: '1.2-2' }}₺</strong>
       </h5>
     </div>
   </div>

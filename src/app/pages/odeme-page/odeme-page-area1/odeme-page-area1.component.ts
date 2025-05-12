@@ -27,6 +27,11 @@ export class OdemePageArea1Component {
     return this.selectedItems.includes(item);
   }
 
+  onDeselectClick(event: MouseEvent, item: any): void {
+    event.stopPropagation();
+    this.deselectItem(item);
+  }
+
   get selectedTotal(): number {
     return this.selectedItems.reduce((total, item) => {
       const itemTotal = item.product?.price * item.quantity;

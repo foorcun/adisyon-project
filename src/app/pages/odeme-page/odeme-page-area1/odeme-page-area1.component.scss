@@ -9,7 +9,6 @@
         margin: 0;
 
         li {
-          position: relative;
           padding: 0.5rem 1rem;
           margin-bottom: 0.5rem;
           border: 1px solid #dee2e6;
@@ -17,19 +16,15 @@
           transition: background-color 0.2s ease, color 0.2s ease;
           display: flex;
           align-items: center;
-          justify-content: space-between;
           background-color: #fff;
-
-          &:hover {
-            background-color: #f8f9fa;
-          }
+          cursor: pointer;
 
           &.selected {
             background-color: #4c3398;
             color: #fff;
             border-color: #4c3398;
 
-            .item-button {
+            .item-content {
               color: #fff;
             }
 
@@ -43,34 +38,38 @@
             }
           }
 
-          .item-button {
-            background: transparent;
-            border: none;
-            padding: 0;
-            margin: 0;
+          .item-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             width: 100%;
-            text-align: left;
-            font: inherit;
-            cursor: pointer;
-            color: inherit;
-            transition: background-color 0.2s ease;
+          }
 
-            &:hover:not(:disabled) {
-              background-color: transparent;
-            }
-
-            &:disabled {
-              cursor: default;
-              opacity: 1;
-            }
+          .item-content {
+            flex: 1;
+            font-size: 1rem;
           }
 
           .deselect-btn {
-            font-size: 0.75rem;
-            padding: 0.25rem 0.5rem;
+            width: 2rem;
+            height: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             margin-left: 1rem;
-            white-space: nowrap;
-            z-index: 1;
+            padding: 0;
+            font-size: 1rem;
+
+            i {
+              font-size: 1rem;
+            }
+          }
+
+          .deselect-spacer {
+            width: 2rem;
+            height: 2rem;
+            display: inline-block;
+            margin-left: 1rem;
           }
         }
       }
