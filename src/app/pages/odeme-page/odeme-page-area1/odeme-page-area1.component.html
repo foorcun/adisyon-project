@@ -7,21 +7,26 @@
     <div *ngFor="let order of orders" class="mb-3">
       <div class="order-items">
         <ul>
-          <li *ngFor="let item of order.items" [class.selected]="isSelected(item)">
+          <li
+            *ngFor="let item of order.items"
+            [class.selected]="isSelected(item)"
+          >
             <button
               class="item-button"
               (click)="selectItem(item)"
               [disabled]="isSelected(item)"
             >
-              {{ item.product.name }} - {{ item.product.price }}₺ - x{{ item.quantity }}
+              {{ item.product.name }} - {{ item.product.price }}₺ - x{{
+                item.quantity
+              }}
             </button>
 
             <button
               *ngIf="isSelected(item)"
-              class="btn btn-sm btn-outline-light deselect-btn"
+              class="btn btn-sm btn-outline-light deselect-btn d-flex align-items-center gap-1"
               (click)="deselectItem(item)"
             >
-              Vazgeç
+              <i class="fas fa-rotate-left"></i>
             </button>
           </li>
         </ul>
@@ -32,7 +37,7 @@
     <div *ngIf="selectedItems.length > 0" class="mt-4 text-end">
       <h5>
         Seçilen Ürünlerin Toplamı:
-        <strong>{{ selectedTotal | number: '1.2-2' }}₺</strong>
+        <strong>{{ selectedTotal | number : "1.2-2" }}₺</strong>
       </h5>
     </div>
   </div>
