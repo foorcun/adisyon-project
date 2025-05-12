@@ -3,10 +3,22 @@
     *ngIf="odemePageFacadeService.orders$ | async as orders; else noOrders"
     class="order-group"
   >
-
-    <div *ngFor="let order of odemePageFacadeService.orders$ | async">
-      <div *ngFor="let item of order.items">
-        {{ item.product.name }}- {{ item.product.price }} - x {{ item.quantity }}
+    <div
+      *ngFor="let order of odemePageFacadeService.orders$ | async"
+      class="mb-3"
+    >
+      <div class="list-group">
+        <button
+          type="button"
+          class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+          (click)="onItemClick(item)"
+          *ngFor="let item of order.items"
+        >
+          <span> {{ item.product.name }} - {{ item.product.price }}₺ </span>
+          <span class="badge bg-primary rounded-pill"
+            >x{{ item.quantity }}</span
+          >
+        </button>
       </div>
     </div>
   </div>

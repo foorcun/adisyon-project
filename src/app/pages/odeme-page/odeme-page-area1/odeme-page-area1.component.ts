@@ -15,4 +15,8 @@ export class OdemePageArea1Component {
   ) {
   }
 
+  onItemClick(item: any): void {
+    console.log('Clicked:', item);
+  }
+
 }
