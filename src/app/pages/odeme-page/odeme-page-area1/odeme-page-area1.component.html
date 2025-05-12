@@ -10,36 +10,37 @@
           <li
             *ngFor="let item of order.items"
             class="order-item"
-            [class.selected]="odemePageFacadeService.isSelected(item)"
-            (click)="odemePageFacadeService.selectItem(item)"
+            [class.selected]="isSelected(item)"
+            [class.paid]="isPaid(item)"
+            (click)="onSelect(item)"
             tabindex="0"
             role="button"
-            [attr.aria-pressed]="odemePageFacadeService.isSelected(item)"
+            [attr.aria-pressed]="isSelected(item)"
           >
             <div class="item-wrapper d-flex justify-content-between align-items-center">
               <span class="item-content">
                 {{ item.product.name }} - {{ item.product.price }}₺ - x{{ item.quantity }}
                 <span
-                  *ngIf="odemePageFacadeService.getSelectedCount(item) > 0"
+                  *ngIf="getSelectedCount(item) > 0"
                   class="selected-count ms-2"
                 >
-                  ({{ odemePageFacadeService.getSelectedCount(item) }}/{{ item.quantity }})
+                  ({{ getSelectedCount(item) }}/{{ item.quantity }})
                 </span>
               </span>
 
-              <!-- Deselect button (only visible when selected) -->
+              <!-- Deselect button -->
               <button
-                *ngIf="odemePageFacadeService.isSelected(item)"
+                *ngIf="isSelected(item)"
                 class="btn btn-sm btn-outline-light deselect-btn"
-                (click)="odemePageFacadeService.deselectItem(item); $event.stopPropagation()"
+                (click)="onDeselect($event, item)"
                 aria-label="Ürünü geri al"
               >
                 <i class="fas fa-rotate-left"></i>
               </button>
 
-              <!-- Spacer to preserve layout -->
+              <!-- Spacer when no button -->
               <span
-                *ngIf="!odemePageFacadeService.isSelected(item)"
+                *ngIf="!isSelected(item)"
                 class="deselect-spacer"
                 aria-hidden="true"
               ></span>
@@ -49,16 +50,16 @@
       </div>
     </div>
 
-    <!-- Total of selected items -->
-    <div *ngIf="odemePageFacadeService.selectedTotal > 0" class="mt-4 text-end">
+    <!-- Selected Total -->
+    <div *ngIf="selectedTotal > 0" class="mt-4 text-end">
       <h5>
         Seçilen Ürünlerin Toplamı:
-        <strong>{{ odemePageFacadeService.selectedTotal | number: '1.2-2' }}₺</strong>
+        <strong>{{ selectedTotal | number: '1.2-2' }}₺</strong>
       </h5>
     </div>
   </div>
 
-  <!-- No Orders Message -->
+  <!-- No Orders -->
   <ng-template #noOrders>
     <p class="no-orders-message">Bu masa için sipariş bulunamadı.</p>
   </ng-template>

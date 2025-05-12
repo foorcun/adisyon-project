@@ -16,13 +16,17 @@ export class OdemePageArea1Component {
     this.odemePageFacadeService.selectItem(item);
   }
 
-  onDeselectClick(event: MouseEvent, item: any): void {
+  onDeselect(event: MouseEvent, item: any): void {
     event.stopPropagation();
     this.odemePageFacadeService.deselectItem(item);
   }
 
   isSelected(item: any): boolean {
     return this.odemePageFacadeService.isSelected(item);
+  }
+
+  isPaid(item: any): boolean {
+    return this.odemePageFacadeService.isPaid(item);
   }
 
   getSelectedCount(item: any): number {
