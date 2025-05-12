@@ -1,24 +1,13 @@
 <div class="odeme-page">
-  <!-- Grouped Orders View -->
-  <!-- <div *ngIf="orders.length > 0; else noOrders" class="order-group"> -->
-  <div *ngIf="odemePageFacadeService.orders$ | async as orders; else noOrders" class="order-group">
-    <!-- Split Items -->
-    <!-- <div class="order-items">
-            <h4>Tüm Ürünler:</h4>
-            <ul>
-              <li
-                *ngFor="let item of getAllItems(); let i = index"
-                (click)="toggleItemSelection(i)"
-                [class.selected]="odemePageFacadeService.selectedItems.includes(i)"
-              >
-                {{ item.product.name }} - {{ item.product.price | currency : "TRY" }}
-              </li>
-            </ul>
-          </div> -->
+  <div
+    *ngIf="odemePageFacadeService.orders$ | async as orders; else noOrders"
+    class="order-group"
+  >
 
-    <!-- {{ (odemePageFacadeService.orders$ | async)?.length }} -->
     <div *ngFor="let order of odemePageFacadeService.orders$ | async">
-      <div *ngFor="let item of order.items">{{ item.product.name }}- {{item.product.price}}</div>
+      <div *ngFor="let item of order.items">
+        {{ item.product.name }}- {{ item.product.price }}
+      </div>
     </div>
   </div>
 
