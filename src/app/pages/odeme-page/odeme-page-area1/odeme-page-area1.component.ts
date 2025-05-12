@@ -13,25 +13,25 @@ export class OdemePageArea1Component {
 
   constructor(public odemePageFacadeService: OdemePageFacadeService) { }
 
-  toggleItemSelection(item: any): void {
-    const index = this.selectedItems.indexOf(item);
-    if (index > -1) {
-      this.selectedItems.splice(index, 1); // remove
-    } else {
-      this.selectedItems.push(item); // add
+  selectItem(item: any): void {
+    if (!this.isSelected(item)) {
+      this.selectedItems.push(item);
     }
-    console.log('Selected Items:', this.selectedItems);
+  }
+
+  deselectItem(item: any): void {
+    this.selectedItems = this.selectedItems.filter(i => i !== item);
   }
 
   isSelected(item: any): boolean {
     return this.selectedItems.includes(item);
   }
+
   get selectedTotal(): number {
     return this.selectedItems.reduce((total, item) => {
       const itemTotal = item.product?.price * item.quantity;
       return total + (itemTotal || 0);
     }, 0);
   }
-
 }
 

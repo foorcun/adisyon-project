@@ -5,15 +5,24 @@
     class="order-group"
   >
     <div *ngFor="let order of orders" class="mb-3">
-
       <div class="order-items">
         <ul>
-          <li
-            *ngFor="let item of order.items"
-            (click)="toggleItemSelection(item)"
-            [class.selected]="isSelected(item)"
-          >
-            {{ item.product.name }} - {{ item.product.price }}₺ - x{{ item.quantity }}
+          <li *ngFor="let item of order.items" [class.selected]="isSelected(item)">
+            <button
+              class="item-button"
+              (click)="selectItem(item)"
+              [disabled]="isSelected(item)"
+            >
+              {{ item.product.name }} - {{ item.product.price }}₺ - x{{ item.quantity }}
+            </button>
+
+            <button
+              *ngIf="isSelected(item)"
+              class="btn btn-sm btn-outline-light deselect-btn"
+              (click)="deselectItem(item)"
+            >
+              Vazgeç
+            </button>
           </li>
         </ul>
       </div>

@@ -9,12 +9,16 @@
         margin: 0;
 
         li {
-          cursor: pointer;
-          padding: 0.75rem 1rem;
+          position: relative;
+          padding: 0.5rem 1rem;
+          margin-bottom: 0.5rem;
           border: 1px solid #dee2e6;
           border-radius: 0.375rem;
-          margin-bottom: 0.5rem;
           transition: background-color 0.2s ease, color 0.2s ease;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          background-color: #fff;
 
           &:hover {
             background-color: #f8f9fa;
@@ -24,13 +28,59 @@
             background-color: #4c3398;
             color: #fff;
             border-color: #4c3398;
+
+            .item-button {
+              color: #fff;
+            }
+
+            .deselect-btn {
+              border-color: #fff;
+              color: #fff;
+
+              &:hover {
+                background-color: rgba(255, 255, 255, 0.15);
+              }
+            }
+          }
+
+          .item-button {
+            background: transparent;
+            border: none;
+            padding: 0;
+            margin: 0;
+            width: 100%;
+            text-align: left;
+            font: inherit;
+            cursor: pointer;
+            color: inherit;
+            transition: background-color 0.2s ease;
+
+            &:hover:not(:disabled) {
+              background-color: transparent;
+            }
+
+            &:disabled {
+              cursor: default;
+              opacity: 1;
+            }
+          }
+
+          .deselect-btn {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            margin-left: 1rem;
+            white-space: nowrap;
+            z-index: 1;
           }
         }
       }
     }
 
-    .total-price {
+    .mt-4 {
       margin-top: 1.5rem;
+    }
+
+    .text-end {
       text-align: right;
 
       h5 {
