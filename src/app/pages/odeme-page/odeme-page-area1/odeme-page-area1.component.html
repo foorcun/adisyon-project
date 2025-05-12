@@ -6,7 +6,7 @@
 
     <div *ngFor="let order of odemePageFacadeService.orders$ | async">
       <div *ngFor="let item of order.items">
-        {{ item.product.name }}- {{ item.product.price }}
+        {{ item.product.name }}- {{ item.product.price }} - x {{ item.quantity }}
       </div>
     </div>
   </div>
