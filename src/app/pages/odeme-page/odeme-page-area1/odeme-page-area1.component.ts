@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { take } from 'rxjs/operators';
 import { OdemePageFacadeService } from '../../../services/odeme-page-facade.service';
 import { OrderItem } from '../../../OrderFeature/domain/entities/order-item.entity';
 import { Order } from '../../../OrderFeature/domain/entities/order.entity';
-import { take } from 'rxjs';
 
 @Component({
   selector: 'app-odeme-page-area1',
@@ -13,25 +13,26 @@ import { take } from 'rxjs';
   styleUrl: './odeme-page-area1.component.scss',
 })
 export class OdemePageArea1Component {
-  private allItemsCache: OrderItem[] = [];
+  private orders: Order[] = [];
 
   constructor(public odemePageFacadeService: OdemePageFacadeService) {
     this.odemePageFacadeService.orders$.pipe(take(1)).subscribe(orders => {
-      this.allItemsCache = orders.flatMap(order => order.items);
+      this.orders = orders;
     });
   }
 
-  // 🔵 Unpaid items
+  get allItems(): OrderItem[] {
+    return this.orders.flatMap(order => order.items);
+  }
+
   get unpaidItems(): OrderItem[] {
-    return this.allItemsCache.filter(item => !this.isPaid(item));
+    return this.allItems.filter(item => this.getPaidCount(item) < item.quantity);
   }
 
-  // ✅ Paid items
   get paidItems(): OrderItem[] {
-    return this.allItemsCache.filter(item => this.isPaid(item));
+    return this.allItems.filter(item => this.getPaidCount(item) >= item.quantity);
   }
 
-  // ✅ Selection and payment state passthroughs
   onSelect(item: OrderItem): void {
     this.odemePageFacadeService.selectItem(item);
   }

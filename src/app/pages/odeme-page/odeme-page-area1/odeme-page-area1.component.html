@@ -1,5 +1,9 @@
 <div class="odeme-page">
-  <div *ngIf="odemePageFacadeService.orders$ | async; else noOrders" class="order-group">
+  <!-- Orders exist -->
+  <div
+    *ngIf="odemePageFacadeService.orders$ | async; else noOrders"
+    class="order-group"
+  >
     <!-- 🔵 Ödenmemiş Olanlar -->
     <div *ngIf="unpaidItems.length > 0">
       <h6 class="text-primary fw-bold">🔵 Ödenmemiş Olanlar</h6>
@@ -16,14 +20,19 @@
           <div class="item-wrapper d-flex justify-content-between align-items-center">
             <span class="item-content">
               {{ item.product.name }} - {{ item.product.price }}₺ - x{{ item.quantity }}
+              <span class="ms-2 text-muted">
+                ({{ item.quantity - getPaidCount(item) }} ödenmemiş /
+                 {{ getPaidCount(item) }} ödenmiş)
+              </span>
               <span
                 *ngIf="getSelectedCount(item) > 0"
                 class="selected-count ms-2"
               >
-                ({{ getSelectedCount(item) }}/{{ item.quantity }})
+                (seçili: {{ getSelectedCount(item) }})
               </span>
             </span>
 
+            <!-- Deselect button -->
             <button
               *ngIf="isSelected(item)"
               class="btn btn-sm btn-outline-light deselect-btn"
@@ -33,6 +42,7 @@
               <i class="fas fa-rotate-left"></i>
             </button>
 
+            <!-- Spacer -->
             <span *ngIf="!isSelected(item)" class="deselect-spacer" aria-hidden="true"></span>
           </div>
         </li>
@@ -50,8 +60,8 @@
           <div class="item-wrapper d-flex justify-content-between align-items-center">
             <span class="item-content">
               {{ item.product.name }} - {{ item.product.price }}₺ - x{{ item.quantity }}
-              <span class="selected-count ms-2">
-                ({{ getPaidCount(item) }}/{{ item.quantity }})
+              <span class="ms-2 text-muted">
+                ({{ getPaidCount(item) }}/{{ item.quantity }} ödenmiş)
               </span>
             </span>
             <span class="deselect-spacer"></span>
@@ -60,7 +70,7 @@
       </ul>
     </div>
 
-    <!-- Selected Total -->
+    <!-- Total of selected items -->
     <div *ngIf="selectedTotal > 0" class="mt-4 text-end">
       <h5>
         Seçilen Ürünlerin Toplamı:
@@ -69,6 +79,7 @@
     </div>
   </div>
 
+  <!-- No Orders Message -->
   <ng-template #noOrders>
     <p class="no-orders-message">Bu masa için sipariş bulunamadı.</p>
   </ng-template>
