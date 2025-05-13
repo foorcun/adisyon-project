@@ -13,30 +13,13 @@ import { SubpaymentComponent } from './subpayment/subpayment.component';
   styleUrl: './odeme-page-area2.component.scss'
 })
 export class OdemePageArea2Component {
-
-  public totalPrice$: Observable<number>;
-  public subPaymentTotal$: Observable<number>;
-  public remainingInfo$: Observable<{ label: string; amount: number }>;
+  public totalPrice$!: Observable<number>;
+  public subPaymentTotal$!: Observable<number>;
+  public remainingInfo$!: Observable<{ label: string; amount: number }>;
 
   constructor(public odemePageFacadeService: OdemePageFacadeService) {
     this.totalPrice$ = this.odemePageFacadeService.totalPrice$;
     this.subPaymentTotal$ = this.odemePageFacadeService.subPaymentTotal$;
-
-    this.remainingInfo$ = combineLatest([
-      this.totalPrice$,
-      this.subPaymentTotal$
-    ]).pipe(
-      map(([total, paid]) => {
-        const diff = paid - total;
-
-        if (diff < 0) {
-          return { label: 'Kalan Tutar', amount: Math.abs(diff) };
-        } else if (diff > 0) {
-          return { label: 'Para Üstü', amount: diff };
-        } else {
-          return { label: 'Tam Ödendi', amount: 0 };
-        }
-      })
-    );
+    this.remainingInfo$ = this.odemePageFacadeService.remainingInfo$;
   }
 }

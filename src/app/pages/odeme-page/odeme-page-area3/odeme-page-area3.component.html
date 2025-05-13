@@ -10,7 +10,7 @@
     <button (click)="payKredikarti()">Kredi Kartı Öde</button>
     <button
       (click)="kaydetVeMasayiBosalt()"
-      [disabled]="!odemePageFacadeService.canCloseTable()"
+      [disabled]="!(odemePageFacadeService.canCloseTable$ | async)"
     >
       Kaydet ve Masayı Boşalt
     </button>

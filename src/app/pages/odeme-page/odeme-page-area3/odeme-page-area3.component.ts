@@ -4,11 +4,13 @@ import { OdemePageFacadeService } from '../../../services/odeme-page-facade.serv
 import { TableDetailsPageFacadeService } from '../../../services/table-details-page.facade.service';
 import { PaymentMethod } from '../../../PaymentFeature/domain/entities/payment-method.enum';
 import { Cart } from '../../../CartFeature/domain/entity/cart';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-odeme-page-area3',
   templateUrl: './odeme-page-area3.component.html',
-  styleUrl: './odeme-page-area3.component.scss'
+  styleUrl: './odeme-page-area3.component.scss',
+  imports: [CommonModule],
 })
 export class OdemePageArea3Component {
 
@@ -39,11 +41,14 @@ export class OdemePageArea3Component {
   }
 
   kaydetVeMasayiBosalt(): void {
-    if (this.odemePageFacadeService.canCloseTable()) {
-      this.odemePageFacadeService.closeTableAndSave();
-    } else {
-      alert("Tüm ürünler ödenmeden masa kapatılamaz.");
-    }
+    this.odemePageFacadeService.canCloseTable$.pipe(take(1)).subscribe(canClose => {
+      if (canClose) {
+        this.odemePageFacadeService.closeTableAndSave();
+      } else {
+        alert("Tüm ürünler ödenmeden masa kapatılamaz.");
+      }
+    });
   }
+
 
 }
