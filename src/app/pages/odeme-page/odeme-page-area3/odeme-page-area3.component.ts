@@ -37,4 +37,8 @@ export class OdemePageArea3Component {
       this.odemePageFacadeService.pay(this.odemePageFacadeService.selectedTotal, PaymentMethod.CARD);
     }
   }
+
+  kaydetVeMasayiBosalt() {
+    throw new Error('Method not implemented.');
+  }
 }
