@@ -243,4 +243,23 @@ export class OdemePageFacadeService {
   getPaymentAmount(): number {
     return this._paymentAmount$.getValue() ? parseFloat(this._paymentAmount$.getValue()) : 0;
   }
+
+  canCloseTable(): boolean {
+    const paidMap = this.paidCountMap;
+
+    return this._orders$.getValue().every(order =>
+      order.items.every(item =>
+        (paidMap.get(item) ?? 0) >= item.quantity
+      )
+    );
+  }
+
+  closeTableAndSave(): void {
+    console.log('[OdemePageFacadeService] Table closure initiated...');
+    // Add real logic here:
+    // - Change order statuses to COMPLETED
+    // - Clear table assignment
+    // - Notify backend
+  }
+
 }

@@ -13,7 +13,7 @@ import { Cart } from '../../../CartFeature/domain/entity/cart';
 export class OdemePageArea3Component {
 
   constructor(
-    private odemePageFacadeService: OdemePageFacadeService,
+    public odemePageFacadeService: OdemePageFacadeService,
     private tableDetailsPageFacadeService: TableDetailsPageFacadeService,
   ) { }
 
@@ -38,7 +38,12 @@ export class OdemePageArea3Component {
     }
   }
 
-  kaydetVeMasayiBosalt() {
-    throw new Error('Method not implemented.');
+  kaydetVeMasayiBosalt(): void {
+    if (this.odemePageFacadeService.canCloseTable()) {
+      this.odemePageFacadeService.closeTableAndSave();
+    } else {
+      alert("Tüm ürünler ödenmeden masa kapatılamaz.");
+    }
   }
+
 }
