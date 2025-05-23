@@ -1,105 +1,72 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-// import { CartModalService } from '../../../services/cart-modal.service';
-// import { ProfileModalService } from '../../../services/profile-modal.service';
-// import { OrderModalService } from '../../../services/order-modal.service';
-// import { CartPageFacadeService } from '../../../services/cart-page.facade.service';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { UserService } from '../../services/user.service';
 import { UserRole } from '../../UserFeature/domain/entities/user-role.enum';
 import { UserWithRole } from '../../UserFeature/domain/entities/user-with-role';
-// import { Cart } from '../../../CartFeature/domain/entity/cart';
-// import { UserRole } from '../../../UserFeature/domain/entities/user-role.enum';
-// import { UserService } from '../../../services/user.service';
-// import { UserWithRole } from '../../../UserFeature/domain/entities/user-with-role';
-// import { MyOrdersModalService } from '../../../services/modals/my-orders-modal.service';
 import { CartService } from '../../services/cart.service';
 
 @Component({
   selector: 'app-bottom-navigation-bar',
   templateUrl: './bottom-navigation-bar.component.html',
   styleUrls: ['./bottom-navigation-bar.component.scss'],
-  imports: [CommonModule]
+  imports: [CommonModule],
+  standalone: true
 })
 export class BottomNavigationBarComponent {
 
-activeRoute: string = 'home-page'; // Default active route
-
-  private itemCountSubject = new BehaviorSubject<number>(0); // Holds the cart state
-  itemCount$ = this.itemCountSubject.asObservable(); // Observable for components to subscribe to
+  activeRoute: string = 'home-page';
   userRole: UserRole | null = null;
 
   navItems = [
-    { label: 'Home', icon: 'fas fa-home', route: 'home-page' },
-    // { label: 'Search', icon: 'fas fa-search', route: '/search' },
-    { label: 'Cart', icon: 'fas fa-shopping-cart', route: 'cart-page', badge: 3 },
-    { label: 'Profile', icon: 'fas fa-user', route: 'profile-page' },
-    // { label: 'Order', icon: 'fas fa-store', route: 'order-page' }
-    { label: 'Siparişlerim', icon: 'fas fa-store', route: 'user-orders-page' }
+    { id: 'home', label: 'Home', icon: 'fas fa-home', route: 'home-page' },
+    { id: 'cart', label: 'Cart', icon: 'fas fa-shopping-cart', route: 'cart-page', badge: 0 },
+    { id: 'profile', label: 'Profile', icon: 'fas fa-user', route: 'profile-page' },
+    { id: 'orders', label: 'Siparişlerim', icon: 'fas fa-store', route: 'user-orders-page' }
   ];
 
   constructor(
     private router: Router,
-    // private cartModalService: CartModalService,
-    // private profileModalService: ProfileModalService,
-    // private orderModalService: OrderModalService,
-    // private myOrdersModalService: MyOrdersModalService,
-    // private cartPageFacadeService: CartPageFacadeService,
     private cartService: CartService,
     private userService: UserService
   ) {
-    // this.cartPageFacadeService.getCart().subscribe((cart: Cart) => {
-    //   console.log('Cart updated in bottom nav:', cart);
-    //   this.itemCountSubject.next(cart.getItemsCount());
-    // });
-    this.cartService.cart$.subscribe((cart) => {
-      console.log('Cart updated in bottom nav:', cart);
-      // this.itemCountSubject.next(cart.getItemsCount());
-      this.navItems[1].badge = cart.getItemsCount();
-    }
-    );
-
-    this.itemCount$.subscribe((count) => {
-      console.log('Item count updated:', count);
-      this.navItems[1].badge = count;
+    this.cartService.cart$.subscribe(cart => {
+      this.updateBadge('cart', cart.getItemsCount());
     });
 
-    // Subscribe to user role changes
     this.userService.currentUserWithRole$.subscribe((userWithRole: UserWithRole | null) => {
       if (userWithRole) {
         this.userRole = userWithRole.role;
-        this.updateNavItems();
+        this.updateNavItemsForRole();
       }
     });
   }
-  private updateNavItems() {
-    if (this.userRole === UserRole.ADMIN) {
-      this.navItems[3] = { label: 'Sipariş', icon: 'fas fa-store', route: 'admin-orders-page' };
-    } else {
-      this.navItems[3] = { label: 'Siparişlerim', icon: 'fas fa-box', route: 'user-orders-page' };
+
+  private updateBadge(id: string, count: number): void {
+    const item = this.navItems.find(nav => nav.id === id);
+    if (item) {
+      item.badge = count;
     }
   }
-  navigate(route: string) {
-    // if (route === 'cart-page') {
-    //   this.cartModalService.openModal();
-    // } else if (route === 'profile-page') {
-    //   console.log("[BottomNavigationBarComponent] profileModalService.openModal()");
-    //   this.profileModalService.openModal();
-    // }
-    // else if (route === 'admin-orders-page') {
-    //   console.log("[BottomNavigationBarComponent] orderModalService.openModal()");
-    //   this.orderModalService.openModal();
-    // }
-    // // user-orders-page
-    // else if (route === 'user-orders-page') {
-    //   console.log("[BottomNavigationBarComponent] myOrdersModalService.openModal()");
-    //   // this.router.navigate(['/user-orders-page']);
-    //   this.myOrdersModalService.openModal();
-    // }
-    // else {
-    this.activeRoute = route; // Set the clicked route as active
+
+  private updateNavItemsForRole(): void {
+    const ordersItem = this.navItems.find(nav => nav.id === 'orders');
+    if (ordersItem) {
+      if (this.userRole === UserRole.ADMIN) {
+        ordersItem.label = 'Sipariş';
+        ordersItem.icon = 'fas fa-store';
+        ordersItem.route = 'admin-orders-page';
+      } else {
+        ordersItem.label = 'Siparişlerim';
+        ordersItem.icon = 'fas fa-box';
+        ordersItem.route = 'user-orders-page';
+      }
+    }
+  }
+
+  navigate(route: string): void {
+    this.activeRoute = route;
     this.router.navigate([route]);
-    // }
   }
 }
