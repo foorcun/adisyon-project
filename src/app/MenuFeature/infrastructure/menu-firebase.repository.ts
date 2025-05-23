@@ -13,7 +13,8 @@ export class MenuFirebaseRepository {
     private basePath = 'menu';
     private menuSubject = new BehaviorSubject<Menu | null>(null);
     menu$ = this.menuSubject.asObservable();
-    menuKey = 'menuKey1';
+    // menuKey = 'menuKey1';
+    menuKey = 'menuKey_zeuspub';
 
     constructor(private database: Database) { }
 
@@ -70,8 +71,8 @@ export class MenuFirebaseRepository {
     }
     
     // Add Menu Item
-    addMenuItem(menuKey: string, categoryId: string, menuItem: MenuItem): Observable<void> {
-        const menuItemRef = ref(this.database, `${this.basePath}/${menuKey}/category/${categoryId}/menuItem`);
+    addMenuItem(categoryId: string, menuItem: MenuItem): Observable<void> {
+        const menuItemRef = ref(this.database, `${this.basePath}/${this.menuKey}/category/${categoryId}/menuItem`);
         return from(push(menuItemRef, {
             name: menuItem.name,
             description: menuItem.description,
@@ -81,14 +82,14 @@ export class MenuFirebaseRepository {
     }
 
     // Remove Menu Item
-    removeMenuItem(menuKey: string, categoryId: string, menuItemId: string): Observable<void> {
-        const menuItemRef = ref(this.database, `${this.basePath}/${menuKey}/category/${categoryId}/menuItem/${menuItemId}`);
+    removeMenuItem(categoryId: string, menuItemId: string): Observable<void> {
+        const menuItemRef = ref(this.database, `${this.basePath}/${this.menuKey}/category/${categoryId}/menuItem/${menuItemId}`);
         return from(remove(menuItemRef));
     }
 
     // Update Menu Item
-    updateMenuItem(menuKey: string, categoryId: string, menuItemId: string, updates: Partial<MenuItem>): Observable<void> {
-        const menuItemRef = ref(this.database, `${this.basePath}/${menuKey}/category/${categoryId}/menuItem/${menuItemId}`);
+    updateMenuItem(categoryId: string, menuItemId: string, updates: Partial<MenuItem>): Observable<void> {
+        const menuItemRef = ref(this.database, `${this.basePath}/${this.menuKey}/category/${categoryId}/menuItem/${menuItemId}`);
         return from(update(menuItemRef, updates));
     }
 }

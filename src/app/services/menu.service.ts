@@ -82,31 +82,31 @@ export class MenuService {
 
   /** ✅ Add a category */
   addCategory(menuKey: string, category: Category): Observable<void> {
-    return this.menuRepository.addCategory( category);
+    return this.menuRepository.addCategory(category);
   }
 
   /** ✅ Update a category name */
   updateCategoryName(menuKey: string, categoryId: string, newName: string): Observable<void> {
-    return this.menuRepository.updateCategoryName( categoryId, newName);
+    return this.menuRepository.updateCategoryName(categoryId, newName);
   }
 
   /** ✅ Remove a category */
   removeCategory(menuKey: string, categoryId: string): Observable<void> {
-    return this.menuRepository.removeCategory( categoryId);
+    return this.menuRepository.removeCategory(categoryId);
   }
 
   /** ✅ Add a menu item */
   addMenuItem(menuKey: string, categoryId: string, menuItem: MenuItem): Observable<void> {
-    return this.menuRepository.addMenuItem(menuKey, categoryId, menuItem);
+    return this.menuRepository.addMenuItem(categoryId, menuItem);
   }
 
   /** ✅ Update a menu item */
   updateMenuItem(menuKey: string, categoryId: string, menuItemId: string, updates: Partial<MenuItem>): Observable<void> {
-    return this.menuRepository.updateMenuItem(menuKey, categoryId, menuItemId, updates);
+    return this.menuRepository.updateMenuItem(categoryId, menuItemId, updates);
   }
 
   /** ✅ Remove a menu item */
   removeMenuItem(menuKey: string, categoryId: string, menuItemId: string): Observable<void> {
-    return this.menuRepository.removeMenuItem(menuKey, categoryId, menuItemId);
+    return this.menuRepository.removeMenuItem(categoryId, menuItemId);
   }
 }

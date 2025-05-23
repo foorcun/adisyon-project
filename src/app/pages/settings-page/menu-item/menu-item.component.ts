@@ -13,7 +13,7 @@ import { MenuFirebaseRepository } from '../../../MenuFeature/infrastructure/menu
   imports: [ReactiveFormsModule, CommonModule, FormsModule]
 })
 export class MenuItemComponent implements OnInit {
-  menuKey: string = 'menuKey1';
+  // menuKey: string = 'menuKey1';
   categories: { [key: string]: Category } = {};
   selectedCategoryId: string | null = null;
   menuItems: { [key: string]: MenuItem } = {};
@@ -89,7 +89,7 @@ export class MenuItemComponent implements OnInit {
 
       const selectedCategory = this.menuItemForm.value.categoryId;
 
-      this.menuRepository.addMenuItem(this.menuKey, selectedCategory, newItem).subscribe(() => {
+      this.menuRepository.addMenuItem(selectedCategory, newItem).subscribe(() => {
         console.log('Menu item added successfully');
         this.menuItemForm.reset();
         this.isAddItemVisible = false; // Collapse the form after adding
@@ -103,7 +103,7 @@ export class MenuItemComponent implements OnInit {
   // Delete a menu item
   deleteMenuItem(menuItemId: string) {
     if (this.selectedCategoryId) {
-      this.menuRepository.removeMenuItem(this.menuKey, this.selectedCategoryId, menuItemId).subscribe(() => {
+      this.menuRepository.removeMenuItem(this.selectedCategoryId, menuItemId).subscribe(() => {
         console.log(`Menu item ${menuItemId} deleted.`);
         this.loadMenuItems();
       });
@@ -119,7 +119,7 @@ export class MenuItemComponent implements OnInit {
       this.updatingItems[menuItemId] = true;
       this.updatedItems[menuItemId] = false;
 
-      this.menuRepository.updateMenuItem(this.menuKey, this.selectedCategoryId, menuItemId, updates).subscribe(() => {
+      this.menuRepository.updateMenuItem(this.selectedCategoryId, menuItemId, updates).subscribe(() => {
         console.log(`Menu item ${menuItemId} updated.`);
         this.loadMenuItems();
 
