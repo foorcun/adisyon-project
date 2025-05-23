@@ -12,11 +12,12 @@ export class TableFirebaseRepository {
   private basePath = 'myTables';
   private tablesSubject = new BehaviorSubject<{ [key: string]: Table } | null>(null);
   tables$ = this.tablesSubject.asObservable();
+  menuKey = 'menuKey_zeuspub';
 
   constructor(private database: Database) { }
 
   listenForTablesChanges() {
-    const tablesRef = ref(this.database, this.basePath);
+    const tablesRef = ref(this.database, `${this.basePath}/${this.menuKey}`);
     onValue(tablesRef, (snapshot) => {
       const tablesData = snapshot.val();
 
@@ -62,19 +63,19 @@ export class TableFirebaseRepository {
 
   // ✅ Add Table Function
   createTable(table: Table): Observable<void> {
-    const tableRef = ref(this.database, this.basePath);
+    const tableRef = ref(this.database, `${this.basePath}/${this.menuKey}`);
     return from(push(tableRef, table).then(() => { }));
   }
 
   updateTable(tableId: string, updates: Partial<Table>): Observable<void> {
-    const tableRef = ref(this.database, `${this.basePath}/${tableId}`);
+    const tableRef = ref(this.database, `${this.basePath}/${this.menuKey}/${tableId}`);
     return from(update(tableRef, updates));
   }
 
 
   /** ✅ Delete a table */
   deleteTable(tableId: string): Observable<void> {
-    const tableRef = ref(this.database, `${this.basePath}/${tableId}`);
+    const tableRef = ref(this.database, `${this.basePath}/${this.menuKey}/${tableId}`);
     return from(remove(tableRef));
   }
 }
