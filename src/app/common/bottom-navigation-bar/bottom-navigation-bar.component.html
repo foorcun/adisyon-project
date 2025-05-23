@@ -1,12 +1,14 @@
 <div class="bottom-nav-bar">
-  <button
-    class="nav-button"
-    *ngFor="let item of navItems"
-    (click)="navigate(item.route)"
-    [ngClass]="{ 'active': activeRoute === item.route }"
-  >
-    <i class="{{ item.icon }}"></i>
-    <span>{{ item.label }}</span>
-    <span *ngIf="item.badge" class="badge">{{ item.badge }}</span>
-  </button>
+  <ng-container *ngFor="let item of navItems">
+    <button
+      *ngIf="!item.disabled"
+      class="nav-button"
+      (click)="navigate(item.route)"
+      [ngClass]="{ 'active': activeRoute === item.route }"
+    >
+      <i class="{{ item.icon }}"></i>
+      <span>{{ item.label }}</span>
+      <span *ngIf="item.badge" class="badge">{{ item.badge }}</span>
+    </button>
+  </ng-container>
 </div>

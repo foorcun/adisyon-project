@@ -21,7 +21,14 @@ export class BottomNavigationBarComponent {
 
   navItems = [
     { id: 'home', label: 'Home', icon: 'fas fa-home', route: 'home-page' },
-    { id: 'cart', label: 'Cart', icon: 'fas fa-shopping-cart', route: 'cart-page', badge: 0 },
+    {
+      id: 'cart',
+      label: 'Cart',
+      icon: 'fas fa-shopping-cart',
+      route: 'cart-page',
+      badge: 0,
+      disabled: true // 👈 Temporarily disable
+    },
     { id: 'profile', label: 'Profile', icon: 'fas fa-user', route: 'profile-page' },
     { id: 'orders', label: 'Siparişlerim', icon: 'fas fa-store', route: 'user-orders-page' }
   ];
