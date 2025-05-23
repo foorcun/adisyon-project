@@ -35,7 +35,7 @@ export class OrderFirebaseRepository extends OrderRepository {
     * Listens for changes to all orders in Firebase and updates the BehaviorSubject.
     */
   listenForAllOrdersChanges(): void {
-    const ordersRef = ref(this.database, this.basePath);
+    const ordersRef = ref(this.database, `${this.basePath}/${this.menuKey}`);
 
     onValue(ordersRef, (snapshot: DataSnapshot) => {
       const data = snapshot.val();
@@ -70,7 +70,7 @@ export class OrderFirebaseRepository extends OrderRepository {
   createOrder(order: OrderDto): Observable<string> {
     console.log("[OrderFirebaseRepository] - Creating order...", order);
     return new Observable((observer) => {
-      const orderRef = push(ref(this.database, this.basePath));
+      const orderRef = push(ref(this.database, `${this.basePath}/${this.menuKey}`));
 
       set(orderRef, order)
         .then(() => {
@@ -90,7 +90,7 @@ export class OrderFirebaseRepository extends OrderRepository {
    */
   getOrderById(orderId: string): Observable<Order> {
     return new Observable((observer) => {
-      const orderRef = ref(this.database, `${this.basePath}/${orderId}`);
+      const orderRef = ref(this.database, `${this.basePath}/${this.menuKey}/${orderId}`);
       onValue(
         orderRef,
         (snapshot: DataSnapshot) => {
@@ -123,7 +123,7 @@ export class OrderFirebaseRepository extends OrderRepository {
    */
   getAllOrders(): Observable<Order[]> {
     return new Observable((observer) => {
-      const ordersRef = ref(this.database, this.basePath);
+      const ordersRef = ref(this.database, `${this.basePath}/${this.menuKey}`);
       onValue(
         ordersRef,
         (snapshot: DataSnapshot) => {
@@ -160,7 +160,7 @@ export class OrderFirebaseRepository extends OrderRepository {
    */
   updateOrderStatus(orderId: string, status: OrderStatus): Observable<void> {
     return new Observable((observer) => {
-      const orderRef = ref(this.database, `${this.basePath}/${orderId}`);
+      const orderRef = ref(this.database, `${this.basePath}/${this.menuKey}/${orderId}`);
       update(orderRef, { status })
         .then(() => {
           observer.next();
@@ -177,7 +177,7 @@ export class OrderFirebaseRepository extends OrderRepository {
    */
   deleteOrder(orderId: string): Observable<void> {
     return new Observable((observer) => {
-      const orderRef = ref(this.database, `${this.basePath}/${orderId}`);
+      const orderRef = ref(this.database, `${this.basePath}/${this.menuKey}/${orderId}`);
       remove(orderRef)
         .then(() => {
           observer.next();
