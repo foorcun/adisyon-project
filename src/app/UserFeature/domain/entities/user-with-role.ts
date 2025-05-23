@@ -6,4 +6,8 @@ export class UserWithRole {
     public firebaseUser: User, // Firebase's User object
     public role: UserRole, // Role as a separate property
   ) {}
+
+  isUser(){
+    return this.role === UserRole.USER
+  }
 }

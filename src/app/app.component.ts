@@ -4,22 +4,32 @@ import { NavbarBootstrapComponent } from './common/navbar-bootstrap/navbar-boots
 import { BottomNavigationBarComponent } from './common/bottom-navigation-bar/bottom-navigation-bar.component';
 import { filter } from 'rxjs';
 import { CommonModule } from '@angular/common';
+import { UserService } from './services/user.service';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, BottomNavigationBarComponent, CommonModule ],
+  imports: [RouterOutlet, BottomNavigationBarComponent, CommonModule],
+  // imports: [RouterOutlet, CommonModule ],
   // imports: [RouterOutlet ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
- title = 'adisyon-project';
+  title = 'adisyon-project';
   showBottomNav = true;
+  isUserAllowed = false;
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private userService: UserService) {
     this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe(() => {
       this.checkRoute();
     });
+    // this.isUserAllowed = this.userService.currentUserWithRole$.
+    this.userService.currentUserWithRole$.subscribe(currentuserWithRole => {
+      // console.log(currentuserWithRole)
+      if (currentuserWithRole) {
+        this.isUserAllowed = !currentuserWithRole.isUser();
+      }
+    })
   }
 
   private checkRoute() {
