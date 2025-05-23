@@ -26,7 +26,6 @@ export class MyConfigurationFirebaseRepository {
         const configRef = ref(this.database, `${this.basePath}/${this.userKey}`);
         onValue(configRef, (snapshot) => {
             const configData = snapshot.val();
-            console.log("[MyConfigurationFirebaseRepository]" + configData)
             const transformedConfig = MyConfigurationMapper.fromJson(configData);
             console.log("[MyConfigurationFirebaseRepository] listenForConfigChanges:", transformedConfig);
             this.configSubject.next(transformedConfig);

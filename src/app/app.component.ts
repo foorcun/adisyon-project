@@ -15,6 +15,8 @@ import { MyConfigService } from './services/my-config.service';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
+
+
 export class AppComponent {
   title = 'adisyon-project';
   showBottomNav = true;
@@ -31,6 +33,14 @@ export class AppComponent {
         this.isUserAllowed = !currentuserWithRole.isUser();
       }
     })
+
+
+    // document.documentElement.style.setProperty('--primary-color', this.myConfig.primaryColor);
+    this.myConfig.config$.subscribe(myConfig => {
+      console.log("[AppComponent]" + myConfig.primaryColor)
+      document.documentElement.style.setProperty('--primary-color', myConfig.primaryColor);
+    }
+    )
   }
 
   private checkRoute() {

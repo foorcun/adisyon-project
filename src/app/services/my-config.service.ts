@@ -14,7 +14,16 @@ export class MyConfigService {
     constructor(
         private myConfigurationRepository: MyConfigurationFirebaseRepository,
     ) {
-        this.myConfigurationRepository.listenForConfigChanges(); // 🔥 Listen immediately when the service is initialized
+        this.listenForConfigChanges(); // 🔥 Listen immediately when the service is initialized
+    }
+
+    private listenForConfigChanges(): void {
+        this.myConfigurationRepository.listenForConfigChanges();
+        this.myConfigurationRepository.config$.subscribe(myConfig => {
+            if (myConfig) {
+                this.configSubject.next(myConfig)
+            }
+        })
     }
 
 }
