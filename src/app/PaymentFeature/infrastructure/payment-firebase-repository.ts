@@ -22,6 +22,7 @@ export class PaymentFirebaseRepository extends PaymentRepository {
     private basePath = 'payments';
     private paymentsSubject = new BehaviorSubject<Payment[]>([]);
     payments$ = this.paymentsSubject.asObservable();
+    menuKey = 'menuKey_zeuspub';
 
     constructor(private database: Database) {
         super();
@@ -29,7 +30,7 @@ export class PaymentFirebaseRepository extends PaymentRepository {
     }
 
     private listenForPayments(): void {
-        const paymentsRef = ref(this.database, this.basePath);
+        const paymentsRef = ref(this.database, `${this.basePath}/${this.menuKey}`);
         onValue(
             paymentsRef,
             (snapshot: DataSnapshot) => {
@@ -64,7 +65,7 @@ export class PaymentFirebaseRepository extends PaymentRepository {
     }
 
     override initializePayment(tableId: string, totalAmount: number): Observable<void> {
-        const paymentRef = ref(this.database, `${this.basePath}/${tableId}`);
+        const paymentRef = ref(this.database, `${this.basePath}/${this.menuKey}/${tableId}`);
         const payment = {
             tableId,
             totalAmount,
@@ -86,7 +87,7 @@ export class PaymentFirebaseRepository extends PaymentRepository {
 
     override addSubPayment(command: PaymentCommand): Observable<void> {
         const subPayment = new SubPayment(command.method, command.amount);
-        const paymentRef = ref(this.database, `${this.basePath}/${command.tableId}/subPayments`);
+        const paymentRef = ref(this.database, `${this.basePath}/${this.menuKey}/${command.tableId}/subPayments`);
 
         return new Observable((observer) => {
             push(paymentRef, subPayment.toPlainObject())
@@ -100,7 +101,7 @@ export class PaymentFirebaseRepository extends PaymentRepository {
     }
 
     override getPaymentByTableId(tableId: string): Observable<Payment> {
-        const refPath = ref(this.database, `${this.basePath}/${tableId}`);
+        const refPath = ref(this.database, `${this.basePath}/${this.menuKey}/${tableId}`);
         return new Observable((observer) => {
             onValue(
                 refPath,
@@ -136,7 +137,7 @@ export class PaymentFirebaseRepository extends PaymentRepository {
 
 
     override closePayment(tableId: string): Observable<void> {
-        const refPath = ref(this.database, `${this.basePath}/${tableId}`);
+        const refPath = ref(this.database, `${this.basePath}/${this.menuKey}/${tableId}`);
         return new Observable((observer) => {
             update(refPath, { isClosed: true })
                 .then(() => {
