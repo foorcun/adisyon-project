@@ -5,6 +5,7 @@ import { BottomNavigationBarComponent } from './common/bottom-navigation-bar/bot
 import { filter } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { UserService } from './services/user.service';
+import { MyConfigService } from './services/my-config.service';
 
 @Component({
   selector: 'app-root',
@@ -19,7 +20,7 @@ export class AppComponent {
   showBottomNav = true;
   isUserAllowed = false;
 
-  constructor(private router: Router, private userService: UserService) {
+  constructor(private router: Router, private userService: UserService, private myConfig: MyConfigService) {
     this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe(() => {
       this.checkRoute();
     });
