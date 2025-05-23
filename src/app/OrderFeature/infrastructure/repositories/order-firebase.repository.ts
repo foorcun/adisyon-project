@@ -12,6 +12,7 @@ import { OrderDto } from '../../domain/entities/order.dto';
 })
 export class OrderFirebaseRepository extends OrderRepository {
   private basePath = 'orders';
+  menuKey = 'menuKey_zeuspub';
 
   // private cartSubject = new BehaviorSubject<Cart>(new Cart('', {}));
   // cart$ = this.cartSubject.asObservable();
