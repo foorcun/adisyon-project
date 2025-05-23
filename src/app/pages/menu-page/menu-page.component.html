@@ -31,10 +31,16 @@
         {{ categoryProduct.category.name | uppercase }}
       </h2>
       <div class="menu-items-list">
-        <div
+        <!-- <div
           class="menu-item"
           *ngFor="let menuItem of categoryProduct.menuItems"
           (click)="selectMenuItem(menuItem, categoryProduct.category.id); navigateSiparisDetay()"
+          [ngClass]="{ 'selected-item': selectedMenuItem?.product!.id === menuItem.id }"
+        > -->
+
+        <div
+          class="menu-item"
+          *ngFor="let menuItem of categoryProduct.menuItems"
           [ngClass]="{ 'selected-item': selectedMenuItem?.product!.id === menuItem.id }"
         >
           <div class="menu-item-image">
