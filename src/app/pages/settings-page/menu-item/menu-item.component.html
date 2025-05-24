@@ -1,7 +1,7 @@
 <div class="menu-item-settings">
   <h2>🍽️ Menu Item Management</h2>
 
-  <!-- Category Selection for Viewing Menu Items -->
+  <!-- Category Selection -->
   <div class="category-select">
     <label for="categoryDropdown">📂 Select Category:</label>
     <select id="categoryDropdown" #categorySelector (change)="onCategorySelect(categorySelector.value)" class="form-select">
@@ -12,43 +12,58 @@
     </select>
   </div>
 
-  <!-- Toggle Add Item Section -->
-  <button class="toggle-add-item-btn" (click)="toggleAddItemForm()">
-    <span *ngIf="!isAddItemVisible">➕ Add New Item</span>
-    <span *ngIf="isAddItemVisible">🔼 Close</span>
-  </button>
+  <!-- ➕ Add Menu Item Card -->
+  <div class="add-menu-item-card mb-4">
+    <div
+      class="card h-100 text-center"
+      [class.clickable]="!isAddItemVisible"
+      (click)="!isAddItemVisible && showAddItemForm()"
+    >
+      <div class="card-body d-flex justify-content-center align-items-center flex-column">
+        <ng-container *ngIf="!isAddItemVisible; else menuItemFormBlock">
+          <i class="fas fa-plus fa-2x text-muted mb-2"></i>
+          <small class="text-muted">Add New Menu Item</small>
+        </ng-container>
 
-  <!-- Add New Menu Item Form (Initially Collapsed) -->
-  <form *ngIf="isAddItemVisible" [formGroup]="menuItemForm" (ngSubmit)="addMenuItem()" class="add-menu-item-form">
-    <div class="form-group">
-      <label for="addCategoryDropdown">📂 Category:</label>
-      <select id="addCategoryDropdown" formControlName="categoryId">
-        <option value="" selected disabled>Select category</option>
-        <option *ngFor="let categoryId of getCategoryKeys()" [value]="categoryId">
-          {{ categories[categoryId].name }}
-        </option>
-      </select>
+        <ng-template #menuItemFormBlock>
+          <form
+            [formGroup]="menuItemForm"
+            (ngSubmit)="addMenuItem()"
+            class="w-100"
+            (click)="$event.stopPropagation()"
+          >
+            <select formControlName="categoryId" class="form-control mb-2" required>
+              <option value="" disabled selected>Select category</option>
+              <option *ngFor="let categoryId of getCategoryKeys()" [value]="categoryId">
+                {{ categories[categoryId].name }}
+              </option>
+            </select>
 
-      <input formControlName="name" placeholder="📝 Item Name" />
-      <input formControlName="description" placeholder="📝 Description" />
-      <input formControlName="price" placeholder="💲 Price" type="number" min="0" />
-      <input formControlName="imageUrl" placeholder="🌆 Image URL (optional)" />
+            <input formControlName="name" placeholder="📝 Item Name" class="form-control mb-2" />
+            <input formControlName="description" placeholder="📝 Description" class="form-control mb-2" />
+            <input formControlName="price" placeholder="💲 Price" type="number" min="0" class="form-control mb-2" />
+            <input formControlName="imageUrl" placeholder="🌆 Image URL (optional)" class="form-control mb-2" />
 
-      <button type="submit" [disabled]="menuItemForm.invalid">➕ Add Item</button>
+            <div class="d-flex justify-content-between">
+              <button type="submit" class="btn btn-success btn-sm" [disabled]="menuItemForm.invalid">
+                <i class="fas fa-check"></i>
+              </button>
+              <button type="button" class="btn btn-secondary btn-sm" (click)="cancelAddItem(); $event.stopPropagation()">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+          </form>
+        </ng-template>
+      </div>
     </div>
-  </form>
+  </div>
 
-  <!-- Display Existing Menu Items -->
+  <!-- Menu Item List -->
   <div class="menu-item-list" *ngIf="getMenuItemKeys().length > 0">
     <h3>📋 Current Menu Items:</h3>
-    
+
     <div *ngFor="let menuItemId of getMenuItemKeys()" class="menu-item-card">
       <div class="menu-item">
-        <!-- Image Preview -->
-        <!-- <div class="item-image" *ngIf="menuItems[menuItemId].imageUrl">
-          <img [src]="menuItems[menuItemId].imageUrl" alt="Menu Item Image" />
-        </div> -->
-
         <div class="item-details">
           <div class="info">
             <strong>Name:</strong>
@@ -72,7 +87,6 @@
         </div>
 
         <div class="item-actions">
-          <!-- Update Button with Feedback -->
           <button
             class="update-btn"
             [disabled]="updatingItems[menuItemId]"
@@ -81,18 +95,11 @@
             <span *ngIf="updatingItems[menuItemId]">
               <i class="fas fa-spinner fa-spin"></i> Updating...
             </span>
-            <span *ngIf="updatedItems[menuItemId]">
-              ✅ Updated!
-            </span>
-            <span *ngIf="!updatingItems[menuItemId] && !updatedItems[menuItemId]">
-              🔄 Update
-            </span>
+            <span *ngIf="updatedItems[menuItemId]">✅ Updated!</span>
+            <span *ngIf="!updatingItems[menuItemId] && !updatedItems[menuItemId]">🔄 Update</span>
           </button>
 
-          <!-- Delete Button -->
-          <button class="delete-btn" (click)="deleteMenuItem(menuItemId)">
-            ❌ Delete
-          </button>
+          <button class="delete-btn" (click)="deleteMenuItem(menuItemId)">❌ Delete</button>
         </div>
       </div>
     </div>

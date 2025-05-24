@@ -257,3 +257,28 @@ $primary-color: #87764c;
     transform: translateY(0);
   }
 }
+
+.add-menu-item-card {
+  .card {
+    min-height: 250px;
+    border: 2px dashed #ccc;
+    transition: all 0.3s ease;
+
+    &.clickable {
+      cursor: pointer;
+
+      &:hover {
+        background-color: #f1f5f9;
+        border-color: $primary-color;
+      }
+    }
+
+    .card-body {
+      width: 100%;
+    }
+
+    i {
+      font-size: 2rem;
+    }
+  }
+}

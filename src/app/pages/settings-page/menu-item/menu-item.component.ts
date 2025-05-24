@@ -13,19 +13,18 @@ import { MenuFirebaseRepository } from '../../../MenuFeature/infrastructure/menu
   imports: [ReactiveFormsModule, CommonModule, FormsModule]
 })
 export class MenuItemComponent implements OnInit {
-  // menuKey: string = 'menuKey1';
   categories: { [key: string]: Category } = {};
   selectedCategoryId: string | null = null;
   menuItems: { [key: string]: MenuItem } = {};
 
-  // Track visibility of the add item form
-  isAddItemVisible: boolean = false;
+  // Form visibility toggle for the plus card
+  isAddItemVisible = false;
 
-  // Track update status for visual feedback
+  // Update status tracking
   updatingItems: { [key: string]: boolean } = {};
   updatedItems: { [key: string]: boolean } = {};
 
-  // Form to add a new menu item
+  // Form group for new menu item
   menuItemForm: FormGroup;
 
   constructor(private menuRepository: MenuFirebaseRepository, private fb: FormBuilder) {
@@ -42,7 +41,7 @@ export class MenuItemComponent implements OnInit {
     this.loadCategories();
   }
 
-  // Load categories from Firebase
+  // Load categories from repository
   loadCategories() {
     this.menuRepository.listenForMenuChanges();
     this.menuRepository.menu$.subscribe(menu => {
@@ -53,7 +52,7 @@ export class MenuItemComponent implements OnInit {
     });
   }
 
-  // Handle category selection for displaying items
+  // Show items for selected category
   onCategorySelect(categoryId: string) {
     this.selectedCategoryId = categoryId;
     this.loadMenuItems();
@@ -71,12 +70,18 @@ export class MenuItemComponent implements OnInit {
     }
   }
 
-  // Toggle add menu item form visibility
-  toggleAddItemForm() {
-    this.isAddItemVisible = !this.isAddItemVisible;
+  // Show the plus card's form
+  showAddItemForm(): void {
+    this.isAddItemVisible = true;
   }
 
-  // Add a new menu item
+  // Cancel and reset the plus card form
+  cancelAddItem(): void {
+    this.menuItemForm.reset();
+    this.isAddItemVisible = false;
+  }
+
+  // Add a new menu item via form
   addMenuItem() {
     if (this.menuItemForm.valid) {
       const newItem = new MenuItem(
@@ -92,7 +97,7 @@ export class MenuItemComponent implements OnInit {
       this.menuRepository.addMenuItem(selectedCategory, newItem).subscribe(() => {
         console.log('Menu item added successfully');
         this.menuItemForm.reset();
-        this.isAddItemVisible = false; // Collapse the form after adding
+        this.isAddItemVisible = false;
         this.loadMenuItems();
       });
     } else {
@@ -100,7 +105,7 @@ export class MenuItemComponent implements OnInit {
     }
   }
 
-  // Delete a menu item
+  // Delete an item
   deleteMenuItem(menuItemId: string) {
     if (this.selectedCategoryId) {
       this.menuRepository.removeMenuItem(this.selectedCategoryId, menuItemId).subscribe(() => {
@@ -110,12 +115,11 @@ export class MenuItemComponent implements OnInit {
     }
   }
 
-  // Update a menu item with visual feedback
+  // Update an item with visual feedback
   updateMenuItem(menuItemId: string, name: string, description: string, price: number, imageUrl: string) {
     if (this.selectedCategoryId) {
       const updates: Partial<MenuItem> = { name, description, price, imageUrl };
 
-      // Set loading state
       this.updatingItems[menuItemId] = true;
       this.updatedItems[menuItemId] = false;
 
@@ -123,11 +127,9 @@ export class MenuItemComponent implements OnInit {
         console.log(`Menu item ${menuItemId} updated.`);
         this.loadMenuItems();
 
-        // Show success feedback
         this.updatingItems[menuItemId] = false;
         this.updatedItems[menuItemId] = true;
 
-        // Reset success message after 2 seconds
         setTimeout(() => {
           this.updatedItems[menuItemId] = false;
         }, 2000);
@@ -135,12 +137,12 @@ export class MenuItemComponent implements OnInit {
     }
   }
 
-  // Helper to get category keys
+  // Utility: get category keys as array
   getCategoryKeys(): string[] {
     return Object.keys(this.categories);
   }
 
-  // Helper to get menu item keys
+  // Utility: get menu item keys as array
   getMenuItemKeys(): string[] {
     return Object.keys(this.menuItems);
   }
