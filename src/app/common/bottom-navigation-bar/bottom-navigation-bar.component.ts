@@ -30,7 +30,11 @@ export class BottomNavigationBarComponent {
       disabled: true // 👈 Temporarily disable
     },
     { id: 'profile', label: 'Profile', icon: 'fas fa-user', route: 'profile-page' },
-    { id: 'orders', label: 'Siparişlerim', icon: 'fas fa-store', route: 'user-orders-page' }
+    {
+      id: 'orders', label: 'Siparişlerim', icon: 'fas fa-store', route: 'user-orders-page',
+
+      disabled: true // 👈 Temporarily disable
+    }
   ];
 
   constructor(
