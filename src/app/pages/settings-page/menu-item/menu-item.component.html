@@ -2,7 +2,9 @@
   <h2>🍽️ Menu Item Management</h2>
 
   <!-- 📂 Category Selection + ➕ Add Button or Card -->
-  <div class="top-action-row d-flex flex-column flex-md-row gap-3 mb-4 align-items-stretch">
+  <div
+    class="top-action-row d-flex flex-column flex-md-row gap-3 mb-4 align-items-stretch"
+  >
     <!-- Category Dropdown -->
     <div class="category-select flex-fill">
       <label for="categoryDropdown">📂 Select Category:</label>
@@ -13,7 +15,10 @@
         class="form-select"
       >
         <option value="" selected disabled>Select a category</option>
-        <option *ngFor="let categoryId of getCategoryKeys()" [value]="categoryId">
+        <option
+          *ngFor="let categoryId of getCategoryKeys()"
+          [value]="categoryId"
+        >
           {{ categories[categoryId].name }}
         </option>
       </select>
@@ -32,30 +37,65 @@
 
       <!-- Add Card Form -->
       <div *ngIf="isAddItemVisible" class="card h-100">
-        <div class="card-body d-flex justify-content-center align-items-center flex-column">
+        <div
+          class="card-body d-flex justify-content-center align-items-center flex-column"
+        >
           <form
             [formGroup]="menuItemForm"
             (ngSubmit)="addMenuItem()"
             class="w-100"
             (click)="$event.stopPropagation()"
           >
-            <select formControlName="categoryId" class="form-control mb-2" required>
+            <select
+              formControlName="categoryId"
+              class="form-control mb-2"
+              required
+            >
               <option value="" disabled selected>Select category</option>
-              <option *ngFor="let categoryId of getCategoryKeys()" [value]="categoryId">
+              <option
+                *ngFor="let categoryId of getCategoryKeys()"
+                [value]="categoryId"
+              >
                 {{ categories[categoryId].name }}
               </option>
             </select>
 
-            <input formControlName="name" placeholder="📝 Item Name" class="form-control mb-2" />
-            <input formControlName="description" placeholder="📝 Description" class="form-control mb-2" />
-            <input formControlName="price" placeholder="💲 Price" type="number" min="0" class="form-control mb-2" />
-            <input formControlName="imageUrl" placeholder="🌆 Image URL (optional)" class="form-control mb-2" />
+            <input
+              formControlName="name"
+              placeholder="📝 Item Name"
+              class="form-control mb-2"
+            />
+            <input
+              formControlName="description"
+              placeholder="📝 Description"
+              class="form-control mb-2"
+            />
+            <input
+              formControlName="price"
+              placeholder="💲 Price"
+              type="number"
+              min="0"
+              class="form-control mb-2"
+            />
+            <input
+              formControlName="imageUrl"
+              placeholder="🌆 Image URL (optional)"
+              class="form-control mb-2"
+            />
 
             <div class="d-flex justify-content-between">
-              <button type="submit" class="btn btn-success btn-sm" [disabled]="menuItemForm.invalid">
+              <button
+                type="submit"
+                class="btn btn-success btn-sm"
+                [disabled]="menuItemForm.invalid"
+              >
                 <i class="fas fa-check"></i>
               </button>
-              <button type="button" class="btn btn-secondary btn-sm" (click)="cancelAddItem(); $event.stopPropagation()">
+              <button
+                type="button"
+                class="btn btn-secondary btn-sm"
+                (click)="cancelAddItem(); $event.stopPropagation()"
+              >
                 <i class="fas fa-times"></i>
               </button>
             </div>
@@ -67,50 +107,93 @@
 
   <!-- Menu Item List -->
   <div class="menu-item-list" *ngIf="getMenuItemKeys().length > 0">
-    <h3>📋 Current Menu Items:</h3>
+    <h3 class="text-center">📋 Current Menu Items:</h3>
 
-    <div *ngFor="let menuItemId of getMenuItemKeys()" class="menu-item-card">
-      <div class="menu-item">
-        <div class="item-details">
-          <div class="info">
-            <strong>Name:</strong>
-            <input [(ngModel)]="menuItems[menuItemId].name" placeholder="Name" />
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mt-2">
+      <div class="col" *ngFor="let menuItemId of getMenuItemKeys()">
+        <div class="card h-100 shadow-sm">
+          <!-- Optional Image Preview -->
+          <img
+            *ngIf="menuItems[menuItemId].imageUrl"
+            [src]="menuItems[menuItemId].imageUrl"
+            class="card-img-top"
+            alt="Image"
+          />
+
+          <div class="card-body">
+            <h5 class="card-title">{{ menuItems[menuItemId].name }}</h5>
+            <p class="card-text">{{ menuItems[menuItemId].description }}</p>
+            <p class="card-text fw-bold">TRY {{ menuItems[menuItemId].price }}</p>
+
+            <!-- Editable Fields -->
+            <div class="mb-2">
+              <label class="form-label">Name</label>
+              <input
+                [(ngModel)]="menuItems[menuItemId].name"
+                class="form-control"
+              />
+            </div>
+            <div class="mb-2">
+              <label class="form-label">Description</label>
+              <input
+                [(ngModel)]="menuItems[menuItemId].description"
+                class="form-control"
+              />
+            </div>
+            <div class="mb-2">
+              <label class="form-label">Price</label>
+              <input
+                [(ngModel)]="menuItems[menuItemId].price"
+                type="number"
+                class="form-control"
+              />
+            </div>
+            <div class="mb-2">
+              <label class="form-label">Image URL</label>
+              <input
+                [(ngModel)]="menuItems[menuItemId].imageUrl"
+                class="form-control"
+              />
+            </div>
           </div>
 
-          <div class="info">
-            <strong>Description:</strong>
-            <input [(ngModel)]="menuItems[menuItemId].description" placeholder="Description" />
+          <div class="card-footer d-flex justify-content-between">
+            <button
+              class="btn btn-primary btn-sm"
+              [disabled]="updatingItems[menuItemId]"
+              (click)="
+                updateMenuItem(
+                  menuItemId,
+                  menuItems[menuItemId].name,
+                  menuItems[menuItemId].description,
+                  menuItems[menuItemId].price,
+                  menuItems[menuItemId].imageUrl
+                )
+              "
+            >
+              <span *ngIf="updatingItems[menuItemId]">
+                <i class="fas fa-spinner fa-spin"></i> Updating...
+              </span>
+              <span *ngIf="updatedItems[menuItemId]">✅ Updated!</span>
+              <span
+                *ngIf="!updatingItems[menuItemId] && !updatedItems[menuItemId]"
+                >🔄 Update</span
+              >
+            </button>
+
+            <button
+              class="btn btn-danger btn-sm"
+              (click)="deleteMenuItem(menuItemId)"
+            >
+              ❌ Delete
+            </button>
           </div>
-
-          <div class="info">
-            <strong>Price:</strong>
-            <input [(ngModel)]="menuItems[menuItemId].price" type="number" min="0" placeholder="Price" />
-          </div>
-
-          <div class="info">
-            <strong>Image:</strong>
-            <input [(ngModel)]="menuItems[menuItemId].imageUrl" placeholder="Image URL" />
-          </div>
-        </div>
-
-        <div class="item-actions">
-          <button
-            class="update-btn"
-            [disabled]="updatingItems[menuItemId]"
-            (click)="updateMenuItem(menuItemId, menuItems[menuItemId].name, menuItems[menuItemId].description, menuItems[menuItemId].price, menuItems[menuItemId].imageUrl)"
-          >
-            <span *ngIf="updatingItems[menuItemId]">
-              <i class="fas fa-spinner fa-spin"></i> Updating...
-            </span>
-            <span *ngIf="updatedItems[menuItemId]">✅ Updated!</span>
-            <span *ngIf="!updatingItems[menuItemId] && !updatedItems[menuItemId]">🔄 Update</span>
-          </button>
-
-          <button class="delete-btn" (click)="deleteMenuItem(menuItemId)">❌ Delete</button>
         </div>
       </div>
     </div>
   </div>
 
-  <p *ngIf="!getMenuItemKeys().length && selectedCategoryId">🚫 No menu items available.</p>
+  <p *ngIf="!getMenuItemKeys().length && selectedCategoryId">
+    🚫 No menu items available.
+  </p>
 </div>

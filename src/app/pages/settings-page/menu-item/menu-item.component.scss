@@ -72,13 +72,14 @@ $primary-color: #87764c;
       display: flex;
       flex-direction: column;
       gap: 12px;
-      
+
       label {
         font-weight: bold;
         color: #374151;
       }
 
-      select, input {
+      select,
+      input {
         padding: 12px;
         border: 2px solid #d1d5db;
         border-radius: 8px;
@@ -115,127 +116,22 @@ $primary-color: #87764c;
   }
 
   .menu-item-list {
-    margin-top: 20px;
-
-    h3 {
-      text-align: center;
-      color: #333;
-      font-size: 1.3rem;
+    .card-img-top {
+      height: 180px;
+      object-fit: cover;
     }
 
-    .menu-item-card {
-      background: #f3f4f6;
-      border-radius: 12px;
-      padding: 15px;
-      margin-bottom: 15px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
-      transition: transform 0.3s ease-in-out;
+    .card {
+      transition: transform 0.2s ease;
 
       &:hover {
-        transform: scale(1.02);
+        transform: scale(1.01);
       }
     }
 
-    .menu-item {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      padding: 15px;
-      border: 2px solid $primary-color;
-      border-radius: 12px;
-      background-color: #fff;
-
-      .item-image {
-        text-align: center;
-        margin-bottom: 10px;
-
-        img {
-          max-width: 100%;
-          height: auto;
-          border-radius: 8px;
-          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-      }
-
-      .item-details {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-
-        .info {
-          display: flex;
-          align-items: center;
-          gap: 10px;
-          margin-bottom: 5px;
-
-          input {
-            flex: 1;
-            padding: 8px;
-            border: 2px solid #ccc;
-            border-radius: 6px;
-            font-size: 1rem;
-            transition: border 0.3s ease-in-out;
-
-            &:focus {
-              border-color: $primary-color;
-              outline: none;
-            }
-          }
-
-          strong {
-            min-width: 90px;
-            color: #374151;
-          }
-        }
-      }
-
-      .item-actions {
-        margin-top: 10px;
-        display: flex;
-        justify-content: flex-end;
-        gap: 10px;
-
-        .update-btn {
-          padding: 8px 16px;
-          border-radius: 6px;
-          background-color: #0284c7;
-          color: #fff;
-          cursor: pointer;
-          transition: 0.3s;
-          display: flex;
-          align-items: center;
-          gap: 8px;
-          min-width: 120px;
-          text-align: center;
-          justify-content: center;
-
-          &:hover {
-            background-color: #0369a1;
-          }
-
-          &:disabled {
-            background-color: #ccc;
-            cursor: not-allowed;
-          }
-
-          .fa-spinner {
-            font-size: 1rem;
-          }
-        }
-
-        .delete-btn {
-          padding: 8px 16px;
-          border-radius: 6px;
-          background-color: #ef4444;
-          color: #fff;
-          cursor: pointer;
-          transition: 0.3s;
-
-          &:hover {
-            background-color: #dc2626;
-          }
-        }
-      }
+    .card-footer {
+      background-color: #f9fafb;
+      border-top: 1px solid #e5e7eb;
     }
   }
 
