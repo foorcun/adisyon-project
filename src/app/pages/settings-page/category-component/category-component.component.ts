@@ -46,17 +46,17 @@ export class CategoryComponentComponent implements OnInit {
       });
   }
 
-  onAddCardSubmit(): void {
-    if (this.categoryForm.valid) {
-      this.addCategory();
-      this.isAddingCategory = false;
-    }
-  }
+  // onAddCardSubmit(): void {
+  //   if (this.categoryForm.valid) {
+  //     this.addCategory();
+  //     this.isAddingCategory = false;
+  //   }
+  // }
 
-  cancelAddCard(): void {
-    this.categoryForm.reset();
-    this.isAddingCategory = false;
-  }
+  // cancelAddCard(): void {
+  //   this.categoryForm.reset();
+  //   this.isAddingCategory = false;
+  // }
 
   addCategory() {
     if (this.categoryForm.valid) {
@@ -104,4 +104,21 @@ export class CategoryComponentComponent implements OnInit {
       });
     }
   }
+  openAddForm(): void {
+    this.isAddingCategory = true;
+  }
+
+  onAddCardSubmit(event: Event): void {
+    event.stopPropagation();
+    if (this.categoryForm.valid) {
+      this.addCategory();
+      this.isAddingCategory = false;
+    }
+  }
+
+  cancelAddCard(): void {
+    this.categoryForm.reset();
+    this.isAddingCategory = false;
+  }
+
 }

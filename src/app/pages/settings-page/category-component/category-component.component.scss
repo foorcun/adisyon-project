@@ -35,6 +35,13 @@ $primary-color: #87764c;
     }
   }
 
+  .clickable-body {
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
   .no-categories {
     text-align: center;
     color: #888;
@@ -42,4 +49,18 @@ $primary-color: #87764c;
     margin-top: 15px;
     font-size: 1.1rem;
   }
+}
+
+.add-card.clickable {
+  cursor: pointer;
+  border: 2px dashed #ccc;
+
+  &:hover {
+    background-color: #f9f9f9;
+    border-color: $primary-color;
+  }
+}
+
+.add-card form {
+  cursor: default;
 }
