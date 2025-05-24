@@ -1,50 +1,44 @@
-<div class="category-settings">
-  <h2><i class="fas fa-list"></i> Category Settings</h2>
-
-  <!-- ✅ Add Category Form with Display Order -->
-  <form [formGroup]="categoryForm" (ngSubmit)="addCategory()" class="add-category-form">
-    <div class="input-group">
-      <input formControlName="name" placeholder="Enter category name" />
-      <input formControlName="displayOrder" type="number" placeholder="Display Order (optional)" />
-      <button type="submit" [disabled]="categoryForm.invalid">
-        <i class="fas fa-plus-circle"></i> Add
-      </button>
-    </div>
-  </form>
-
-  <!-- ✅ Display Existing Categories -->
-  <div class="category-list" *ngIf="categories.length">
-    <h3><i class="fas fa-box"></i> Existing Categories:</h3>
-    <div *ngFor="let category of categories" class="category-card">
-      <div class="category-item">
-        <span>{{ category.name }}</span>
-        <span>Order: {{ category.displayOrder ?? 'N/A' }}</span>
-
-        <!-- ✅ Update Category Name -->
-        <div class="input-group">
-          <input #updatedName placeholder="New name" />
-          <button (click)="updateCategoryName(category.id, updatedName.value)" title="Update">
-            <i class="fas fa-edit"></i>
-          </button>
-        </div>
-
-        <!-- ✅ Update Display Order -->
-        <div class="input-group">
-          <input #updatedOrder type="number" placeholder="New Order" />
-          <button (click)="updateDisplayOrder(category.id, updatedOrder.value)" title="Update Order">
-            <i class="fas fa-sort-numeric-up-alt"></i>
-          </button>
-        </div>
-
-        <!-- ✅ Delete Category -->
-        <button (click)="deleteCategory(category.id)" class="delete-btn" title="Delete">
-          <i class="fas fa-trash"></i>
-        </button>
+<div class="row row-cols-1 row-cols-md-3 g-4 mt-4">
+  <!-- Add Category Card -->
+  <div class="col">
+    <div class="card h-100 add-card text-center" (click)="addCategory()" [class.disabled]="categoryForm.invalid">
+      <div class="card-body d-flex justify-content-center align-items-center">
+        <i class="fas fa-plus fa-2x text-muted"></i>
+      </div>
+      <div class="card-footer">
+        <small class="text-muted">Add Category</small>
       </div>
     </div>
   </div>
 
-  <p *ngIf="categories.length === 0" class="no-categories">
-    <i class="fas fa-exclamation-circle"></i> No categories available.
-  </p>
+  <!-- Existing Categories -->
+  <div class="col" *ngFor="let category of categories">
+    <div class="card h-100">
+      <div class="card-body">
+        <h5 class="card-title">{{ category.name }}</h5>
+        <p class="card-text">Display Order: {{ category.displayOrder ?? 'N/A' }}</p>
+
+        <!-- Name Update -->
+        <div class="input-group mb-2">
+          <input #updatedName class="form-control" placeholder="New name" />
+          <button class="btn btn-outline-secondary" (click)="updateCategoryName(category.id, updatedName.value)">
+            <i class="fas fa-edit"></i>
+          </button>
+        </div>
+
+        <!-- Order Update -->
+        <div class="input-group mb-2">
+          <input #updatedOrder class="form-control" type="number" placeholder="New Order" />
+          <button class="btn btn-outline-secondary" (click)="updateDisplayOrder(category.id, updatedOrder.value)">
+            <i class="fas fa-sort-numeric-up-alt"></i>
+          </button>
+        </div>
+
+        <!-- Delete -->
+        <button class="btn btn-danger w-100" (click)="deleteCategory(category.id)">
+          <i class="fas fa-trash"></i> Delete
+        </button>
+      </div>
+    </div>
+  </div>
 </div>

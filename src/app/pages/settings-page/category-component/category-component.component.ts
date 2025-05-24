@@ -15,6 +15,9 @@ export class CategoryComponentComponent implements OnInit {
   categories: Category[] = []; // ✅ Now an array instead of an object
   categoryForm: FormGroup;
 
+  isAddingCategory = false;
+
+
   constructor(private menuRepository: MenuFirebaseRepository, private fb: FormBuilder) {
     this.categoryForm = this.fb.group({
       name: ['', Validators.required],
@@ -101,4 +104,17 @@ export class CategoryComponentComponent implements OnInit {
       });
     }
   }
+
+  onAddCardSubmit(): void {
+    if (this.categoryForm.valid) {
+      this.addCategory(); // uses your existing logic
+      this.isAddingCategory = false;
+    }
+  }
+
+  cancelAddCard(): void {
+    this.categoryForm.reset();
+    this.isAddingCategory = false;
+  }
+
 }

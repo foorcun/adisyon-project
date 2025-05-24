@@ -155,3 +155,27 @@ $primary-color: #87764c;
     font-size: 1.1rem;
   }
 }
+
+.add-card {
+  cursor: pointer;
+  border: 2px dashed #ccc;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: #f1f1f1;
+    border-color: $primary-color;
+  }
+
+  &.disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  .card-body {
+    height: 100px;
+  }
+
+  i {
+    pointer-events: none;
+  }
+}
