@@ -1,63 +1,63 @@
-$primary-color: #4C3398;
+$primary-color: #87764c;
 
 .message-body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    text-align: center;
-    background-color: lightgray;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+  background-color: lightgray;
 
-    @media (min-width: 768px) {
-        display: none; // Hide on wide screens
-    }
+  @media (min-width: 768px) {
+    display: none; // Hide on wide screens
+  }
 }
 
 .message-body h1 {
-    position: relative;
-    font-size: calc(1.5vw + 0.8rem);
-    font-weight: bold;
-    color: #F4F7FA;
-    background-color: $primary-color;
-    padding: 0.8rem 1.5rem;
-    line-height: 1.2;
-    border-radius: 0.4rem;
-    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.15);
+  position: relative;
+  font-size: calc(1.5vw + 0.8rem);
+  font-weight: bold;
+  color: #f4f7fa;
+  background-color: $primary-color;
+  padding: 0.8rem 1.5rem;
+  line-height: 1.2;
+  border-radius: 0.4rem;
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.15);
 }
 
 .message-body h1 span {
-    display: block;
-    white-space: nowrap;
+  display: block;
+  white-space: nowrap;
 }
 
 .message-body h1:before,
 .message-body h1:after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 1.5rem;
-    height: 100%;
-    background-color: #2C476A;
-    z-index: -1;
+  content: "";
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1.5rem;
+  height: 100%;
+  background-color: #2c476a;
+  z-index: -1;
 }
 
 .message-body h1:before {
-    left: -1.5rem;
-    clip-path: polygon(0 0, 100% 50%, 0 100%);
+  left: -1.5rem;
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
 }
 
 .message-body h1:after {
-    right: -1.5rem;
-    clip-path: polygon(100% 0, 0 50%, 100% 100%);
+  right: -1.5rem;
+  clip-path: polygon(100% 0, 0 50%, 100% 100%);
 }
 
 .message-body p {
-    font-size: calc(1.2vw + 0.4rem);
-    font-weight: bold;
-    color: #1D2D46;
-    margin-top: 0.8rem;
-    background-color: #A9D6E5;
-    padding: 0.4rem 0.8rem;
-    border-radius: 0.2rem;
+  font-size: calc(1.2vw + 0.4rem);
+  font-weight: bold;
+  color: #1d2d46;
+  margin-top: 0.8rem;
+  background-color: #a9d6e5;
+  padding: 0.4rem 0.8rem;
+  border-radius: 0.2rem;
 }
