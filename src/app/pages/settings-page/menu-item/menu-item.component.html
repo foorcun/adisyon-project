@@ -1,31 +1,38 @@
 <div class="menu-item-settings">
   <h2>🍽️ Menu Item Management</h2>
 
-  <!-- Category Selection -->
-  <div class="category-select">
-    <label for="categoryDropdown">📂 Select Category:</label>
-    <select id="categoryDropdown" #categorySelector (change)="onCategorySelect(categorySelector.value)" class="form-select">
-      <option value="" selected disabled>Select a category</option>
-      <option *ngFor="let categoryId of getCategoryKeys()" [value]="categoryId">
-        {{ categories[categoryId].name }}
-      </option>
-    </select>
-  </div>
+  <!-- 📂 Category Selection + ➕ Add Button or Card -->
+  <div class="top-action-row d-flex flex-column flex-md-row gap-3 mb-4 align-items-stretch">
+    <!-- Category Dropdown -->
+    <div class="category-select flex-fill">
+      <label for="categoryDropdown">📂 Select Category:</label>
+      <select
+        id="categoryDropdown"
+        #categorySelector
+        (change)="onCategorySelect(categorySelector.value)"
+        class="form-select"
+      >
+        <option value="" selected disabled>Select a category</option>
+        <option *ngFor="let categoryId of getCategoryKeys()" [value]="categoryId">
+          {{ categories[categoryId].name }}
+        </option>
+      </select>
+    </div>
 
-  <!-- ➕ Add Menu Item Card -->
-  <div class="add-menu-item-card mb-4">
-    <div
-      class="card h-100 text-center"
-      [class.clickable]="!isAddItemVisible"
-      (click)="!isAddItemVisible && showAddItemForm()"
-    >
-      <div class="card-body d-flex justify-content-center align-items-center flex-column">
-        <ng-container *ngIf="!isAddItemVisible; else menuItemFormBlock">
-          <i class="fas fa-plus fa-2x text-muted mb-2"></i>
-          <small class="text-muted">Add New Menu Item</small>
-        </ng-container>
+    <!-- Add Menu Item -->
+    <div class="add-menu-item-wrapper flex-fill">
+      <!-- Add Button -->
+      <button
+        *ngIf="!isAddItemVisible"
+        class="btn btn-outline-primary w-100 h-100 d-flex align-items-center justify-content-center"
+        (click)="showAddItemForm()"
+      >
+        <i class="fas fa-plus me-2"></i> Add New Menu Item
+      </button>
 
-        <ng-template #menuItemFormBlock>
+      <!-- Add Card Form -->
+      <div *ngIf="isAddItemVisible" class="card h-100">
+        <div class="card-body d-flex justify-content-center align-items-center flex-column">
           <form
             [formGroup]="menuItemForm"
             (ngSubmit)="addMenuItem()"
@@ -53,7 +60,7 @@
               </button>
             </div>
           </form>
-        </ng-template>
+        </div>
       </div>
     </div>
   </div>

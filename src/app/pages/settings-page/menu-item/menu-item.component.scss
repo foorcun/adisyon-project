@@ -282,3 +282,21 @@ $primary-color: #87764c;
     }
   }
 }
+
+.add-menu-item-wrapper {
+  .btn {
+    height: 100%;
+    font-size: 1.1rem;
+    padding: 1rem;
+  }
+
+  .card {
+    min-height: 100%;
+    border: 2px dashed #ccc;
+    transition: all 0.3s ease;
+  }
+
+  .card-body {
+    width: 100%;
+  }
+}
