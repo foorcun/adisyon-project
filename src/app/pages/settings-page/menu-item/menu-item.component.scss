@@ -1,15 +1,17 @@
+$primary-color: #87764c;
+
 .menu-item-settings {
   padding: 25px;
-  border: 3px solid #6c63ff;
+  border: 3px solid $primary-color;
   border-radius: 15px;
-  max-width: 700px;
+  // max-width: 700px;
   margin: 30px auto;
   background-color: #f8fafc;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 
   h2 {
     text-align: center;
-    color: #4f46e5;
+    color: $primary-color;
     margin-bottom: 20px;
     font-size: 1.8rem;
   }
@@ -34,7 +36,7 @@
       transition: all 0.3s ease;
 
       &:hover {
-        border-color: #4f46e5;
+        border-color: $primary-color;
       }
     }
   }
@@ -45,7 +47,7 @@
     align-items: center;
     width: 100%;
     padding: 12px;
-    background-color: #4f46e5;
+    background-color: $primary-color;
     color: #fff;
     font-size: 1.1rem;
     border: none;
@@ -84,7 +86,7 @@
         transition: border 0.3s ease-in-out;
 
         &:focus {
-          border-color: #4f46e5;
+          border-color: $primary-color;
           outline: none;
           box-shadow: 0 0 8px rgba(79, 70, 229, 0.5);
         }
@@ -139,7 +141,7 @@
       flex-direction: column;
       gap: 12px;
       padding: 15px;
-      border: 2px solid #4f46e5;
+      border: 2px solid $primary-color;
       border-radius: 12px;
       background-color: #fff;
 
@@ -175,7 +177,7 @@
             transition: border 0.3s ease-in-out;
 
             &:focus {
-              border-color: #4f46e5;
+              border-color: $primary-color;
               outline: none;
             }
           }
