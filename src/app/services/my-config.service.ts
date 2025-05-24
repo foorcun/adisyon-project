@@ -8,7 +8,7 @@ import { Injectable } from "@angular/core";
 })
 export class MyConfigService {
 
-    private configSubject = new BehaviorSubject<MyConfiguration>(new MyConfiguration('#000000'));
+    private configSubject = new BehaviorSubject<MyConfiguration>(new MyConfiguration('white'));
     config$ = this.configSubject.asObservable();
 
     constructor(

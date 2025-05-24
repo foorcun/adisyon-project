@@ -10,7 +10,7 @@ import { Injectable } from '@angular/core';
 })
 export class MyConfigurationFirebaseRepository {
     private basePath = 'myConfiguration';
-    private configSubject = new BehaviorSubject<MyConfiguration>(new MyConfiguration('#000000'));
+    private configSubject = new BehaviorSubject<MyConfiguration>(new MyConfiguration('white'));
     config$ = this.configSubject.asObservable();
     userKey = 'menuKey_zeuspub';
 
