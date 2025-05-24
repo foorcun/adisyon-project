@@ -1,3 +1,5 @@
+$primary-color: #87764c;
+
 .dark-overlay {
   position: absolute;
   top: 0;
@@ -70,7 +72,7 @@
   align-items: center; /* Centers text vertically */
   justify-content: center; /* Centers text horizontally */
   color: white; /* Text color (adjust as needed) */
-  background-color: #1d2d46;
+  background-color: $primary-color;
   padding: 0.2rem;
   // text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7); /* Optional: Make text more readable */
   // font-size: 1.5rem; /* Adjust font size */

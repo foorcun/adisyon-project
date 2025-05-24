@@ -1,7 +1,6 @@
 <app-navbar-bootstrap></app-navbar-bootstrap>
 
 <div class="pageContainer">
-
   <!-- 🏷️ Category Header -->
   <div class="categories-header" style="user-select: none">
     <div class="dark-overlay">
@@ -41,10 +40,13 @@
         <div
           class="menu-item"
           *ngFor="let menuItem of categoryProduct.menuItems"
-          [ngClass]="{ 'selected-item': selectedMenuItem?.product!.id === menuItem.id }"
+          [ngClass]="{
+            'selected-item': (selectedMenuItem?.product)!.id === menuItem.id
+          }"
         >
-          <div class="menu-item-image">
-            <img [src]="menuItem.imageUrl" [alt]="menuItem.name" />
+          <div class="menu-item-image" style="background-color: #87764c;">
+            <!-- <img [src]="menuItem.imageUrl" [alt]="menuItem.name" /> -->
+            <img src="/logo/brand-logo.png" [alt]="menuItem.name" />
           </div>
           <div class="menu-item-details">
             <h3>{{ menuItem.name }}</h3>
@@ -62,5 +64,4 @@
   <p *ngIf="!categoryProducts.length" class="text-center text-danger mt-3">
     <i class="fas fa-exclamation-circle"></i> Menü yükleniyor...
   </p>
-
 </div>
