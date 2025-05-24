@@ -12,16 +12,14 @@ import { MenuFirebaseRepository } from '../../../MenuFeature/infrastructure/menu
   imports: [ReactiveFormsModule, CommonModule]
 })
 export class CategoryComponentComponent implements OnInit {
-  categories: Category[] = []; // ✅ Now an array instead of an object
+  categories: Category[] = [];
   categoryForm: FormGroup;
-
   isAddingCategory = false;
-
 
   constructor(private menuRepository: MenuFirebaseRepository, private fb: FormBuilder) {
     this.categoryForm = this.fb.group({
       name: ['', Validators.required],
-      displayOrder: [null] // ✅ Added displayOrder to form
+      displayOrder: [null]
     });
   }
 
@@ -29,21 +27,18 @@ export class CategoryComponentComponent implements OnInit {
     this.loadCategories();
   }
 
-  // ✅ Load categories from Firebase and sort them
   loadCategories() {
     this.menuRepository.listenForMenuChanges();
     this.menuRepository.menu$.subscribe(menu => {
       if (menu && menu.categories) {
         this.categories = this.sortCategories(menu.categories);
-        console.log('Sorted Categories:', this.categories);
       }
     });
   }
 
-  // ✅ Sort categories by displayOrder
   private sortCategories(categoriesObj: { [key: string]: Category }): Category[] {
     return Object.entries(categoriesObj)
-      .map(([id, category]) => ({ ...category, id })) // Convert to array and preserve `id`
+      .map(([id, category]) => ({ ...category, id }))
       .sort((a, b) => {
         const orderA = a.displayOrder ?? Number.MAX_SAFE_INTEGER;
         const orderB = b.displayOrder ?? Number.MAX_SAFE_INTEGER;
@@ -51,7 +46,18 @@ export class CategoryComponentComponent implements OnInit {
       });
   }
 
-  // ✅ Add a new category with displayOrder
+  onAddCardSubmit(): void {
+    if (this.categoryForm.valid) {
+      this.addCategory();
+      this.isAddingCategory = false;
+    }
+  }
+
+  cancelAddCard(): void {
+    this.categoryForm.reset();
+    this.isAddingCategory = false;
+  }
+
   addCategory() {
     if (this.categoryForm.valid) {
       const newCategory = new Category(
@@ -67,19 +73,15 @@ export class CategoryComponentComponent implements OnInit {
     }
   }
 
-  // ✅ Delete a category
   deleteCategory(categoryId: string) {
     this.menuRepository.removeCategory(categoryId).subscribe(() => {
-      console.log(`Category ${categoryId} deleted.`);
       this.categories = this.categories.filter(category => category.id !== categoryId);
     });
   }
 
-  // ✅ Update a category name
   updateCategoryName(categoryId: string, newName: string) {
     if (newName.trim()) {
       this.menuRepository.updateCategoryName(categoryId, newName.trim()).subscribe(() => {
-        console.log(`Category ${categoryId} updated to ${newName}.`);
         const category = this.categories.find(c => c.id === categoryId);
         if (category) {
           category.name = newName.trim();
@@ -88,33 +90,18 @@ export class CategoryComponentComponent implements OnInit {
     }
   }
 
-  // ✅ Update category displayOrder
   updateDisplayOrder(categoryId: string, newDisplayOrder: string) {
     const orderValue = Number(newDisplayOrder);
     if (!isNaN(orderValue) && orderValue >= 0) {
       this.menuRepository.updateDisplayOrder(categoryId, orderValue).subscribe(() => {
-        console.log(`Updated displayOrder for ${categoryId} to ${orderValue}`);
         const category = this.categories.find(c => c.id === categoryId);
         if (category) {
           category.displayOrder = orderValue;
           this.categories = this.sortCategories(
             Object.fromEntries(this.categories.map(c => [c.id, c]))
-          ); // ✅ Re-sort after update
+          );
         }
       });
     }
   }
-
-  onAddCardSubmit(): void {
-    if (this.categoryForm.valid) {
-      this.addCategory(); // uses your existing logic
-      this.isAddingCategory = false;
-    }
-  }
-
-  cancelAddCard(): void {
-    this.categoryForm.reset();
-    this.isAddingCategory = false;
-  }
-
 }
