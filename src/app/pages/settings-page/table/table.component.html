@@ -1,38 +1,56 @@
 <div class="container mt-4">
   <h2 class="mb-4">Restaurant Tables</h2>
 
-  <!-- ✅ Table Creation Form -->
-  <div class="mb-4 p-3 border rounded bg-light">
-    <h4>Create New Table</h4>
-    <div class="row">
-      <div class="col-md-5">
-        <input
-          [(ngModel)]="newTableName"
-          class="form-control"
-          placeholder="Enter table name"
-        />
-      </div>
-      <div class="col-md-3">
-        <input
-          [(ngModel)]="newTableCapacity"
-          type="number"
-          class="form-control"
-          placeholder="Capacity"
-        />
-      </div>
-      <div class="col-md-4">
-        <button class="btn btn-success w-100" (click)="createTable()">
-          Add Table
-        </button>
+  <!-- ✅ Table Cards -->
+  <div class="row row-cols-1 row-cols-md-3 g-4">
+    <!-- ➕ Add Table Card -->
+    <div class="col">
+      <div
+        class="card h-100 add-card text-center"
+        [class.clickable]="!isAddingTable"
+        (click)="!isAddingTable && openAddTableForm()"
+      >
+        <div class="card-body d-flex justify-content-center align-items-center flex-column">
+          <ng-container *ngIf="!isAddingTable; else tableFormBlock">
+            <i class="fas fa-plus fa-2x text-muted mb-2"></i>
+            <small class="text-muted">Add Table</small>
+          </ng-container>
+
+          <ng-template #tableFormBlock>
+            <form (submit)="onAddTableSubmit($event)" class="w-100" (click)="$event.stopPropagation()">
+              <input
+                [(ngModel)]="newTableName"
+                name="tableName"
+                class="form-control mb-2"
+                placeholder="Enter table name"
+                required
+              />
+              <input
+                [(ngModel)]="newTableCapacity"
+                name="tableCapacity"
+                type="number"
+                class="form-control mb-2"
+                placeholder="Capacity"
+                required
+              />
+              <div class="d-flex justify-content-between">
+                <button type="submit" class="btn btn-success btn-sm">
+                  <i class="fas fa-check"></i>
+                </button>
+                <button type="button" class="btn btn-secondary btn-sm" (click)="cancelAddTable(); $event.stopPropagation()">
+                  <i class="fas fa-times"></i>
+                </button>
+              </div>
+            </form>
+          </ng-template>
+        </div>
       </div>
     </div>
-  </div>
 
-  <!-- ✅ Tables Display -->
-  <div class="row">
-    <div *ngFor="let table of tables; let i = index" class="col-md-4">
+    <!-- ✅ Existing Tables -->
+    <div *ngFor="let table of tables" class="col">
       <div
-        class="card mb-3"
+        class="card h-100"
         [ngClass]="{
           'bg-success text-white': table.status === 'available',
           'bg-danger text-white': table.status === 'occupied'
@@ -41,45 +59,22 @@
         <div class="card-body">
           <!-- ✅ Edit Mode -->
           <div *ngIf="editingTableId === table.id">
-            <input
-              [(ngModel)]="editedTable.name"
-              class="form-control mb-2"
-              placeholder="Table Name"
-            />
-            <input
-              [(ngModel)]="editedTable.capacity"
-              type="number"
-              class="form-control mb-2"
-              placeholder="Capacity"
-            />
+            <input [(ngModel)]="editedTable.name" class="form-control mb-2" placeholder="Table Name" />
+            <input [(ngModel)]="editedTable.capacity" type="number" class="form-control mb-2" placeholder="Capacity" />
             <select [(ngModel)]="editedTable.status" class="form-control mb-2">
               <option value="available">Available</option>
               <option value="occupied">Occupied</option>
             </select>
-            <button class="btn btn-primary w-100" (click)="updateTable()">
-              Save
-            </button>
+            <button class="btn btn-primary w-100" (click)="updateTable()">Save</button>
           </div>
 
           <!-- ✅ View Mode -->
           <div *ngIf="editingTableId !== table.id">
             <h5 class="card-title">{{ table.name }}</h5>
             <p class="card-text">Capacity: {{ table.capacity }}</p>
-            <p class="card-text">
-              Status: <strong>{{ table.status }}</strong>
-            </p>
-            <button
-              class="btn btn-warning w-100 mt-2"
-              (click)="startEditing(table)"
-            >
-              Edit
-            </button>
-            <button
-              class="btn btn-danger w-100 mt-2"
-              (click)="deleteTable(table.id)"
-            >
-              Delete
-            </button>
+            <p class="card-text">Status: <strong>{{ table.status }}</strong></p>
+            <button class="btn btn-warning w-100 mt-2" (click)="startEditing(table)">Edit</button>
+            <button class="btn btn-danger w-100 mt-2" (click)="deleteTable(table.id)">Delete</button>
           </div>
         </div>
       </div>

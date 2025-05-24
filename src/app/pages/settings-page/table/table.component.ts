@@ -21,6 +21,8 @@ export class TableComponent implements OnInit {
   editingTableId: string | null = null;
   editedTable: Partial<Table> = {};
 
+  isAddingTable = false;
+
   constructor(private tableService: TableService) { }
 
   ngOnInit(): void {
@@ -82,5 +84,27 @@ export class TableComponent implements OnInit {
       });
     }
   }
+
+
+  openAddTableForm(): void {
+    this.isAddingTable = true;
+  }
+
+  cancelAddTable(): void {
+    this.isAddingTable = false;
+    this.newTableName = '';
+    this.newTableCapacity = 4;
+  }
+
+  onAddTableSubmit(event: Event): void {
+    event.preventDefault();
+    event.stopPropagation();
+
+    if (!this.newTableName.trim() || this.newTableCapacity <= 0) return;
+
+    this.createTable();
+    this.cancelAddTable();
+  }
+
 }
 
