@@ -41,6 +41,7 @@ export class SubpaymentComponent {
    */
   deleteSubPayment(key: string): void {
     // this.odemePageFacadeService.deleteSubPaymentByKey(key);
+    console.log("[SubpaymentComponent] Deleting subpayment with key:", key);
     this.odemePageFacadeService.deleteSubPaymentAtIndex(key)
   }
 

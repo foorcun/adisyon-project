@@ -151,7 +151,7 @@ export class PaymentFirebaseRepository extends PaymentRepository {
 
     override deleteSubPayment(tableId: string, subPaymentKey: string): Observable<void> {
         console.log("[PaymentFirebaseRepository]3 deleteSubPayment", tableId, subPaymentKey);
-        const subRef = ref(this.database, `payments/${tableId}/subPayments/${subPaymentKey}`);
+        const subRef = ref(this.database, `${this.basePath}/${this.menuKey}/${tableId}/subPayments/${subPaymentKey}`);
         return new Observable(observer => {
             remove(subRef)
                 .then(() => {
