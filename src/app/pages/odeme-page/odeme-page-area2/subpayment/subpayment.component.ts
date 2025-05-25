@@ -13,14 +13,8 @@ import { OdemePageFacadeService } from '../../../../services/odeme-page-facade.s
   styleUrl: './subpayment.component.scss'
 })
 export class SubpaymentComponent {
-  /**
-   * The current payment observable from the facade
-   */
   public currentPayment$: Observable<Payment>;
 
-  /**
-   * A derived observable of [key, subPayment] tuples for easier iteration with deletion support
-   */
   public subPaymentEntries$: Observable<[string, SubPayment][]>;
 
   constructor(public odemePageFacadeService: OdemePageFacadeService) {

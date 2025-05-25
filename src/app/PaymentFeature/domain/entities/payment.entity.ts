@@ -1,3 +1,4 @@
+import { PaymentOrder } from "./payment-order.entity";
 import { SubPayment } from "./sub-payment.entity";
 
 export class Payment {
@@ -6,7 +7,10 @@ export class Payment {
     public totalAmount: number,
     public subPayments: Record<string, SubPayment> = {}, // ✅ fix here
     public isClosed: boolean = false,
-    public createdAt: Date = new Date()
+    public createdAt: Date = new Date(),
+
+    // orders buraya
+    public orders: PaymentOrder[]
   ) {}
 
   get paidAmount(): number {

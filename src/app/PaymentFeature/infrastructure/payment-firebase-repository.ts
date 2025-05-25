@@ -50,7 +50,8 @@ export class PaymentFirebaseRepository extends PaymentRepository {
                             payment.totalAmount,
                             subPayments,
                             payment.isClosed,
-                            new Date(payment.createdAt)
+                            new Date(payment.createdAt),
+                            []
                         );
                     });
                     this.paymentsSubject.next(payments);
@@ -120,13 +121,14 @@ export class PaymentFirebaseRepository extends PaymentRepository {
                             data.totalAmount,
                             subPayments,
                             data.isClosed,
-                            new Date(data.createdAt)
+                            new Date(data.createdAt),
+                            [],
                         );
 
                         observer.next(payment);
                     } else {
                         console.warn(`[PaymentFirebaseRepository] No payment found for table ${tableId}, returning empty Payment.`);
-                        const fallback = new Payment(tableId, 0, {}, false, new Date());
+                        const fallback = new Payment(tableId, 0, {}, false, new Date(), []);
                         observer.next(fallback); // ✅ emit empty payment instead of error
                     }
                 },
