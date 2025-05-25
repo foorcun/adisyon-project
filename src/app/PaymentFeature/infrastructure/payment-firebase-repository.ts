@@ -14,6 +14,7 @@ import { PaymentRepository } from '../domain/repositories/payment-repository';
 import { Payment } from '../domain/entities/payment.entity';
 import { PaymentCommand } from '../domain/entities/payment-command';
 import { SubPayment } from '../domain/entities/sub-payment.entity';
+import { PaymentMapper } from '../domain/entities/payment.mapper';
 
 @Injectable({
     providedIn: 'root',
@@ -36,24 +37,7 @@ export class PaymentFirebaseRepository extends PaymentRepository {
             (snapshot: DataSnapshot) => {
                 const data = snapshot.val();
                 if (data) {
-                    const payments = Object.keys(data).map((key) => {
-                        const payment = data[key];
-                        const subPayments: Record<string, SubPayment> = payment.subPayments
-                            ? Object.entries(payment.subPayments).reduce((acc, [subKey, sp]) => {
-                                acc[subKey] = SubPayment.fromPlainObject(sp);
-                                return acc;
-                            }, {} as Record<string, SubPayment>)
-                            : {};
-
-                        return new Payment(
-                            payment.tableId,
-                            payment.totalAmount,
-                            subPayments,
-                            payment.isClosed,
-                            new Date(payment.createdAt),
-                            []
-                        );
-                    });
+                    const payments = Object.values(data).map(raw => PaymentMapper.toPayment(raw));
                     this.paymentsSubject.next(payments);
                 } else {
                     this.paymentsSubject.next([]);
@@ -109,34 +93,18 @@ export class PaymentFirebaseRepository extends PaymentRepository {
                 (snapshot: DataSnapshot) => {
                     const data = snapshot.val();
                     if (data) {
-                        const subPayments: Record<string, SubPayment> = data.subPayments
-                            ? Object.entries(data.subPayments).reduce((acc, [subKey, sp]) => {
-                                acc[subKey] = SubPayment.fromPlainObject(sp);
-                                return acc;
-                            }, {} as Record<string, SubPayment>)
-                            : {};
-
-                        const payment = new Payment(
-                            data.tableId,
-                            data.totalAmount,
-                            subPayments,
-                            data.isClosed,
-                            new Date(data.createdAt),
-                            [],
-                        );
-
+                        const payment = PaymentMapper.toPayment(data);
                         observer.next(payment);
                     } else {
                         console.warn(`[PaymentFirebaseRepository] No payment found for table ${tableId}, returning empty Payment.`);
                         const fallback = new Payment(tableId, 0, {}, false, new Date(), []);
-                        observer.next(fallback); // ✅ emit empty payment instead of error
+                        observer.next(fallback);
                     }
                 },
                 (error) => observer.error(error)
             );
         });
     }
-
 
     override closePayment(tableId: string): Observable<void> {
         const refPath = ref(this.database, `${this.basePath}/${this.menuKey}/${tableId}`);
@@ -152,7 +120,6 @@ export class PaymentFirebaseRepository extends PaymentRepository {
     }
 
     override deleteSubPayment(tableId: string, subPaymentKey: string): Observable<void> {
-        console.log("[PaymentFirebaseRepository]3 deleteSubPayment", tableId, subPaymentKey);
         const subRef = ref(this.database, `${this.basePath}/${this.menuKey}/${tableId}/subPayments/${subPaymentKey}`);
         return new Observable(observer => {
             remove(subRef)
