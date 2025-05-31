@@ -21,8 +21,11 @@ import { PaymentMapper } from '../domain/entities/payment.mapper';
 })
 export class PaymentFirebaseRepository extends PaymentRepository {
     private basePath = 'payments';
-    private paymentsSubject = new BehaviorSubject<Payment[]>([]);
+    
+    // ✅ Updated to Record<string, Payment>
+    private paymentsSubject = new BehaviorSubject<{ [tableId: string]: Payment }>({});
     payments$ = this.paymentsSubject.asObservable();
+
     menuKey = 'menuKey_zeuspub';
 
     constructor(private database: Database) {
@@ -30,6 +33,7 @@ export class PaymentFirebaseRepository extends PaymentRepository {
         this.listenForPayments();
     }
 
+    /** 🔁 Listen for all payments under the menuKey */
     private listenForPayments(): void {
         const paymentsRef = ref(this.database, `${this.basePath}/${this.menuKey}`);
         onValue(
@@ -37,17 +41,16 @@ export class PaymentFirebaseRepository extends PaymentRepository {
             (snapshot: DataSnapshot) => {
                 const data = snapshot.val();
                 if (data) {
-                    const payments = Object.values(data).map(raw => PaymentMapper.toPayment(raw));
-                    // payments.forEach(payment =>{
-                    // // console.log("[PaymentFirebaseRepository] - payment: "  ) // malpractise
-                    // // console.log(payment)
-                    // console.log("[PaymentFirebaseRepository] - payment: ", payment  ) // best practise
-                    // // console.log("[PaymentFirebaseRepository] - payment: " + JSON.stringify(payment)  ) // malpractise
-                    // })
-                    console.log("[PaymentFirebaseRepository] - payment: ", payments  ) // best practise
-                    this.paymentsSubject.next(payments);
+                    const paymentsMap: { [tableId: string]: Payment } = {};
+
+                    for (const [tableId, raw] of Object.entries(data)) {
+                        paymentsMap[tableId] = PaymentMapper.toPayment(raw);
+                    }
+
+                    console.log("[PaymentFirebaseRepository] - payments:", paymentsMap);
+                    this.paymentsSubject.next(paymentsMap);
                 } else {
-                    this.paymentsSubject.next([]);
+                    this.paymentsSubject.next({});
                 }
             },
             (error) => {
