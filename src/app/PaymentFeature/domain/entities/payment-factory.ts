@@ -1,3 +1,4 @@
+import { PaymentOrderItem } from "./payment-order-item.entity";
 import { PaymentOrder } from "./payment-order.entity";
 import { Payment } from "./payment.entity";
 import { SubPayment } from "./sub-payment.entity";
@@ -47,4 +48,22 @@ export class PaymentFactory {
       newOrders
     );
   }
+
+  static convertOrdersToPaymentOrders(orders: any[]): PaymentOrder[] {
+    return orders.map(order => {
+      const items: PaymentOrderItem[] = Array.isArray(order.items)
+        ? order.items.map((item: any) => {
+          const product = {
+            id: item.product?.id || '',
+            name: item.product?.name || '',
+            price: item.product?.price || 0,
+          };
+          return new PaymentOrderItem(product, item.quantity, item.paidQuantity || 0);
+        })
+        : [];
+
+      return new PaymentOrder(order.id, items);
+    });
+  }
+
 }

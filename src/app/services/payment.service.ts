@@ -6,6 +6,7 @@ import { PaymentRepository } from '../PaymentFeature/domain/repositories/payment
 import { PaymentFirebaseRepository } from '../PaymentFeature/infrastructure/payment-firebase-repository';
 import { OrderService } from './order.service';
 import { TableService } from './table.service';
+import { PaymentFactory } from '../PaymentFeature/domain/entities/payment-factory';
 
 @Injectable({
     providedIn: 'root',
@@ -47,7 +48,9 @@ export class PaymentService {
                     // });
                     const relatedOrders = Object.values(orders).filter(order => order.tableUUID === selectedTable?.id);
                     console.log('[PaymentService] Related orders for selected table:', relatedOrders);
-                    payment!.orders = relatedOrders;
+
+                    // payment!.orders = relatedOrders;
+                    payment!.orders = PaymentFactory.convertOrdersToPaymentOrders(relatedOrders); 
 
                     console.log('[PaymentService] Updated payment with orders:', payment);
                     this.selectedTablePaymentSubject.next(payment);

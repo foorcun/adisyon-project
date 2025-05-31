@@ -5,6 +5,7 @@ import { TableDetailsPageFacadeService } from '../../../services/table-details-p
 import { PaymentMethod } from '../../../PaymentFeature/domain/entities/payment-method.enum';
 import { Cart } from '../../../CartFeature/domain/entity/cart';
 import { CommonModule } from '@angular/common';
+import { OdemePageFacadeService2 } from '../../../services/odeme-page-facade2.service';
 
 @Component({
   selector: 'app-odeme-page-area3',
@@ -15,8 +16,8 @@ import { CommonModule } from '@angular/common';
 export class OdemePageArea3Component {
 
   constructor(
-    public odemePageFacadeService: OdemePageFacadeService,
-    private tableDetailsPageFacadeService: TableDetailsPageFacadeService,
+    // public odemePageFacadeService: OdemePageFacadeService,
+    public odemePageFacadeService: OdemePageFacadeService2,
   ) { }
 
   payNakit(): void {

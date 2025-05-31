@@ -13,6 +13,7 @@ import { OdemePageArea3Component } from "./odeme-page-area3/odeme-page-area3.com
 import { OdemePageArea1Component } from "./odeme-page-area1/odeme-page-area1.component";
 import { AdminOrdersPageFacadeService } from '../../services/admin-orders-page-facade.service';
 import { OdemePageFacadeService } from '../../services/odeme-page-facade.service';
+import { OdemePageFacadeService2 } from '../../services/odeme-page-facade2.service';
 
 @Component({
   selector: 'app-odeme-page',
@@ -21,7 +22,9 @@ import { OdemePageFacadeService } from '../../services/odeme-page-facade.service
   styleUrl: './odeme-page.component.scss'
 })
 export class OdemePageComponent {
-  constructor(public odemePageFacadeService: OdemePageFacadeService,
+  constructor(
+    // public odemePageFacadeService: OdemePageFacadeService,
+    public odemePageFacadeService: OdemePageFacadeService2,
     public tableDetailsPageFacadeService: TableDetailsPageFacadeService,
   ) {
     this.tableDetailsPageFacadeService.heartBeat();

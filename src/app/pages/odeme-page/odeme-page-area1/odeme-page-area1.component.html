@@ -1,14 +1,20 @@
 <div class="odeme-page">
   <!-- Orders exist -->
+
   <div
     *ngIf="odemePageFacadeService.orders$ | async; else noOrders"
     class="order-group"
   >
+    <!-- <ul>
+      <li *ngFor="let item of odemePageFacadeService.orders$ | async">
+        {{ item.items | json }}
+      </li>
+    </ul> -->
     <!-- 🔵 Ödenmemiş Olanlar -->
     <div *ngIf="unpaidItems.length > 0">
       <h6 class="text-primary fw-bold">🔵 Ödenmemiş Olanlar</h6>
       <ul class="mb-3">
-        <li
+        <!-- <li
           *ngFor="let item of unpaidItems"
           class="order-item"
           [class.selected]="isSelected(item)"
@@ -16,13 +22,24 @@
           tabindex="0"
           role="button"
           [attr.aria-pressed]="isSelected(item)"
+        > -->
+
+        <li
+          *ngFor="let item of unpaidItems"
+          class="order-item"
+          tabindex="0"
+          role="button"
         >
-          <div class="item-wrapper d-flex justify-content-between align-items-center">
+          <div
+            class="item-wrapper d-flex justify-content-between align-items-center"
+          >
             <span class="item-content">
-              {{ item.product.name }} - {{ item.product.price }}₺ - x{{ item.quantity }}
+              <!-- {{ item.product.name }} - {{ item.product.price }}₺ - x{{ item.quantity }} -->
+              {{ item.items[0].product.name }} - {{ item.items[0].product.price }}₺ - x{{ item.items[0].quantity }}
               <span class="ms-2 text-muted">
-                ({{ item.quantity - getPaidCount(item) }} ödenmemiş /
-                 {{ getPaidCount(item) }} ödenmiş)
+                {{ item.items[0].quantity }} - {{ item.items[0].paidQuantity }} 
+                <!-- ({{ item.items[0].quantity - getPaidCount(item.items[0]) }} ödenmemiş /
+                 {{ getPaidCount(item) }} ödenmiş) -->
               </span>
               <span
                 *ngIf="getSelectedCount(item) > 0"
@@ -32,18 +49,16 @@
               </span>
             </span>
 
-            <!-- Deselect button -->
-            <button
+            <!-- <button
               *ngIf="isSelected(item)"
               class="btn btn-sm btn-outline-light deselect-btn"
               (click)="onDeselect($event, item)"
               aria-label="Ürünü geri al"
             >
               <i class="fas fa-rotate-left"></i>
-            </button>
+            </button> -->
 
-            <!-- Spacer -->
-            <span *ngIf="!isSelected(item)" class="deselect-spacer" aria-hidden="true"></span>
+            <!-- <span *ngIf="!isSelected(item)" class="deselect-spacer" aria-hidden="true"></span> -->
           </div>
         </li>
       </ul>
@@ -53,13 +68,14 @@
     <div *ngIf="paidItems.length > 0">
       <h6 class="text-success fw-bold">✅ Ödenmiş Olanlar</h6>
       <ul class="mb-3">
-        <li
-          *ngFor="let item of paidItems"
-          class="order-item paid"
-        >
-          <div class="item-wrapper d-flex justify-content-between align-items-center">
+        <li *ngFor="let item of paidItems" class="order-item paid">
+          <div
+            class="item-wrapper d-flex justify-content-between align-items-center"
+          >
             <span class="item-content">
-              {{ item.product.name }} - {{ item.product.price }}₺ - x{{ item.quantity }}
+              {{ item.product.name }} - {{ item.product.price }}₺ - x{{
+                item.quantity
+              }}
               <span class="ms-2 text-muted">
                 ({{ getPaidCount(item) }}/{{ item.quantity }} ödenmiş)
               </span>
@@ -74,7 +90,7 @@
     <div *ngIf="selectedTotal > 0" class="mt-4 text-end">
       <h5>
         Seçilen Ürünlerin Toplamı:
-        <strong>{{ selectedTotal | number: '1.2-2' }}₺</strong>
+        <strong>{{ selectedTotal | number : "1.2-2" }}₺</strong>
       </h5>
     </div>
   </div>
