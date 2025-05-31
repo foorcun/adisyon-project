@@ -1,18 +1,19 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { Order } from '../OrderFeature/domain/entities/order.entity';
-import { OrderService } from './order.service';
-import { TableDetailsPageFacadeService } from './table-details-page.facade.service';
+import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
+import { filter, map, switchMap, take, tap, withLatestFrom } from 'rxjs/operators';
 import { Router } from '@angular/router';
+
+import { Order } from '../OrderFeature/domain/entities/order.entity';
 import { OrderStatus } from '../OrderFeature/domain/entities/order-status';
 import { Table } from '../OrderFeature/domain/entities/table.entity';
 import { Payment } from '../PaymentFeature/domain/entities/payment.entity';
-import { PaymentService } from './payment.service';
-import { PaymentMethod } from '../PaymentFeature/domain/entities/payment-method.enum';
 import { PaymentCommand } from '../PaymentFeature/domain/entities/payment-command';
-import { OrderItem } from '../OrderFeature/domain/entities/order-item.entity';
-import { filter, map, switchMap, take, tap, withLatestFrom } from 'rxjs/operators';
+import { PaymentMethod } from '../PaymentFeature/domain/entities/payment-method.enum';
 import { PaymentOrderItem } from '../PaymentFeature/domain/entities/payment-order-item.entity';
+
+import { OrderService } from './order.service';
+import { PaymentService } from './payment.service';
+import { TableDetailsPageFacadeService } from './table-details-page.facade.service';
 
 @Injectable({
   providedIn: 'root'
@@ -24,21 +25,19 @@ export class OdemePageFacadeService2 {
   private _paymentAmount$ = new BehaviorSubject<string>('');
   paymentAmount$ = this._paymentAmount$.asObservable();
 
+  public selectedTablePayment$!: Observable<Payment | undefined>;
+  public currentPayment$!: Observable<Payment>;
+
   public totalPrice$: Observable<number>;
   public subPaymentTotal$: Observable<number>;
   public selectedTotal$: Observable<number>;
   public remainingInfo$: Observable<{ label: string; amount: number }>;
   public canCloseTable$: Observable<boolean>;
-  public currentPayment$!: Observable<Payment>;
+
+  public paidCountMap$ = new BehaviorSubject<Map<string, number>>(new Map());
 
   private tableId: string | null = null;
-
-  private selectedCountMap = new Map<OrderItem, number>();
-  private paidCountMap = new Map<OrderItem, number>();
-
-
-  private selectedTablePaymentSubject = new BehaviorSubject<Payment | undefined>(undefined);
-  selectedTablePayment$ = this.selectedTablePaymentSubject.asObservable();
+  private selectedCountMap = new Map<PaymentOrderItem, number>();
 
   constructor(
     private orderService: OrderService,
@@ -46,7 +45,19 @@ export class OdemePageFacadeService2 {
     private router: Router,
     private paymentService: PaymentService
   ) {
-    this.selectedTablePayment$ = this.paymentService.selectedTablePayment$
+    this.selectedTablePayment$ = this.paymentService.selectedTablePayment$;
+
+    // Build paidCountMap$ reactively from selectedTablePayment$
+    this.selectedTablePayment$.subscribe(payment => {
+      const map = new Map<string, number>();
+      payment?.orders?.forEach(order =>
+        order.items.forEach(item => {
+          const current = map.get(item.product.id) ?? 0;
+          map.set(item.product.id, current + item.paidQuantity);
+        })
+      );
+      this.paidCountMap$.next(map);
+    });
 
     this.tableDetailsPageFacadeService.table$.pipe(
       tap(table => {
@@ -76,13 +87,10 @@ export class OdemePageFacadeService2 {
       switchMap(table => this.paymentService.getPaymentByTableId(table.id))
     );
 
-    this.totalPrice$ = this.orders$.pipe(
-      map(orders => {
-        if (!orders || orders.length === 0) return 0;
-        const allItems = orders.flatMap(order =>
-          order.items.map(item => new OrderItem(item.product, item.quantity))
-        );
-        return allItems.reduce((sum, item) => sum + item.getTotalPrice, 0);
+    this.totalPrice$ = this.selectedTablePayment$.pipe(
+      map(payment => {
+        const allItems = payment?.orders.flatMap(order => order.items) ?? [];
+        return allItems.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
       })
     );
 
@@ -92,17 +100,16 @@ export class OdemePageFacadeService2 {
       )
     );
 
-    this.selectedTotal$ = this.orders$.pipe(
-      map(orders => {
-        let total = 0;
-        for (const order of orders) {
-          for (const item of order.items) {
-            const count = this.getSelectedCount(item);
-            const price = item.product?.price ?? 0;
-            total += price * count;
-          }
-        }
-        return total;
+    this.selectedTotal$ = combineLatest([
+      this.selectedTablePayment$,
+      this.paidCountMap$
+    ]).pipe(
+      map(([payment, paidMap]) => {
+        const allItems = payment?.orders.flatMap(order => order.items) ?? [];
+        return allItems.reduce((total, item) => {
+          const count = this.getSelectedCount(item);
+          return total + (item.product?.price ?? 0) * count;
+        }, 0);
       })
     );
 
@@ -111,13 +118,10 @@ export class OdemePageFacadeService2 {
         this.subPaymentTotal$.pipe(
           map(paid => {
             const diff = paid - total;
-            if (diff < 0) {
-              return { label: 'Kalan Tutar', amount: Math.abs(diff) };
-            } else if (diff > 0) {
-              return { label: 'Para Üstü', amount: diff };
-            } else {
-              return { label: 'Tam Ödendi', amount: 0 };
-            }
+            return {
+              label: diff < 0 ? 'Kalan Tutar' : diff > 0 ? 'Para Üstü' : 'Tam Ödendi',
+              amount: Math.abs(diff)
+            };
           })
         )
       )
@@ -128,23 +132,20 @@ export class OdemePageFacadeService2 {
     );
   }
 
-  selectItem(item: OrderItem): void {
-    if (this.isPaid(item)) return;
+  selectItem(item: PaymentOrderItem): void {
+    this.paidCountMap$.pipe(take(1)).subscribe(paidMap => {
+      const selected = this.selectedCountMap.get(item) ?? 0;
+      const paid = paidMap.get(item.product.id) ?? 0;
+      const remaining = item.quantity - paid;
 
-    const selected = this.selectedCountMap.get(item) ?? 0;
-    const paid = this.paidCountMap.get(item) ?? 0;
-    const remaining = item.quantity - paid;
-
-    if (selected < remaining) {
-      this.selectedCountMap.set(item, selected + 1);
-    } else {
-      console.log('Cannot select more than remaining unpaid quantity.');
-    }
+      if (selected < remaining) {
+        this.selectedCountMap.set(item, selected + 1);
+      }
+    });
   }
 
-  deselectItem(item: OrderItem): void {
+  deselectItem(item: PaymentOrderItem): void {
     const selected = this.selectedCountMap.get(item) ?? 0;
-
     if (selected > 1) {
       this.selectedCountMap.set(item, selected - 1);
     } else {
@@ -152,27 +153,21 @@ export class OdemePageFacadeService2 {
     }
   }
 
-  isSelected(item: OrderItem): boolean {
+  isSelected(item: PaymentOrderItem): boolean {
     return (this.selectedCountMap.get(item) ?? 0) > 0;
   }
 
-  getSelectedCount(item: OrderItem): number {
+  getSelectedCount(item: PaymentOrderItem): number {
     return this.selectedCountMap.get(item) ?? 0;
   }
 
-  isPaid(item: OrderItem): boolean {
-    return (this.paidCountMap.get(item) ?? 0) >= item.quantity;
+  isPaid(item: PaymentOrderItem): boolean {
+    return this.getPaidCount(item) >= item.quantity;
   }
 
-  getPaidCount(item: OrderItem): number {
-  // getPaidCount(item: PaymentOrderItem): number {
-    return this.paidCountMap.get(item) ?? 0;
-    // this.selectedTablePayment$.subscribe(payment => {
-    //   if (!payment) return 0;
-    //   // const paidItem = payment.orders.find(i => i.product.id === item.product.id);
-    //   const paymentOrder = payment.orders.find(o => o.items.some(i => i.product.id === item.product.id));
-    //   return paymentOrderItem ? paymentOrderItem. : 0;
-    // });
+  getPaidCount(item: PaymentOrderItem): number {
+    const map = this.paidCountMap$.getValue();
+    return map.get(item.product.id) ?? 0;
   }
 
   get selectedTotal(): number {
@@ -201,34 +196,28 @@ export class OdemePageFacadeService2 {
   }
 
   pay(amount: number, method: PaymentMethod): void {
-    if (!this.tableId) {
-      console.warn('[OdemePageFacadeService] Cannot process payment — no table ID.');
-      return;
-    }
+    if (!this.tableId) return;
 
     if (isNaN(amount) || amount <= 0) {
       console.warn('[OdemePageFacadeService] Invalid payment amount:', amount);
       return;
     }
 
-    console.log('[OdemePageFacadeService] Processing payment:', this.tableId, method, amount);
     const command = new PaymentCommand(this.tableId, method, amount);
 
     this.paymentService.addSubPayment(command).subscribe({
       next: () => {
-        console.log('[OdemePageFacadeService] SubPayment successful:', command);
-
         this.selectedCountMap.forEach((count, item) => {
-          const paid = this.paidCountMap.get(item) ?? 0;
-          this.paidCountMap.set(item, paid + count);
+          const currentPaid = this.getPaidCount(item);
+          this.paidCountMap$.next(
+            new Map(this.paidCountMap$.getValue().set(item.product.id, currentPaid + count))
+          );
         });
 
         this.selectedCountMap.clear();
         this._paymentAmount$.next('');
       },
-      error: err => {
-        console.error('[OdemePageFacadeService] SubPayment failed:', err);
-      }
+      error: err => console.error('[OdemePageFacadeService] SubPayment failed:', err)
     });
   }
 
@@ -238,48 +227,26 @@ export class OdemePageFacadeService2 {
       withLatestFrom(this.tableDetailsPageFacadeService.table$)
     ).subscribe({
       next: ([payment, table]) => {
-        if (!table) {
-          console.warn('[OdemePageFacadeService] Table not found.');
-          return;
-        }
+        if (!table) return;
 
-        const tableId = table.id;
-        const keyToDelete = index;
-
-        if (!keyToDelete) {
-          console.warn('[OdemePageFacadeService] Subpayment key not found at index:', index);
-          return;
-        }
-
-        this.paymentService.deleteSubPayment(tableId, keyToDelete).subscribe({
+        this.paymentService.deleteSubPayment(table.id, index).subscribe({
           next: () => {
-            console.log(`[OdemePageFacadeService] SubPayment ${index} deleted.`);
-            this.paidCountMap.clear();
-            this.tableDetailsPageFacadeService.table$
-              .pipe(take(1))
-              .subscribe(table => {
-                if (table) {
-                  this.paymentService.getPaymentByTableId(table.id).subscribe(payment => {
-                    console.log('[OdemePageFacadeService] Refreshed payment after delete:', payment);
-                  });
-                }
-              });
+            this.paidCountMap$.next(new Map()); // Reset paid count
+            this.paymentService.getPaymentByTableId(table.id).subscribe(); // Re-fetch
           },
-          error: err => {
-            console.error('[OdemePageFacadeService] Failed to delete subpayment:', err);
-          }
+          error: err => console.error('[OdemePageFacadeService] Failed to delete subpayment:', err)
         });
-      },
-      error: err => console.error('[OdemePageFacadeService] Failed to resolve table or payment:', err)
+      }
     });
   }
 
   getPaymentAmount(): number {
-    return this._paymentAmount$.getValue() ? parseFloat(this._paymentAmount$.getValue()) : 0;
+    const raw = this._paymentAmount$.getValue();
+    return raw ? parseFloat(raw) : 0;
   }
 
   closeTableAndSave(): void {
     console.log('[OdemePageFacadeService] Table closure initiated...');
-    // TODO: Implement closing logic — set orders to COMPLETED, release table, etc.
+    // TODO: Implement closure: update order statuses and table status
   }
 }

@@ -18,70 +18,58 @@ import { PaymentOrderItem } from '../../../PaymentFeature/domain/entities/paymen
   styleUrl: './odeme-page-area1.component.scss',
 })
 export class OdemePageArea1Component {
-  // private orders: Order[] = [];
   private selectedTablePaymentSubject = new BehaviorSubject<Payment | undefined>(undefined);
   selectedTablePayment$ = this.selectedTablePaymentSubject.asObservable();
 
-  private ordersSubject = new BehaviorSubject<PaymentOrder[]>([])
+  private ordersSubject = new BehaviorSubject<PaymentOrder[]>([]);
   orders$ = this.ordersSubject.asObservable();
 
-  constructor(
-    // public odemePageFacadeService: OdemePageFacadeService
-    public odemePageFacadeService: OdemePageFacadeService2
-  ) {
-    // this.odemePageFacadeService.orders$.pipe(take(1)).subscribe(orders => {
-    //   this.orders = orders;
-    // });
+  constructor(public odemePageFacadeService: OdemePageFacadeService2) {
     this.odemePageFacadeService.selectedTablePayment$.subscribe(selectedTablePayment => {
       if (selectedTablePayment?.orders) {
-        console.log("[OdemePageArea1Component] ", selectedTablePayment.orders)
-        this.ordersSubject.next(selectedTablePayment.orders)
+        console.log("[OdemePageArea1Component] ", selectedTablePayment.orders);
+        this.ordersSubject.next(selectedTablePayment.orders);
       }
     });
-
   }
 
-  // get allItems(): OrderItem[] {
-  get allItems() {
-    // return this.orders.flatMap(order => order.items);
-    return this.ordersSubject.getValue();
+  /** Flattened array of all order items from all orders */
+  get allItems(): PaymentOrderItem[] {
+    return this.ordersSubject.getValue().flatMap(order => order.items);
   }
 
-  // get unpaidItems(): OrderItem[] {
-  get unpaidItems() {
-    // return this.allItems.filter(item => this.getPaidCount(item) < item.quantity);
-    return this.ordersSubject.getValue();
+  /** Items that are not fully paid */
+  get unpaidItems(): PaymentOrderItem[] {
+    return this.allItems.filter(item => item.paidQuantity < item.quantity);
   }
 
-  get paidItems(): OrderItem[] {
-    // return this.allItems.filter(item => this.getPaidCount(item) >= item.quantity);
-    return []
+  /** Items that are fully paid */
+  get paidItems(): PaymentOrderItem[] {
+    return this.allItems.filter(item => item.paidQuantity >= item.quantity);
   }
 
-  onSelect(item: OrderItem): void {
+  onSelect(item: PaymentOrderItem): void {
     this.odemePageFacadeService.selectItem(item);
   }
 
-  onDeselect(event: MouseEvent, item: OrderItem): void {
+  onDeselect(event: MouseEvent, item: PaymentOrderItem): void {
     event.stopPropagation();
     this.odemePageFacadeService.deselectItem(item);
   }
 
-  isSelected(item: OrderItem): boolean {
+  isSelected(item: PaymentOrderItem): boolean {
     return this.odemePageFacadeService.isSelected(item);
   }
 
-  // getSelectedCount(item: OrderItem): number {
-  getSelectedCount(item: PaymentOrder): number {
+  getSelectedCount(item: PaymentOrderItem): number {
     return this.odemePageFacadeService.getSelectedCount(item);
   }
 
-  isPaid(item: OrderItem): boolean {
+  isPaid(item: PaymentOrderItem): boolean {
     return this.odemePageFacadeService.isPaid(item);
   }
 
-  getPaidCount(item: OrderItem): number {
-  // getPaidCount(item: PaymentOrderItem): number {
+  getPaidCount(item: PaymentOrderItem): number {
     return this.odemePageFacadeService.getPaidCount(item);
   }
 
