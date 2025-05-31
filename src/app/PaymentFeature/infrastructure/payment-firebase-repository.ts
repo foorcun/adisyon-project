@@ -21,8 +21,7 @@ import { PaymentMapper } from '../domain/entities/payment.mapper';
 })
 export class PaymentFirebaseRepository extends PaymentRepository {
     private basePath = 'payments';
-    
-    // ✅ Updated to Record<string, Payment>
+
     private paymentsSubject = new BehaviorSubject<{ [tableId: string]: Payment }>({});
     payments$ = this.paymentsSubject.asObservable();
 
@@ -33,7 +32,6 @@ export class PaymentFirebaseRepository extends PaymentRepository {
         this.listenForPayments();
     }
 
-    /** 🔁 Listen for all payments under the menuKey */
     private listenForPayments(): void {
         const paymentsRef = ref(this.database, `${this.basePath}/${this.menuKey}`);
         onValue(
@@ -81,7 +79,7 @@ export class PaymentFirebaseRepository extends PaymentRepository {
     }
 
     override addSubPayment(command: PaymentCommand): Observable<void> {
-        const subPayment = new SubPayment(command.method, command.amount);
+        const subPayment = new SubPayment(command.method, command.amount, new Date(), command.items);
         const paymentRef = ref(this.database, `${this.basePath}/${this.menuKey}/${command.tableId}/subPayments`);
 
         return new Observable((observer) => {
