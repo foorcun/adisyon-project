@@ -38,15 +38,14 @@ export class OdemePageArea1Component {
     return this.ordersSubject.getValue().flatMap(order => order.items);
   }
 
-  /** Items that are not fully paid */
   get unpaidItems(): PaymentOrderItem[] {
-    return this.allItems.filter(item => item.paidQuantity < item.quantity);
+    return this.allItems.filter(item => this.getPaidCount(item) < item.quantity);
   }
 
-  /** Items that are fully paid */
   get paidItems(): PaymentOrderItem[] {
-    return this.allItems.filter(item => item.paidQuantity >= item.quantity);
+    return this.allItems.filter(item => this.getPaidCount(item) >= item.quantity);
   }
+
 
   onSelect(item: PaymentOrderItem): void {
     this.odemePageFacadeService.selectItem(item);
@@ -72,6 +71,7 @@ export class OdemePageArea1Component {
   getPaidCount(item: PaymentOrderItem): number {
     return this.odemePageFacadeService.getPaidCount(item);
   }
+
 
   get selectedTotal(): number {
     return this.odemePageFacadeService.selectedTotal;

@@ -10,8 +10,6 @@ import { Payment } from '../PaymentFeature/domain/entities/payment.entity';
 import { PaymentCommand } from '../PaymentFeature/domain/entities/payment-command';
 import { PaymentMethod } from '../PaymentFeature/domain/entities/payment-method.enum';
 import { PaymentOrderItem } from '../PaymentFeature/domain/entities/payment-order-item.entity';
-import { SubPaymentItem } from '../PaymentFeature/domain/entities/sub-payment-item.interface';
-import { SubPayment } from '../PaymentFeature/domain/entities/sub-payment.entity';
 
 import { OrderService } from './order.service';
 import { PaymentService } from './payment.service';
@@ -49,6 +47,7 @@ export class OdemePageFacadeService2 {
   ) {
     this.selectedTablePayment$ = this.paymentService.selectedTablePayment$;
 
+    // Build paidCountMap$ reactively from selectedTablePayment$
     this.selectedTablePayment$.subscribe(payment => {
       const map = new Map<string, number>();
       payment?.orders?.forEach(order =>
@@ -198,22 +197,15 @@ export class OdemePageFacadeService2 {
 
   pay(amount: number, method: PaymentMethod): void {
     if (!this.tableId) return;
+
     if (isNaN(amount) || amount <= 0) {
       console.warn('[OdemePageFacadeService] Invalid payment amount:', amount);
       return;
     }
 
-    const items: SubPaymentItem[] = [];
-    this.selectedCountMap.forEach((count, item) => {
-      items.push({
-        productId: item.product.id,
-        quantity: count
-      });
-    });
+    const command = new PaymentCommand(this.tableId, method, amount);
 
-    const subPayment = new SubPayment(method, amount, new Date(), items);
-
-    this.paymentService.addSubPayment(new PaymentCommand(this.tableId, method, amount, items)).subscribe({
+    this.paymentService.addSubPayment(command).subscribe({
       next: () => {
         this.selectedCountMap.forEach((count, item) => {
           const currentPaid = this.getPaidCount(item);
@@ -239,8 +231,8 @@ export class OdemePageFacadeService2 {
 
         this.paymentService.deleteSubPayment(table.id, index).subscribe({
           next: () => {
-            this.paidCountMap$.next(new Map()); // Reset
-            this.paymentService.getPaymentByTableId(table.id).subscribe(); // Reload
+            this.paidCountMap$.next(new Map()); // Reset paid count
+            this.paymentService.getPaymentByTableId(table.id).subscribe(); // Re-fetch
           },
           error: err => console.error('[OdemePageFacadeService] Failed to delete subpayment:', err)
         });
@@ -255,6 +247,6 @@ export class OdemePageFacadeService2 {
 
   closeTableAndSave(): void {
     console.log('[OdemePageFacadeService] Table closure initiated...');
-    // TODO: Set order status to COMPLETED, free up the table, etc.
+    // TODO: Implement closure: update order statuses and table status
   }
 }

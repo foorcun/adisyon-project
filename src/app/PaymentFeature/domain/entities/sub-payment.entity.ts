@@ -6,18 +6,15 @@ export class SubPayment {
     public method: PaymentMethod,
     public amount: number,
     public createdAt: Date = new Date(),
-    public subPaymentItems: SubPaymentItem[] = [] // ✅ renamed from "items"
-  ) {}
+    public subPaymentItems: { productId: string; quantity: number }[] = []
+  ) { }
 
   toPlainObject() {
     return {
       method: this.method,
       amount: this.amount,
       createdAt: this.createdAt.toISOString(),
-      subPaymentItems: this.subPaymentItems.map(item => ({
-        productId: item.productId,
-        quantity: item.quantity
-      }))
+      subPaymentItems: this.subPaymentItems
     };
   }
 
@@ -26,12 +23,7 @@ export class SubPayment {
       obj.method,
       obj.amount,
       new Date(obj.createdAt),
-      Array.isArray(obj.subPaymentItems)
-        ? obj.subPaymentItems.map((item: any) => ({
-            productId: item.productId,
-            quantity: item.quantity
-          }))
-        : []
+      obj.subPaymentItems || []
     );
   }
 }
