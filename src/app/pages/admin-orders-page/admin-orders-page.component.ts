@@ -99,9 +99,19 @@ export class AdminOrdersPageComponent implements OnInit {
     this.router.navigate(['/menu-page']);
   }
   navigateToTableDetails(table: Table): void {
-    this.adminOrdersPageFacadeService.setSelectedTable(table);
+    // this.adminOrdersPageFacadeService.setSelectedTable(table);
+    this.tableService.setSelectedTable(table)
     // this.router.navigate(['/table-details', table.id]);
-    this.router.navigate(['/table-details', this.adminOrdersPageFacadeService.selectedTable!.id]);
+    // this.router.navigate(['/table-details', this.adminOrdersPageFacadeService.selectedTable!.id]);
+    // this.router.navigate(['/table-details', this.tableService.selectedTable!.id]);
+    this.tableService.selectedTable$.subscribe((selectedTable) => {
+      if (selectedTable) {
+        this.router.navigate(['/table-details', selectedTable.id]);
+      } else {
+        console.warn("[AdminOrdersPageComponent] Warning: No selected table found.");
+      }
+    }
+    );
   }
 
   getTableStatusClass(tableId: string): string {

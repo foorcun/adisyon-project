@@ -38,6 +38,13 @@ export class PaymentFirebaseRepository extends PaymentRepository {
                 const data = snapshot.val();
                 if (data) {
                     const payments = Object.values(data).map(raw => PaymentMapper.toPayment(raw));
+                    // payments.forEach(payment =>{
+                    // // console.log("[PaymentFirebaseRepository] - payment: "  ) // malpractise
+                    // // console.log(payment)
+                    // console.log("[PaymentFirebaseRepository] - payment: ", payment  ) // best practise
+                    // // console.log("[PaymentFirebaseRepository] - payment: " + JSON.stringify(payment)  ) // malpractise
+                    // })
+                    console.log("[PaymentFirebaseRepository] - payment: ", payments  ) // best practise
                     this.paymentsSubject.next(payments);
                 } else {
                     this.paymentsSubject.next([]);

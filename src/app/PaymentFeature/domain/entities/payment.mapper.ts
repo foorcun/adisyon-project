@@ -48,4 +48,28 @@ export class PaymentMapper {
 
         return new Payment(tableId, totalAmount, subPayments, isClosed, createdAt, orders);
     }
+    static toJson(payment: Payment): any {
+        return {
+            tableId: payment.tableId,
+            totalAmount: payment.totalAmount,
+            isClosed: payment.isClosed,
+            createdAt: payment.createdAt.toISOString(),
+            subPayments: Object.entries(payment.subPayments).reduce((acc, [key, sub]) => {
+                acc[key] = sub.toPlainObject();
+                return acc;
+            }, {} as Record<string, any>),
+            orders: payment.orders.map(order => ({
+                id: order.id,
+                items: order.items.map(item => ({
+                    urunNotu: item.urunNotu,
+                    quantity: item.quantity,
+                    product: {
+                        id: item.product.id,
+                        name: item.product.name,
+                        price: item.product.price,
+                    }
+                }))
+            }))
+        };
+    }
 }

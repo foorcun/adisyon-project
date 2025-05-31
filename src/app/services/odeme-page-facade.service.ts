@@ -41,6 +41,7 @@ export class OdemePageFacadeService {
     private router: Router,
     private paymentService: PaymentService
   ) {
+
     this.tableDetailsPageFacadeService.table$.pipe(
       tap(table => {
         if (!table) {
@@ -197,6 +198,7 @@ export class OdemePageFacadeService {
       return;
     }
 
+    console.log('[OdemePageFacadeService] Processing payment:', this.tableId, method, amount);
     const command = new PaymentCommand(this.tableId, method, amount);
 
     this.paymentService.addSubPayment(command).subscribe({

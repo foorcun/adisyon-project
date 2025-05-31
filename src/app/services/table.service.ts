@@ -10,6 +10,11 @@ export class TableService {
   private tablesSubject = new BehaviorSubject<{ [key: string]: Table }>({});
   tables$ = this.tablesSubject.asObservable();
 
+  // selectedTable: Table | undefined ;
+  private selectedTableSubject = new BehaviorSubject<Table | undefined>(undefined);
+  selectedTable$ = this.selectedTableSubject.asObservable();
+
+
   constructor(private tableRepository: TableFirebaseRepository) {
     this.listenForTablesChanges(); // 🔥 Listen immediately when the service is initialized
   }
@@ -18,6 +23,7 @@ export class TableService {
     this.tableRepository.listenForTablesChanges();
     this.tableRepository.tables$.subscribe(tables => {
       if (tables) {
+        console.log("[TableService] tables: ", tables)
         this.tablesSubject.next(tables);
       }
     });
@@ -58,4 +64,11 @@ export class TableService {
     const tables = this.tablesSubject.getValue();
     return tables[tableId]?.name;
   }
+
+  setSelectedTable(table: Table){
+    console.log("[PaymentFirebaseRepository] selected table.id" + table.id)
+    // this.selectedTable = table;
+    this.selectedTableSubject.next(table);
+  }
+
 }
