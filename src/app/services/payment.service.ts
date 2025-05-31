@@ -40,16 +40,21 @@ export class PaymentService {
                 // console.log("[PaymentService] selectedTable", selectedTable)
                 const payment = selectedTable ? paymentsMap[selectedTable.id] : undefined;
                 console.log("[PaymentService] selectedPayment", payment)
-                this.selectedTablePaymentSubject.next(payment);
+                this.orderService.orders$.subscribe((orders) => {
+                    console.log('[PaymentService] Orders received:', orders);
+                    // this.payments$.subscribe((paymentsMap) => {
+                    //     console.log('[PaymentService] Current payments:', paymentsMap);
+                    // });
+                    const relatedOrders = Object.values(orders).filter(order => order.tableUUID === selectedTable?.id);
+                    console.log('[PaymentService] Related orders for selected table:', relatedOrders);
+                    payment!.orders = relatedOrders;
+
+                    console.log('[PaymentService] Updated payment with orders:', payment);
+                    this.selectedTablePaymentSubject.next(payment);
+                });
             });
         });
 
-        this.orderService.orders$.subscribe((orders) => {
-            console.log('[PaymentService] Orders received:', orders);
-            this.payments$.subscribe((paymentsMap) => {
-                console.log('[PaymentService] Current payments:', paymentsMap);
-            });
-        });
 
 
     }
