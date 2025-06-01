@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { combineLatest, take, filter } from 'rxjs';
-import { OdemePageFacadeService } from '../../../services/odeme-page-facade.service';
 import { TableDetailsPageFacadeService } from '../../../services/table-details-page.facade.service';
 import { PaymentMethod } from '../../../PaymentFeature/domain/entities/payment-method.enum';
 import { Cart } from '../../../CartFeature/domain/entity/cart';

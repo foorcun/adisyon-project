@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { Observable, map } from 'rxjs';
 import { Payment } from '../../../../PaymentFeature/domain/entities/payment.entity';
 import { SubPayment } from '../../../../PaymentFeature/domain/entities/sub-payment.entity';
-import { OdemePageFacadeService } from '../../../../services/odeme-page-facade.service';
+import { OdemePageFacadeService2 } from '../../../../services/odeme-page-facade2.service';
 
 @Component({
   selector: 'app-subpayment',
@@ -17,7 +17,7 @@ export class SubpaymentComponent {
 
   public subPaymentEntries$: Observable<[string, SubPayment][]>;
 
-  constructor(public odemePageFacadeService: OdemePageFacadeService) {
+  constructor(public odemePageFacadeService: OdemePageFacadeService2) {
     this.currentPayment$ = this.odemePageFacadeService.currentPayment$;
 
     this.subPaymentEntries$ = this.currentPayment$.pipe(

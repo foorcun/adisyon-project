@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { OdemePageFacadeService } from '../../../../services/odeme-page-facade.service';
+import { OdemePageFacadeService2 } from '../../../../services/odeme-page-facade2.service';
 
 @Component({
   selector: 'app-odeme-grid',
@@ -10,7 +10,7 @@ import { OdemePageFacadeService } from '../../../../services/odeme-page-facade.s
 export class OdemeGridComponent {
 
   constructor(
-    private odemePageFacadeService: OdemePageFacadeService
+    private odemePageFacadeService: OdemePageFacadeService2
   ) { }
 
   handleClick(value: string): void {

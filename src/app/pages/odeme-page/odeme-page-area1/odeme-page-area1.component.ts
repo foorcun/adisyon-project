@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { take } from 'rxjs/operators';
-import { OdemePageFacadeService } from '../../../services/odeme-page-facade.service';
 import { OrderItem } from '../../../OrderFeature/domain/entities/order-item.entity';
 import { Order } from '../../../OrderFeature/domain/entities/order.entity';
 import { OdemePageFacadeService2 } from '../../../services/odeme-page-facade2.service';
