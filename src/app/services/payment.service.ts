@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, filter, map, Observable, tap } from 'rxjs';
 import { Payment } from '../PaymentFeature/domain/entities/payment.entity';
 import { PaymentCommand } from '../PaymentFeature/domain/entities/payment-command';
 import { PaymentRepository } from '../PaymentFeature/domain/repositories/payment-repository';
@@ -38,27 +38,27 @@ export class PaymentService {
             // 🧠 Listen to selectedTable changes and update selectedTablePayment
             this.tableService.selectedTable$.subscribe(selectedTable => {
                 const paymentsMap = this.paymentsSubject.getValue();
-                // console.log("[PaymentService] paymentsMap", paymentsMap)
-                // console.log("[PaymentService] selectedTable", selectedTable)
                 const payment = selectedTable ? paymentsMap[selectedTable.id] : undefined;
                 console.log("[PaymentService] selectedPayment", payment)
                 this.orderService.orders$.subscribe((orders) => {
-                    console.log('[PaymentService] Orders received:', orders);
-                    // this.payments$.subscribe((paymentsMap) => {
-                    //     console.log('[PaymentService] Current payments:', paymentsMap);
-                    // });
+                    // console.log('[PaymentService] Orders received:', orders);
                     const relatedOrders = Object.values(orders).filter(order => order.tableUUID === selectedTable?.id);
-                    console.log('[PaymentService] Related orders for selected table:', relatedOrders);
+                    // console.log('[PaymentService] Related orders for selected table:', relatedOrders);
 
-                    // payment!.orders = relatedOrders;
                     payment!.orders = PaymentFactory.convertOrdersToPaymentOrders(relatedOrders);
 
-                    // console.log('[PaymentService] Updated payment with orders:', payment);
-                    console.log('[PaymentService] Updated payment with -ORaTydw_dw8bdkDRv-R:', this.findProductSubPayments(payment! ,'-ORaTydw_dw8bdkDRv-R'));
+                    // console.log('[PaymentService] Updated payment with -ORaTydw_dw8bdkDRv-R:', this.findProductSubPaymentsForSelectedProduct('-ORaTydw_dw8bdkDRv-R'));
+                    // console.log('[PaymentService] Updated payment with -ORaTydw_dw8bdkDRv-R:', this.findProductSubPayments('-ORaTydw_dw8bdkDRv-R'));
+
                     this.selectedTablePaymentSubject.next(payment);
+
+                    this.findProductSubPayments('-ORaTydw_dw8bdkDRv-R').subscribe(result => {
+                        console.log('[PaymentService] SubPayments for product:', result);
+                    });
                 });
             });
         });
+
 
 
 
@@ -108,30 +108,44 @@ export class PaymentService {
         return this.paymentRepository.deleteSubPayment(tableId, subPaymentKey);
     }
 
-    findProductSubPayments(
-        payment: Payment,
-        productId: string
-    ): {
+
+    findProductSubPayments(productId: string): Observable<{
         matchedSubPayments: SubPayment[];
         totalPaidQuantity: number;
-    } {
-        // selectedTablePaymentSubject
-        // const payment = this.selectedTablePaymentSubject.getValue();
-        let totalPaidQuantity = 0;
-        const matchedSubPayments: SubPayment[] = [];
+    }> {
+        console.log("[PaymentService] start")
+        return this.selectedTablePayment$.pipe(
+            tap(payment => console.log("[PaymentService] payment received", payment)),
 
-        for (const sub of Object.values(payment!.subPayments)) {
-            const match = sub.subPaymentItems.find(item => item.productId === productId);
-            if (match) {
-                totalPaidQuantity += match.quantity;
-                matchedSubPayments.push(sub);
-            }
-        }
+            filter((payment): payment is Payment => {
+                console.log("[PaymentService] inside filter", payment);
 
-        return {
-            matchedSubPayments,
-            totalPaidQuantity
-        };
+                return !!payment && !!payment.subPayments;
+            }),
+            map(payment => {
+
+                console.log("[PaymentService] 3")
+                let totalPaidQuantity = 0;
+                const matchedSubPayments: SubPayment[] = [];
+
+                for (const sub of Object.values(payment.subPayments)) {
+                    if (!sub?.subPaymentItems) continue;
+
+                    const match = sub.subPaymentItems.find(item => item.productId === productId);
+                    if (match) {
+                        totalPaidQuantity += match.quantity;
+                        matchedSubPayments.push(sub);
+                    }
+                }
+                console.log("[PaymentService] matchedSubPayments", matchedSubPayments)
+                console.log("[PaymentService] matchedSubPayments", matchedSubPayments[0].subPaymentItems[0].quantity)
+                return {
+                    matchedSubPayments,
+                    totalPaidQuantity
+                };
+            })
+        );
     }
+
 
 }
