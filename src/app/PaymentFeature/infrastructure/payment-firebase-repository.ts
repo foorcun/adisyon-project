@@ -138,4 +138,17 @@ export class PaymentFirebaseRepository extends PaymentRepository {
                 .catch(error => observer.error(error));
         });
     }
+    updatePayment(tableId: string, payment: Payment): Observable<void> {
+        const paymentRef = ref(this.database, `${this.basePath}/${this.menuKey}/${tableId}`);
+        return new Observable(observer => {
+            set(paymentRef, PaymentMapper.toJson(payment))
+                .then(() => {
+                    observer.next();
+                    observer.complete();
+                    console.log(`[PaymentFirebaseRepository] - Payment updated for table ${tableId}`);
+                })
+                .catch(error => observer.error(error));
+        });
+    }
+
 }
