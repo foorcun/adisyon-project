@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, filter, map, Observable, tap } from 'rxjs';
+import { BehaviorSubject, filter, map, Observable, tap, combineLatest } from 'rxjs';
 import { Payment } from '../PaymentFeature/domain/entities/payment.entity';
 import { PaymentCommand } from '../PaymentFeature/domain/entities/payment-command';
 import { PaymentRepository } from '../PaymentFeature/domain/repositories/payment-repository';
@@ -8,6 +8,7 @@ import { OrderService } from './order.service';
 import { TableService } from './table.service';
 import { PaymentFactory } from '../PaymentFeature/domain/entities/payment-factory';
 import { SubPayment } from '../PaymentFeature/domain/entities/sub-payment.entity';
+
 
 @Injectable({
     providedIn: 'root',
@@ -30,42 +31,46 @@ export class PaymentService {
     }
 
     /** 🔁 Listen to payment updates from the repository */
+
     private listenForPayments(): void {
         this.paymentRepository.payments$.subscribe((paymentsMap) => {
-            // console.log('[PaymentService] Payments received:', paymentsMap);
+            console.log('[PaymentService] Payments received:', paymentsMap);
             this.paymentsSubject.next(paymentsMap);
+        });
 
-            // 🧠 Listen to selectedTable changes and update selectedTablePayment
-            this.tableService.selectedTable$.subscribe(selectedTable => {
-                const paymentsMap = this.paymentsSubject.getValue();
-                const payment = selectedTable ? paymentsMap[selectedTable.id] : undefined;
-                console.log("[PaymentService] selectedPayment", payment)
-                this.orderService.orders$.subscribe((orders) => {
-                    // console.log('[PaymentService] Orders received:', orders);
-                    const relatedOrders = Object.values(orders).filter(order => order.tableUUID === selectedTable?.id);
-                    // console.log('[PaymentService] Related orders for selected table:', relatedOrders);
+        // Combine selectedTable and orders
+        combineLatest([
+            this.tableService.selectedTable$,
+            this.orderService.orders$,
+            this.payments$
+        ])
+            .pipe(
+                filter(([selectedTable]) => !!selectedTable)
+            )
+            .subscribe(([selectedTable, orders, paymentsMap]) => {
+                const tableId = selectedTable!.id;
+                let payment = paymentsMap[tableId];
 
-                    payment!.orders = PaymentFactory.convertOrdersToPaymentOrders(relatedOrders);
+                if (!payment) {
+                    console.log("[PaymentService] No payment found for table. Initializing:", tableId);
+                    this.initializePayment(tableId, 0).subscribe(() => {
+                        console.log("[PaymentService] Payment initialized.");
+                    });
+                    return;
+                }
 
-                    // console.log('[PaymentService] Updated payment with -ORaTydw_dw8bdkDRv-R:', this.findProductSubPaymentsForSelectedProduct('-ORaTydw_dw8bdkDRv-R'));
-                    // console.log('[PaymentService] Updated payment with -ORaTydw_dw8bdkDRv-R:', this.findProductSubPayments('-ORaTydw_dw8bdkDRv-R'));
+                const relatedOrders = Object.values(orders).filter(order => order.tableUUID === tableId);
+                payment.orders = PaymentFactory.convertOrdersToPaymentOrders(relatedOrders);
 
-                    this.selectedTablePaymentSubject.next(payment);
+                this.selectedTablePaymentSubject.next(payment);
+
+                // Optional: Run subPayment logic here
+                this.findProductSubPayments('-ORaTydw_dw8bdkDRv-R').subscribe(result => {
+                    console.log('[PaymentService] SubPayments for product:', result);
                 });
             });
-        });
-
-
-        this.selectedTablePayment$.subscribe((payment) => {
-            // console.log('[PaymentService] Selected table payment updated:', payment);
-            this.findProductSubPayments('-ORaTydw_dw8bdkDRv-R').subscribe(result => {
-                console.log('[PaymentService] SubPayments for product:', result);
-            });
-        });
-
-
-
     }
+
 
     /** 🧾 Return sorted payments map */
     getPayments(): { [key: string]: Payment } {
