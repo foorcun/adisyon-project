@@ -263,51 +263,49 @@ export class OdemePageFacadeService2 {
     console.log('[OdemePageFacadeService] Table closure initiated...');
 
     const selectedTable = this.tableService.getSelectedTableSync();
-    const currentPayment = this.paymentService.getPaymentByTableIdSync(selectedTable?.id || '');
-
-    if (!selectedTable || !currentPayment) {
-      console.error('[OdemePageFacadeService] No table or payment selected.');
+    if (!selectedTable) {
+      console.warn('[OdemePageFacadeService] No table selected.');
       return;
     }
 
-    // Step 1: Mark all related orders as CLOSED
-    const updatedOrders = currentPayment.orders.map(order => ({
-      ...order,
-      status: 'CLOSED' // Adjust this string based on your Order entity's status enum/type
-    }));
+    const currentPayment = this.paymentService.getPaymentByTableIdSync(selectedTable.id);
+    if (!currentPayment) {
+      console.warn('[OdemePageFacadeService] No active payment found.');
+      return;
+    }
 
-    this.orderService.closeOrdersForTable(selectedTable.id).subscribe(() => {
-      console.log('[OdemePageFacadeService] Orders closed.');
+    const archivedPayment = new ArchivedPayment(
+      currentPayment.tableId,
+      currentPayment.totalAmount,
+      currentPayment.subPayments,
+      true,
+      currentPayment.createdAt,
+      new Date(), // closedAt
+      currentPayment.orders
+    );
 
-      // Step 2: Mark the table as AVAILABLE
-      this.tableService.updateTableStatus(selectedTable.id, TableStatus.Available).subscribe(() => {
-        console.log('[OdemePageFacadeService] Table status updated to AVAILABLE.');
+    this.archivedPaymentService.addArchivedPayment(archivedPayment).subscribe({
+      next: () => {
+        console.log('[OdemePageFacadeService] ArchivedPayment saved.');
 
-        // Step 3: Archive the payment
-        const archivedPayment = new ArchivedPayment(
-          currentPayment.tableId,
-          currentPayment.totalAmount,
-          currentPayment.subPayments,
-          true,
-          currentPayment.createdAt,
-          new Date(),                    // ✅ closedAt
-          currentPayment.orders         // ✅ orders
-        );
+        this.orderService.closeOrdersForTable(selectedTable.id).subscribe(() => {
+          console.log('[OdemePageFacadeService] Orders closed.');
 
+          this.tableService.updateTableStatus(selectedTable.id, TableStatus.Available).subscribe(() => {
+            console.log('[OdemePageFacadeService] Table marked as available.');
 
-        this.archivedPaymentService.addArchivedPayment(archivedPayment).subscribe(() => {
-          console.log('[OdemePageFacadeService] Payment archived.');
-
-          // Step 4: Delete active payment
-          this.paymentService.closePayment(currentPayment.tableId).subscribe(() => {
-            console.log('[OdemePageFacadeService] Active payment closed.');
-
-            // Optionally: refresh UI or notify user
+            this.paymentService.deletePayment(selectedTable.id).subscribe(() => {
+              console.log('[OdemePageFacadeService] Original Payment deleted.');
+            });
           });
         });
-      });
+      },
+      error: (err) => {
+        console.error('[OdemePageFacadeService] Error archiving payment:', err);
+      },
     });
   }
+
 
 
 }

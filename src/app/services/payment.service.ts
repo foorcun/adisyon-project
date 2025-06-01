@@ -59,25 +59,25 @@ export class PaymentService {
             this.orderService.orders$,
             this.payments$
         ])
-        .pipe(filter(([selectedTable]) => !!selectedTable))
-        .subscribe(([selectedTable, orders, paymentsMap]) => {
-            const tableId = selectedTable!.id;
-            let payment = paymentsMap[tableId];
+            .pipe(filter(([selectedTable]) => !!selectedTable))
+            .subscribe(([selectedTable, orders, paymentsMap]) => {
+                const tableId = selectedTable!.id;
+                let payment = paymentsMap[tableId];
 
-            if (!payment) {
-                this.initializePaymentIfNotExists(tableId);
-                return;
-            }
+                if (!payment) {
+                    this.initializePaymentIfNotExists(tableId);
+                    return;
+                }
 
-            const relatedOrders = Object.values(orders).filter(order => order.tableUUID === tableId);
-            payment.orders = PaymentFactory.convertOrdersToPaymentOrders(relatedOrders);
-            this.paymentRepository.updatePayment(tableId, payment).subscribe();
-            this.selectedTablePaymentSubject.next(payment);
+                const relatedOrders = Object.values(orders).filter(order => order.tableUUID === tableId);
+                payment.orders = PaymentFactory.convertOrdersToPaymentOrders(relatedOrders);
+                this.paymentRepository.updatePayment(tableId, payment).subscribe();
+                this.selectedTablePaymentSubject.next(payment);
 
-            this.findProductSubPayments('-ORaTydw_dw8bdkDRv-R').subscribe(result => {
-                console.log('[PaymentService] SubPayments for product:', result);
+                this.findProductSubPayments('-ORaTydw_dw8bdkDRv-R').subscribe(result => {
+                    console.log('[PaymentService] SubPayments for product:', result);
+                });
             });
-        });
 
         this.selectedTablePaymentSubPayment$.subscribe(subPayments => {
             console.log('[PaymentService] SubPayments for selected table:', subPayments);
@@ -156,4 +156,9 @@ export class PaymentService {
             })
         );
     }
+
+    deletePayment(tableId: string): Observable<void> {
+        return this.paymentRepository.deletePayment(tableId);
+    }
+
 }

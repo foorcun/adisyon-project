@@ -151,4 +151,17 @@ export class PaymentFirebaseRepository extends PaymentRepository {
         });
     }
 
+    deletePayment(tableId: string): Observable<void> {
+        const path = `${this.basePath}/${this.menuKey}/${tableId}`;
+        return new Observable(observer => {
+            remove(ref(this.database, path))
+                .then(() => {
+                    observer.next();
+                    observer.complete();
+                    console.log(`[PaymentFirebaseRepository] - Payment deleted for table ${tableId}`);
+                })
+                .catch(error => observer.error(error));
+        });
+    }
+
 }
