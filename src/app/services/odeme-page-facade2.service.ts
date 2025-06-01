@@ -196,30 +196,37 @@ export class OdemePageFacadeService2 {
   }
 
   pay(amount: number, method: PaymentMethod): void {
-    if (!this.tableId) return;
+    if (!this.tableId) {
+      console.warn('[OdemePageFacadeService] Cannot process payment — no table ID.');
+      return;
+    }
 
     if (isNaN(amount) || amount <= 0) {
       console.warn('[OdemePageFacadeService] Invalid payment amount:', amount);
       return;
     }
 
-    const command = new PaymentCommand(this.tableId, method, amount);
+    const subPaymentItems = Array.from(this.selectedCountMap.entries())
+      .filter(([item, count]) => count > 0)
+      .map(([item, count]) => ({
+        productId: item.product.id,
+        quantity: count
+      }));
+
+    const command = new PaymentCommand(this.tableId, method, amount, subPaymentItems);
 
     this.paymentService.addSubPayment(command).subscribe({
       next: () => {
-        this.selectedCountMap.forEach((count, item) => {
-          const currentPaid = this.getPaidCount(item);
-          this.paidCountMap$.next(
-            new Map(this.paidCountMap$.getValue().set(item.product.id, currentPaid + count))
-          );
-        });
-
+        console.log('[OdemePageFacadeService] SubPayment successful:', command);
         this.selectedCountMap.clear();
         this._paymentAmount$.next('');
       },
-      error: err => console.error('[OdemePageFacadeService] SubPayment failed:', err)
+      error: err => {
+        console.error('[OdemePageFacadeService] SubPayment failed:', err);
+      }
     });
   }
+
 
   deleteSubPaymentAtIndex(index: string): void {
     this.currentPayment$.pipe(

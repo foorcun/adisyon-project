@@ -7,6 +7,7 @@ import { PaymentFirebaseRepository } from '../PaymentFeature/infrastructure/paym
 import { OrderService } from './order.service';
 import { TableService } from './table.service';
 import { PaymentFactory } from '../PaymentFeature/domain/entities/payment-factory';
+import { SubPayment } from '../PaymentFeature/domain/entities/sub-payment.entity';
 
 @Injectable({
     providedIn: 'root',
@@ -50,9 +51,10 @@ export class PaymentService {
                     console.log('[PaymentService] Related orders for selected table:', relatedOrders);
 
                     // payment!.orders = relatedOrders;
-                    payment!.orders = PaymentFactory.convertOrdersToPaymentOrders(relatedOrders); 
+                    payment!.orders = PaymentFactory.convertOrdersToPaymentOrders(relatedOrders);
 
                     console.log('[PaymentService] Updated payment with orders:', payment);
+                    // console.log('[PaymentService] Updated payment with -ORaTydw_dw8bdkDRv-R:', this.findProductSubPayments(payment!, '-ORaTydw_dw8bdkDRv-R'));
                     this.selectedTablePaymentSubject.next(payment);
                 });
             });
@@ -105,4 +107,29 @@ export class PaymentService {
         console.log('[PaymentService] deleteSubPayment', tableId, subPaymentKey);
         return this.paymentRepository.deleteSubPayment(tableId, subPaymentKey);
     }
+
+    findProductSubPayments(
+        payment: Payment,
+        productId: string
+    ): {
+        matchedSubPayments: SubPayment[];
+        totalPaidQuantity: number;
+    } {
+        let totalPaidQuantity = 0;
+        const matchedSubPayments: SubPayment[] = [];
+
+        for (const sub of Object.values(payment.subPayments)) {
+            const match = sub.subPaymentItems.find(item => item.productId === productId);
+            if (match) {
+                totalPaidQuantity += match.quantity;
+                matchedSubPayments.push(sub);
+            }
+        }
+
+        return {
+            matchedSubPayments,
+            totalPaidQuantity
+        };
+    }
+
 }
