@@ -104,10 +104,21 @@ export class PaymentFirebaseRepository extends PaymentRepository {
                         const payment = PaymentMapper.toPayment(data);
                         observer.next(payment);
                     } else {
-                        console.warn(`[PaymentFirebaseRepository] No payment found for table ${tableId}, returning empty Payment.`);
+                        console.warn(`[PaymentFirebaseRepository] No payment found for table ${tableId}. Initializing...`);
                         const fallback = new Payment(tableId, 0, {}, false, new Date(), []);
-                        observer.next(fallback);
+
+                        // Save to Firebase
+                        set(refPath, PaymentMapper.toJson(fallback))
+                            .then(() => {
+                                console.log(`[PaymentFirebaseRepository] Initialized empty payment for table ${tableId}`);
+                                observer.next(fallback);
+                            })
+                            .catch(error => {
+                                console.error(`[PaymentFirebaseRepository] Failed to initialize fallback payment:`, error);
+                                observer.error(error);
+                            });
                     }
+
                 },
                 (error) => observer.error(error)
             );

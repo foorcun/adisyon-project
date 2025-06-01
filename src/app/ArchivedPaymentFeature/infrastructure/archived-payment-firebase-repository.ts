@@ -3,6 +3,7 @@ import {
     Database,
     ref,
     set,
+    push,
     get,
     remove,
     DataSnapshot
@@ -49,17 +50,20 @@ export class ArchivedPaymentFirebaseRepository extends ArchivedPaymentRepository
     }
 
     override archivePayment(payment: ArchivedPayment): Observable<void> {
-        const path = `${this.basePath}/${this.menuKey}/${payment.tableId}`;
+        const path = `${this.basePath}/${this.menuKey}`;
+        const refPath = ref(this.database, path);
+
         return new Observable(observer => {
-            set(ref(this.database, path), ArchivedPaymentMapper.toJson(payment))
+            push(refPath, ArchivedPaymentMapper.toJson(payment))  // use `push` for auto-id
                 .then(() => {
                     observer.next();
                     observer.complete();
-                    console.log(`[ArchivedPaymentRepository] Archived payment for table ${payment.tableId}`);
+                    console.log(`[ArchivedPaymentRepository] Archived payment saved with push()`);
                 })
                 .catch(error => observer.error(error));
         });
     }
+
 
     override getArchivedPayments(): Observable<ArchivedPayment[]> {
         const archiveRef = ref(this.database, `${this.basePath}/${this.menuKey}`);
@@ -80,6 +84,7 @@ export class ArchivedPaymentFirebaseRepository extends ArchivedPaymentRepository
                 .catch(error => observer.error(error));
         });
     }
+
 
     override getArchivedPaymentByTableId(tableId: string): Observable<ArchivedPayment | undefined> {
         const path = `${this.basePath}/${this.menuKey}/${tableId}`;
