@@ -26,6 +26,8 @@ export class OdemePageArea1Component {
   private ordersSubject = new BehaviorSubject<PaymentOrder[]>([]);
   orders$ = this.ordersSubject.asObservable();
 
+  productPaidMap: Map<string, number> = new Map();
+
   constructor(public odemePageFacadeService: OdemePageFacadeService2,
     public paymentService: PaymentService
   ) {
@@ -39,6 +41,10 @@ export class OdemePageArea1Component {
     this.paymentService.selectedProductQuantities$.subscribe(selectedProductQuantities => {
       console.log("[OdemePageArea1Component] selectedProductQuantities:", selectedProductQuantities);
       // this.odemePageFacadeService.updateSelectedProductQuantities(selectedProductQuantities);
+    });
+
+    this.paymentService.selectedProductQuantities$.subscribe(entries => {
+      this.productPaidMap = new Map(entries.map(entry => [entry.productId, entry.totalQuantity]));
     });
   }
 
@@ -78,7 +84,8 @@ export class OdemePageArea1Component {
   }
 
   getPaidCount(item: PaymentOrderItem): number {
-    return this.odemePageFacadeService.getPaidCount(item);
+    // return this.odemePageFacadeService.getPaidCount(item);
+    return this.productPaidMap.get(item.product.id) || 0;
   }
 
 

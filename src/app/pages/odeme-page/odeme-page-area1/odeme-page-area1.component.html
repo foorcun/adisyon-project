@@ -25,16 +25,19 @@
               <span class="ms-2 text-muted">
                 ({{ getPaidCount(item) }}/{{ item.quantity }} ödenmiş)
                 <!-- ({{ findProductSubPayments(item.product.id) }}/{{ item.quantity }} ödenmiş) -->
-                <div
+                <!-- <div
                   *ngIf="
                     paymentService.selectedProductQuantities$
                       | async as productCounts
                   "
                 >
-                  <div *ngFor="let item of productCounts">
-                    <p>Product ID: {{ item.productId }} --- Total Quantity: {{ item.totalQuantity }}</p>
+                  <div *ngFor="let productCount of productCounts">
+                    <p *ngIf="item.product.id == productCount.productId">
+                      Product ID: {{ productCount.productId }} --- Total
+                      Quantity: {{ productCount.totalQuantity }}
+                    </p>
                   </div>
-                </div>
+                </div> -->
               </span>
               <span
                 *ngIf="getSelectedCount(item) > 0"
