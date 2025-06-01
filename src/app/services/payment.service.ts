@@ -53,8 +53,8 @@ export class PaymentService {
                     // payment!.orders = relatedOrders;
                     payment!.orders = PaymentFactory.convertOrdersToPaymentOrders(relatedOrders);
 
-                    console.log('[PaymentService] Updated payment with orders:', payment);
-                    // console.log('[PaymentService] Updated payment with -ORaTydw_dw8bdkDRv-R:', this.findProductSubPayments(payment!, '-ORaTydw_dw8bdkDRv-R'));
+                    // console.log('[PaymentService] Updated payment with orders:', payment);
+                    console.log('[PaymentService] Updated payment with -ORaTydw_dw8bdkDRv-R:', this.findProductSubPayments(payment! ,'-ORaTydw_dw8bdkDRv-R'));
                     this.selectedTablePaymentSubject.next(payment);
                 });
             });
@@ -115,10 +115,12 @@ export class PaymentService {
         matchedSubPayments: SubPayment[];
         totalPaidQuantity: number;
     } {
+        // selectedTablePaymentSubject
+        // const payment = this.selectedTablePaymentSubject.getValue();
         let totalPaidQuantity = 0;
         const matchedSubPayments: SubPayment[] = [];
 
-        for (const sub of Object.values(payment.subPayments)) {
+        for (const sub of Object.values(payment!.subPayments)) {
             const match = sub.subPaymentItems.find(item => item.productId === productId);
             if (match) {
                 totalPaidQuantity += match.quantity;

@@ -256,4 +256,5 @@ export class OdemePageFacadeService2 {
     console.log('[OdemePageFacadeService] Table closure initiated...');
     // TODO: Implement closure: update order statuses and table status
   }
+
 }

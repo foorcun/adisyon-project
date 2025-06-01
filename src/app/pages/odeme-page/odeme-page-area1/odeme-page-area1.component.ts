@@ -9,6 +9,7 @@ import { BehaviorSubject } from 'rxjs';
 import { Payment } from '../../../PaymentFeature/domain/entities/payment.entity';
 import { PaymentOrder } from '../../../PaymentFeature/domain/entities/payment-order.entity';
 import { PaymentOrderItem } from '../../../PaymentFeature/domain/entities/payment-order-item.entity';
+import { PaymentService } from '../../../services/payment.service';
 
 @Component({
   selector: 'app-odeme-page-area1',
@@ -18,13 +19,16 @@ import { PaymentOrderItem } from '../../../PaymentFeature/domain/entities/paymen
   styleUrl: './odeme-page-area1.component.scss',
 })
 export class OdemePageArea1Component {
+
   private selectedTablePaymentSubject = new BehaviorSubject<Payment | undefined>(undefined);
   selectedTablePayment$ = this.selectedTablePaymentSubject.asObservable();
 
   private ordersSubject = new BehaviorSubject<PaymentOrder[]>([]);
   orders$ = this.ordersSubject.asObservable();
 
-  constructor(public odemePageFacadeService: OdemePageFacadeService2) {
+  constructor(public odemePageFacadeService: OdemePageFacadeService2,
+    private paymentService: PaymentService
+  ) {
     this.odemePageFacadeService.selectedTablePayment$.subscribe(selectedTablePayment => {
       if (selectedTablePayment?.orders) {
         console.log("[OdemePageArea1Component] ", selectedTablePayment.orders);
@@ -75,5 +79,11 @@ export class OdemePageArea1Component {
 
   get selectedTotal(): number {
     return this.odemePageFacadeService.selectedTotal;
+  }
+
+  findProductSubPayments(arg0: string) {
+    // return this.odemePageFacadeService.findProductSubPayments(arg0);
+    console.log("[OdemePageArea1Component] findProductSubPayments called with arg0:", arg0);
+    // return this.paymentService.findProductSubPayments(arg0);
   }
 }

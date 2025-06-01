@@ -19,6 +19,7 @@
              {{item.product.id}} {{ item.product.name }} - {{ item.product.price }}₺ - x{{ item.quantity }}
               <span class="ms-2 text-muted">
                 ({{ getPaidCount(item) }}/{{ item.quantity }} ödenmiş)
+                <!-- ({{ findProductSubPayments(item.product.id) }}/{{ item.quantity }} ödenmiş) -->
               </span>
               <span
                 *ngIf="getSelectedCount(item) > 0"
