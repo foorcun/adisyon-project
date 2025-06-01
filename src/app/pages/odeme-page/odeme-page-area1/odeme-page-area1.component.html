@@ -20,7 +20,8 @@
             class="item-wrapper d-flex justify-content-between align-items-center"
           >
             <span class="item-content">
-              {{ item.product.id }} {{ item.product.name }} -
+              <!-- {{ item.product.id }} {{ item.product.name }} - -->
+              {{ item.product.name }} -
               {{ item.product.price }}₺ - x{{ item.quantity }}
               <span class="ms-2 text-muted">
                 ({{ getPaidCount(item) }}/{{ item.quantity }} ödenmiş)
