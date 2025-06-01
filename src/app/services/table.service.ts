@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Table } from '../OrderFeature/domain/entities/table.entity';
 import { TableFirebaseRepository } from '../OrderFeature/infrastructure/repositories/table-firebase.repository';
+import { TableStatus } from '../OrderFeature/domain/entities/table-status.enum';
 
 @Injectable({
   providedIn: 'root',
@@ -10,7 +11,6 @@ export class TableService {
   private tablesSubject = new BehaviorSubject<{ [key: string]: Table }>({});
   tables$ = this.tablesSubject.asObservable();
 
-  // selectedTable: Table | undefined ;
   private selectedTableSubject = new BehaviorSubject<Table | undefined>(undefined);
   selectedTable$ = this.selectedTableSubject.asObservable();
 
@@ -65,10 +65,18 @@ export class TableService {
     return tables[tableId]?.name;
   }
 
-  setSelectedTable(table: Table){
+  setSelectedTable(table: Table) {
     console.log("[PaymentFirebaseRepository] selected table.id" + table.id)
-    // this.selectedTable = table;
     this.selectedTableSubject.next(table);
+  }
+  getSelectedTableSync(): Table | undefined {
+    return this.selectedTableSubject.getValue();
+  }
+
+
+  /** ✅ Update only the table's status */
+  updateTableStatus(tableId: string, newStatus: TableStatus): Observable<void> {
+    return this.updateTable(tableId, { status: newStatus });
   }
 
 }

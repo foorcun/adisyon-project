@@ -71,4 +71,36 @@ export class OrderService {
   deleteOrder(orderId: string): Observable<void> {
     return this.orderRepository.deleteOrder(orderId);
   }
+  /** ✅ Close all orders for a specific table */
+  closeOrdersForTable(tableId: string): Observable<void> {
+    return new Observable(observer => {
+      const allOrders = this.ordersSubject.getValue();
+      const matchingOrders = allOrders.filter(order => order.tableUUID === tableId);
+
+      if (matchingOrders.length === 0) {
+        observer.next(); // nothing to close
+        observer.complete();
+        return;
+      }
+
+      let completedCount = 0;
+      const totalToClose = matchingOrders.length;
+
+      matchingOrders.forEach(order => {
+        this.orderRepository.updateOrderStatus(order.id, 'closed' as OrderStatus).subscribe({
+          next: () => {
+            completedCount++;
+            if (completedCount === totalToClose) {
+              observer.next();
+              observer.complete();
+            }
+          },
+          error: (err) => {
+            observer.error(err);
+          }
+        });
+      });
+    });
+  }
+
 }
