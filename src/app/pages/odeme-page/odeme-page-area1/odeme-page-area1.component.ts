@@ -27,13 +27,18 @@ export class OdemePageArea1Component {
   orders$ = this.ordersSubject.asObservable();
 
   constructor(public odemePageFacadeService: OdemePageFacadeService2,
-    private paymentService: PaymentService
+    public paymentService: PaymentService
   ) {
     this.odemePageFacadeService.selectedTablePayment$.subscribe(selectedTablePayment => {
       if (selectedTablePayment?.orders) {
         console.log("[OdemePageArea1Component] ", selectedTablePayment.orders);
         this.ordersSubject.next(selectedTablePayment.orders);
       }
+    });
+
+    this.paymentService.selectedProductQuantities$.subscribe(selectedProductQuantities => {
+      console.log("[OdemePageArea1Component] selectedProductQuantities:", selectedProductQuantities);
+      // this.odemePageFacadeService.updateSelectedProductQuantities(selectedProductQuantities);
     });
   }
 

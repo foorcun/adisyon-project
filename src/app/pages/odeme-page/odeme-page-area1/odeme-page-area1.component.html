@@ -1,7 +1,9 @@
 <div class="odeme-page">
   <!-- Orders Exist -->
-  <div *ngIf="odemePageFacadeService.orders$ | async as orders; else noOrders" class="order-group">
-
+  <div
+    *ngIf="odemePageFacadeService.orders$ | async as orders; else noOrders"
+    class="order-group"
+  >
     <!-- 🔵 Unpaid Items -->
     <div *ngIf="unpaidItems.length > 0">
       <h6 class="text-primary fw-bold">🔵 Ödenmemiş Olanlar</h6>
@@ -14,12 +16,25 @@
           tabindex="0"
           role="button"
         >
-          <div class="item-wrapper d-flex justify-content-between align-items-center">
+          <div
+            class="item-wrapper d-flex justify-content-between align-items-center"
+          >
             <span class="item-content">
-             {{item.product.id}} {{ item.product.name }} - {{ item.product.price }}₺ - x{{ item.quantity }}
+              {{ item.product.id }} {{ item.product.name }} -
+              {{ item.product.price }}₺ - x{{ item.quantity }}
               <span class="ms-2 text-muted">
                 ({{ getPaidCount(item) }}/{{ item.quantity }} ödenmiş)
                 <!-- ({{ findProductSubPayments(item.product.id) }}/{{ item.quantity }} ödenmiş) -->
+                <div
+                  *ngIf="
+                    paymentService.selectedProductQuantities$
+                      | async as productCounts
+                  "
+                >
+                  <div *ngFor="let item of productCounts">
+                    <p>Product ID: {{ item.productId }} --- Total Quantity: {{ item.totalQuantity }}</p>
+                  </div>
+                </div>
               </span>
               <span
                 *ngIf="getSelectedCount(item) > 0"
@@ -46,9 +61,13 @@
       <h6 class="text-success fw-bold">✅ Ödenmiş Olanlar</h6>
       <ul class="mb-3">
         <li *ngFor="let item of paidItems" class="order-item paid">
-          <div class="item-wrapper d-flex justify-content-between align-items-center">
+          <div
+            class="item-wrapper d-flex justify-content-between align-items-center"
+          >
             <span class="item-content">
-              {{ item.product.name }} - {{ item.product.price }}₺ - x{{ item.quantity }}
+              {{ item.product.name }} - {{ item.product.price }}₺ - x{{
+                item.quantity
+              }}
               <span class="ms-2 text-muted">
                 ({{ getPaidCount(item) }}/{{ item.quantity }} ödenmiş)
               </span>

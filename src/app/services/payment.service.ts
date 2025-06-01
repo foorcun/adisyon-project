@@ -20,6 +20,32 @@ export class PaymentService {
     private selectedTablePaymentSubject = new BehaviorSubject<Payment | undefined>(undefined);
     selectedTablePayment$ = this.selectedTablePaymentSubject.asObservable();
 
+    // ✅ Emits all subPayments of selectedTablePayment
+    selectedTablePaymentSubPayment$ = this.selectedTablePayment$.pipe(
+        filter((payment): payment is Payment => !!payment && !!payment.subPayments),
+        map((payment) => {
+            return Object.values(payment.subPayments);
+        })
+    );
+
+    readonly selectedProductQuantities$ = this.selectedTablePaymentSubPayment$.pipe(
+        map((subPayments) => {
+            const countMap = new Map<string, number>();
+
+            subPayments.forEach(sp => {
+                sp.subPaymentItems.forEach(item => {
+                    const current = countMap.get(item.productId) || 0;
+                    countMap.set(item.productId, current + item.quantity);
+                });
+            });
+
+            return Array.from(countMap.entries()).map(([productId, totalQuantity]) => ({
+                productId,
+                totalQuantity
+            }));
+        })
+    );
+
 
     constructor(
         private paymentRepository: PaymentFirebaseRepository,
@@ -69,6 +95,10 @@ export class PaymentService {
                     console.log('[PaymentService] SubPayments for product:', result);
                 });
             });
+
+        this.selectedTablePaymentSubPayment$.subscribe(subPayments => {
+            console.log('[PaymentService] SubPayments for selected table:', subPayments);
+        });
     }
 
 
