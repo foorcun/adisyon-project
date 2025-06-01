@@ -51,14 +51,17 @@ export class PaymentService {
                     // console.log('[PaymentService] Updated payment with -ORaTydw_dw8bdkDRv-R:', this.findProductSubPayments('-ORaTydw_dw8bdkDRv-R'));
 
                     this.selectedTablePaymentSubject.next(payment);
-
-                    this.findProductSubPayments('-ORaTydw_dw8bdkDRv-R').subscribe(result => {
-                        console.log('[PaymentService] SubPayments for product:', result);
-                    });
                 });
             });
         });
 
+
+        this.selectedTablePayment$.subscribe((payment) => {
+            // console.log('[PaymentService] Selected table payment updated:', payment);
+            this.findProductSubPayments('-ORaTydw_dw8bdkDRv-R').subscribe(result => {
+                console.log('[PaymentService] SubPayments for product:', result);
+            });
+        });
 
 
 
