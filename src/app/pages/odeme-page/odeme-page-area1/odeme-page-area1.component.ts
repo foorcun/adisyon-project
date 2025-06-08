@@ -27,7 +27,8 @@ export class OdemePageArea1Component {
 
   productPaidMap: Map<string, number> = new Map();
 
-  constructor(public odemePageFacadeService: OdemePageFacadeService2,
+  constructor(
+    public odemePageFacadeService: OdemePageFacadeService2,
     public paymentService: PaymentService
   ) {
     this.odemePageFacadeService.selectedTablePayment$.subscribe(selectedTablePayment => {
