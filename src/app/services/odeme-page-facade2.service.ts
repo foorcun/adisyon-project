@@ -51,6 +51,23 @@ export class OdemePageFacadeService2 {
   ) {
     this.selectedTablePayment$ = this.paymentService.selectedTablePayment$;
 
+    // ✅ Set table ID and initialize related logic
+    this.tableDetailsPageFacadeService.table$
+      .pipe(filter((table): table is Table => !!table))
+      .subscribe((table) => {
+        console.log('[OdemePageFacadeService2] selected Table', table);
+        this.tableId = table.id;
+
+        this.currentPayment$ = this.paymentService.getPaymentByTableId(table.id);
+
+        this.selectedTablePayment$
+          .pipe(map(payment => payment?.orders ?? []))
+          .subscribe(paymentOrders => {
+            console.log('[OdemePageFacadeService2] paymentOrders', paymentOrders);
+            this._orders$.next(paymentOrders);
+          });
+      });
+
     this.selectedTablePayment$.subscribe(payment => {
       const map = new Map<string, number>();
       payment?.orders?.forEach(order =>
@@ -62,19 +79,6 @@ export class OdemePageFacadeService2 {
       this.paidCountMap$.next(map);
     });
 
-    // ✅ Load orders from current payment
-    this.selectedTablePayment$
-      .pipe(map(payment => payment?.orders ?? []))
-      .subscribe((paymentOrders: PaymentOrder[]) => {
-        console.log("[OdemePageFacadeService2] paymentOrders", paymentOrders);
-        this._orders$.next(paymentOrders);
-      });
-
-    this.currentPayment$ = this.tableDetailsPageFacadeService.table$.pipe(
-      filter((table): table is Table => !!table),
-      switchMap(table => this.paymentService.getPaymentByTableId(table.id))
-    );
-
     this.totalPrice$ = this.selectedTablePayment$.pipe(
       map(payment => {
         const allItems = payment?.orders.flatMap(order => order.items) ?? [];
@@ -82,7 +86,8 @@ export class OdemePageFacadeService2 {
       })
     );
 
-    this.subPaymentTotal$ = this.currentPayment$.pipe(
+    this.subPaymentTotal$ = this.selectedTablePayment$.pipe(
+      filter((payment): payment is Payment => !!payment),
       map(payment =>
         Object.values(payment.subPayments).reduce((sum, sub) => sum + sub.amount, 0)
       )
