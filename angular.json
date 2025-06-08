@@ -53,12 +53,48 @@
                   "maximumError": "8kB"
                 }
               ],
-              "outputHashing": "all"
+              "outputHashing": "all",
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ]
             },
             "development": {
               "optimization": false,
               "extractLicenses": false,
-              "sourceMap": true
+              "sourceMap": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.ts"
+                }
+              ]
+            },
+            "zeuspub": {
+              "outputHashing": "all",
+              "optimization": true,
+              "sourceMap": false,
+              "extractLicenses": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.zeuspub.ts"
+                }
+              ]
+            },
+            "jupitercafe": {
+              "outputHashing": "all",
+              "optimization": true,
+              "sourceMap": false,
+              "extractLicenses": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.jupitercafe.ts"
+                }
+              ]
             }
           },
           "defaultConfiguration": "production"
@@ -71,6 +107,12 @@
             },
             "development": {
               "buildTarget": "adisyon-project:build:development"
+            },
+            "zeuspub": {
+              "buildTarget": "adisyon-project:build:zeuspub"
+            },
+            "jupitercafe": {
+              "buildTarget": "adisyon-project:build:jupitercafe"
             }
           },
           "defaultConfiguration": "development"

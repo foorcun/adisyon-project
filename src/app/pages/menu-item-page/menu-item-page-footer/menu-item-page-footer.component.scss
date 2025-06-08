@@ -19,7 +19,8 @@ $primary-color: var(--primary-color);
     margin-bottom: 10px;
 
     button {
-      background-color: lighten($primary-color, 10%);
+      // background-color: lighten($primary-color, 10%);
+      background-color: $primary-color;
       border: none;
       color: white;
       font-size: 18px;
@@ -29,7 +30,8 @@ $primary-color: var(--primary-color);
       cursor: pointer;
 
       &:hover {
-        background-color: lighten($primary-color, 15%);
+        // background-color: lighten($primary-color, 15%);
+        background-color: $primary-color;
       }
     }
 
@@ -88,11 +90,13 @@ $primary-color: var(--primary-color);
     justify-content: center; /* Center text horizontally */
 
     &:hover {
-      background-color: lighten($primary-color, 10%);
+      // background-color: lighten($primary-color, 10%);
+      background-color: $primary-color;
     }
 
     &:active {
-      background-color: darken($primary-color, 10%);
+      // background-color: darken($primary-color, 10%);
+      background-color: $primary-color;
     }
   }
 }
