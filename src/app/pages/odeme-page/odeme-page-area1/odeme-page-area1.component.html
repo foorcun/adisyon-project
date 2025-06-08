@@ -1,95 +1,84 @@
 <div class="odeme-page">
   <!-- Orders Exist -->
-  <div
+  <ng-container
     *ngIf="odemePageFacadeService.orders$ | async as orders; else noOrders"
-    class="order-group"
   >
-    <!-- 🔵 Unpaid Items -->
-    <div *ngIf="unpaidItems.length > 0">
-      <h6 class="text-primary fw-bold">🔵 Ödenmemiş Olanlar</h6>
-      <ul class="mb-3">
-        <li
-          *ngFor="let item of unpaidItems"
-          class="order-item"
-          [class.selected]="isSelected(item)"
-          (click)="onSelect(item)"
-          tabindex="0"
-          role="button"
-        >
-          <div
-            class="item-wrapper d-flex justify-content-between align-items-center"
-          >
-            <span class="item-content">
-              <!-- {{ item.product.id }} {{ item.product.name }} - -->
-              {{ item.product.name }} -
-              {{ item.product.price }}₺ - x{{ item.quantity }}
-              <span class="ms-2 item-content">
-                ({{ getPaidCount(item) }}/{{ item.quantity }} ödenmiş)
-                <!-- ({{ findProductSubPayments(item.product.id) }}/{{ item.quantity }} ödenmiş) -->
-                <!-- <div
-                  *ngIf="
-                    paymentService.selectedProductQuantities$
-                      | async as productCounts
-                  "
-                >
-                  <div *ngFor="let productCount of productCounts">
-                    <p *ngIf="item.product.id == productCount.productId">
-                      Product ID: {{ productCount.productId }} --- Total
-                      Quantity: {{ productCount.totalQuantity }}
-                    </p>
-                  </div>
-                </div> -->
-              </span>
-              <span
-                *ngIf="getSelectedCount(item) > 0"
-                class="selected-count ms-2"
-              >
-                (seçili: {{ getSelectedCount(item) }})
-              </span>
-            </span>
-            <button
-              *ngIf="isSelected(item)"
-              class="btn btn-sm btn-outline-light deselect-btn"
-              (click)="onDeselect($event, item)"
-              aria-label="Ürünü geri al"
+    <ng-container *ngIf="(orders?.length ?? 0) > 0; else noOrders">
+      <div class="order-group">
+        <!-- 🔵 Unpaid Items -->
+        <div *ngIf="unpaidItems.length > 0">
+          <h6 class="text-primary fw-bold">🔵 Ödenmemiş Olanlar</h6>
+          <ul class="mb-3">
+            <li
+              *ngFor="let item of unpaidItems"
+              class="order-item"
+              [class.selected]="isSelected(item)"
+              (click)="onSelect(item)"
+              tabindex="0"
+              role="button"
             >
-              <i class="fas fa-rotate-left"></i>
-            </button>
-          </div>
-        </li>
-      </ul>
-    </div>
+              <div
+                class="item-wrapper d-flex justify-content-between align-items-center"
+              >
+                <span class="item-content">
+                  {{ item.product.name }} - {{ item.product.price }}₺ - x{{
+                    item.quantity
+                  }}
+                  <span class="ms-2 item-content">
+                    ({{ getPaidCount(item) }}/{{ item.quantity }} ödenmiş)
+                  </span>
+                  <span
+                    *ngIf="getSelectedCount(item) > 0"
+                    class="selected-count ms-2"
+                  >
+                    (seçili: {{ getSelectedCount(item) }})
+                  </span>
+                </span>
+                <button
+                  *ngIf="isSelected(item)"
+                  class="btn btn-sm btn-outline-light deselect-btn"
+                  (click)="onDeselect($event, item)"
+                  aria-label="Ürünü geri al"
+                >
+                  <i class="fas fa-rotate-left"></i>
+                </button>
+              </div>
+            </li>
+          </ul>
+        </div>
 
-    <!-- ✅ Paid Items -->
-    <div *ngIf="paidItems.length > 0">
-      <h6 class="text-success fw-bold">✅ Ödenmiş Olanlar</h6>
-      <ul class="mb-3">
-        <li *ngFor="let item of paidItems" class="order-item paid">
-          <div
-            class="item-wrapper d-flex justify-content-between align-items-center"
-          >
-            <span class="item-content">
-              {{ item.product.name }} - {{ item.product.price }}₺ - x{{
-                item.quantity
-              }}
-              <span class="ms-2 text-muted">
-                ({{ getPaidCount(item) }}/{{ item.quantity }} ödenmiş)
-              </span>
-            </span>
-            <span class="deselect-spacer"></span>
-          </div>
-        </li>
-      </ul>
-    </div>
+        <!-- ✅ Paid Items -->
+        <div *ngIf="paidItems.length > 0">
+          <h6 class="text-success fw-bold">✅ Ödenmiş Olanlar</h6>
+          <ul class="mb-3">
+            <li *ngFor="let item of paidItems" class="order-item paid">
+              <div
+                class="item-wrapper d-flex justify-content-between align-items-center"
+              >
+                <span class="item-content">
+                  {{ item.product.name }} - {{ item.product.price }}₺ - x{{
+                    item.quantity
+                  }}
+                  <span class="ms-2 text-muted">
+                    ({{ getPaidCount(item) }}/{{ item.quantity }} ödenmiş)
+                  </span>
+                </span>
+                <span class="deselect-spacer"></span>
+              </div>
+            </li>
+          </ul>
+        </div>
 
-    <!-- 💰 Total Selected -->
-    <div *ngIf="selectedTotal > 0" class="mt-4 text-end">
-      <h5>
-        Seçilen Ürünlerin Toplamı:
-        <strong>{{ selectedTotal | number : "1.2-2" }}₺</strong>
-      </h5>
-    </div>
-  </div>
+        <!-- 💰 Total Selected -->
+        <div *ngIf="selectedTotal > 0" class="mt-4 text-end">
+          <h5>
+            Seçilen Ürünlerin Toplamı:
+            <strong>{{ selectedTotal | number : "1.2-2" }}₺</strong>
+          </h5>
+        </div>
+      </div>
+    </ng-container>
+  </ng-container>
 
   <!-- 🚫 No Orders Message -->
   <ng-template #noOrders>

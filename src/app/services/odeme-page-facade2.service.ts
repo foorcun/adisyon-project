@@ -3,7 +3,6 @@ import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
 import { filter, map, switchMap, take, tap, withLatestFrom } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
-import { Order } from '../OrderFeature/domain/entities/order.entity';
 import { OrderStatus } from '../OrderFeature/domain/entities/order-status';
 import { Table } from '../OrderFeature/domain/entities/table.entity';
 import { Payment } from '../PaymentFeature/domain/entities/payment.entity';
@@ -11,20 +10,19 @@ import { PaymentCommand } from '../PaymentFeature/domain/entities/payment-comman
 import { PaymentMethod } from '../PaymentFeature/domain/entities/payment-method.enum';
 import { PaymentOrderItem } from '../PaymentFeature/domain/entities/payment-order-item.entity';
 
-import { OrderService } from './order.service';
 import { PaymentService } from './payment.service';
 import { TableDetailsPageFacadeService } from './table-details-page.facade.service';
 import { TableService } from './table.service';
 import { TableStatus } from '../OrderFeature/domain/entities/table-status.enum';
 import { ArchivedPayment } from '../ArchivedPaymentFeature/domain/entities/archived-payment.entity';
-import { ArchivedPaymentFirebaseRepository } from '../ArchivedPaymentFeature/infrastructure/archived-payment-firebase-repository';
 import { ArchivedPaymentService } from './archived-payment.service';
+import { PaymentOrder } from '../PaymentFeature/domain/entities/payment-order.entity';
 
 @Injectable({
   providedIn: 'root'
 })
 export class OdemePageFacadeService2 {
-  private _orders$ = new BehaviorSubject<Order[]>([]);
+  private _orders$ = new BehaviorSubject<PaymentOrder[]>([]);
   orders$ = this._orders$.asObservable();
 
   private _paymentAmount$ = new BehaviorSubject<string>('');
@@ -45,7 +43,6 @@ export class OdemePageFacadeService2 {
   private selectedCountMap = new Map<PaymentOrderItem, number>();
 
   constructor(
-    private orderService: OrderService,
     private tableDetailsPageFacadeService: TableDetailsPageFacadeService,
     private router: Router,
     private paymentService: PaymentService,
@@ -54,7 +51,6 @@ export class OdemePageFacadeService2 {
   ) {
     this.selectedTablePayment$ = this.paymentService.selectedTablePayment$;
 
-    // Build paidCountMap$ reactively from selectedTablePayment$
     this.selectedTablePayment$.subscribe(payment => {
       const map = new Map<string, number>();
       payment?.orders?.forEach(order =>
@@ -66,28 +62,13 @@ export class OdemePageFacadeService2 {
       this.paidCountMap$.next(map);
     });
 
-    this.tableDetailsPageFacadeService.table$.pipe(
-      tap(table => {
-        if (!table) {
-          console.warn('[OdemePageFacadeService] No table ID found, redirecting...');
-          this.router.navigate(['/admin-orders-page']);
-        }
-      }),
-      filter((table): table is Table => !!table),
-      switchMap(table => {
-        this.tableId = table.id;
-        return this.orderService.orders$.pipe(
-          map(orders =>
-            orders.filter(order =>
-              order.tableUUID === table.id &&
-              (order.status === OrderStatus.PENDING || order.status === OrderStatus.IN_PROGRESS)
-            )
-          )
-        );
-      })
-    ).subscribe(filteredOrders => {
-      this._orders$.next(filteredOrders);
-    });
+    // ✅ Load orders from current payment
+    this.selectedTablePayment$
+      .pipe(map(payment => payment?.orders ?? []))
+      .subscribe((paymentOrders: PaymentOrder[]) => {
+        console.log("[OdemePageFacadeService2] paymentOrders", paymentOrders);
+        this._orders$.next(paymentOrders);
+      });
 
     this.currentPayment$ = this.tableDetailsPageFacadeService.table$.pipe(
       filter((table): table is Table => !!table),
@@ -234,7 +215,6 @@ export class OdemePageFacadeService2 {
     });
   }
 
-
   deleteSubPaymentAtIndex(index: string): void {
     this.currentPayment$.pipe(
       take(1),
@@ -245,8 +225,8 @@ export class OdemePageFacadeService2 {
 
         this.paymentService.deleteSubPayment(table.id, index).subscribe({
           next: () => {
-            this.paidCountMap$.next(new Map()); // Reset paid count
-            this.paymentService.getPaymentByTableId(table.id).subscribe(); // Re-fetch
+            this.paidCountMap$.next(new Map());
+            this.paymentService.getPaymentByTableId(table.id).subscribe(); // Trigger refresh
           },
           error: err => console.error('[OdemePageFacadeService] Failed to delete subpayment:', err)
         });
@@ -288,15 +268,11 @@ export class OdemePageFacadeService2 {
       next: () => {
         console.log('[OdemePageFacadeService] ArchivedPayment saved.');
 
-        this.orderService.closeOrdersForTable(selectedTable.id).subscribe(() => {
-          console.log('[OdemePageFacadeService] Orders closed.');
+        this.tableService.updateTableStatus(selectedTable.id, TableStatus.Available).subscribe(() => {
+          console.log('[OdemePageFacadeService] Table marked as available.');
 
-          this.tableService.updateTableStatus(selectedTable.id, TableStatus.Available).subscribe(() => {
-            console.log('[OdemePageFacadeService] Table marked as available.');
-
-            this.paymentService.deletePayment(selectedTable.id).subscribe(() => {
-              console.log('[OdemePageFacadeService] Original Payment deleted.');
-            });
+          this.paymentService.deletePayment(selectedTable.id).subscribe(() => {
+            console.log('[OdemePageFacadeService] Original Payment deleted.');
           });
         });
       },
@@ -305,7 +281,4 @@ export class OdemePageFacadeService2 {
       },
     });
   }
-
-
-
 }
