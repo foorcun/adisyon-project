@@ -25,7 +25,8 @@
 //   }
 // }
 
-$primary-color: #87764c;
+// $primary-color: #87764c;
+$primary-color: var(--primary-color);
 
 #footer-add-to-cart {
   position: fixed;

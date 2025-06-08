@@ -1,4 +1,5 @@
-$primary-color: #87764c;
+// $primary-color: #87764c;
+$primary-color: var(--primary-color);
 
 @media (min-width: 768px) {
   $navbar-height: 10vh;

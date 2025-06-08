@@ -58,7 +58,8 @@
   background-color: #007bff; // Blue for in-progress
 }
 
-$primary-color: #87764c;
+// $primary-color: #87764c;
+$primary-color: var(--primary-color);
 
 #sepetim-navbar {
   display: flex;

@@ -1,6 +1,7 @@
 $navbar-height: 10vh;
 $bottom-bar-height: 10vh;
-$primary-color: #87764c;
+// $primary-color: #87764c;
+$primary-color: var(--primary-color);
 
 #sepetim-navbar {
   display: flex;

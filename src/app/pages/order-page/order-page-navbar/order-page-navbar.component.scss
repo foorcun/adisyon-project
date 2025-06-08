@@ -1,6 +1,7 @@
 
 
-$primary-color: #87764c;
+// $primary-color: #87764c;
+$primary-color: var(--primary-color);
 
 #order-navbar {
   display: flex;

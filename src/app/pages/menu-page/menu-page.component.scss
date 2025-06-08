@@ -1,4 +1,5 @@
-$primary-color: #87764c;
+// $primary-color: #87764c;
+$primary-color: var(--primary-color);
 
 .dark-overlay {
   position: absolute;
@@ -10,7 +11,7 @@ $primary-color: #87764c;
   z-index: 1; /* Ensure it is below the content */
 }
 
-.pageContainer{
+.pageContainer {
   padding-bottom: 10vh;
 }
 
