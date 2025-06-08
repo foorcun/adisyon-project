@@ -3,6 +3,7 @@ import { MyConfiguration } from '../domain/entities/my-configuration.entity';
 import { Database, ref, set, get, child, onValue, push, remove, update } from '@angular/fire/database';
 import { MyConfigurationMapper } from '../domain/entities/my-configuration.mapper';
 import { Injectable } from '@angular/core';
+import { environment } from '../../../environments/environment';
 
 
 @Injectable({
@@ -12,7 +13,7 @@ export class MyConfigurationFirebaseRepository {
     private basePath = 'myConfiguration';
     private configSubject = new BehaviorSubject<MyConfiguration>(new MyConfiguration('white'));
     config$ = this.configSubject.asObservable();
-    userKey = 'menuKey_zeuspub';
+    userKey = environment.key;
 
     constructor(
         private database: Database
