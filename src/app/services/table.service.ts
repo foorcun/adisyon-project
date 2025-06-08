@@ -71,9 +71,6 @@ export class TableService {
     this.selectedTableSubject.next(table);
   }
 
-  getSelectedTableSync(): Table | undefined {
-    return this.selectedTableSubject.getValue();
-  }
 
   /** ✅ Update only the table's status */
   updateTableStatus(tableId: string, newStatus: TableStatus): Observable<void> {

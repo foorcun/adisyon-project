@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, forkJoin, map, Observable, of, switchMap } from 'rxjs';
 import { OrderFirebaseRepository } from '../OrderFeature/infrastructure/repositories/order-firebase.repository';
 import { Order } from '../OrderFeature/domain/entities/order.entity';
 import { OrderDto } from '../OrderFeature/domain/entities/order.dto';
@@ -30,7 +30,7 @@ export class OrderService {
   /** ✅ Listen for real-time updates on orders */
   private listenForOrdersChanges(): void {
     this.orderRepository.listenForAllOrdersChanges();
-    this.orderRepository.order$.subscribe(orders => {
+    this.orderRepository.orders$.subscribe(orders => {
       if (orders) {
         // this.ordersSubject.next(orders.reduce((acc, order) => {
         //   acc[order.id] = order;
@@ -101,6 +101,22 @@ export class OrderService {
         });
       });
     });
+  }
+
+  deleteOrdersByTableId(tableId: string): Observable<void> {
+    console.log('[OrderService][OrderFirebaseRepository] Deleting orders for table:', tableId);
+    return this.orderRepository.orders$.pipe(
+      map((orders: Order[]) =>
+        orders.filter(order => order.tableUUID === tableId).map(order => order.id)
+      ),
+      switchMap((orderIds: string[]) => {
+        if (orderIds.length === 0) return of(void 0); // nothing to delete
+        const deletionObservables = orderIds.map(id =>
+          this.orderRepository.deleteOrder(id)
+        );
+        return forkJoin(deletionObservables).pipe(map(() => void 0));
+      })
+    );
   }
 
 }

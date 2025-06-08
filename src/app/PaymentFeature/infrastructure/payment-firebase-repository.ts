@@ -175,4 +175,17 @@ export class PaymentFirebaseRepository extends PaymentRepository {
         });
     }
 
+    deleteSubPayments(tableId: string): Observable<void> {
+        const subPaymentsRef = ref(this.database, `${this.basePath}/${this.menuKey}/${tableId}/subPayments`);
+        return new Observable(observer => {
+            remove(subPaymentsRef)
+                .then(() => {
+                    observer.next();
+                    observer.complete();
+                    console.log(`[PaymentFirebaseRepository] - SubPayments deleted for table ${tableId}`);
+                })
+                .catch(error => observer.error(error));
+        });
+    }
+
 }

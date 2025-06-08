@@ -17,6 +17,7 @@ import { TableStatus } from '../OrderFeature/domain/entities/table-status.enum';
 import { ArchivedPayment } from '../ArchivedPaymentFeature/domain/entities/archived-payment.entity';
 import { ArchivedPaymentService } from './archived-payment.service';
 import { PaymentOrder } from '../PaymentFeature/domain/entities/payment-order.entity';
+import { OrderService } from './order.service';
 
 @Injectable({
   providedIn: 'root'
@@ -47,7 +48,8 @@ export class OdemePageFacadeService2 {
     private router: Router,
     private paymentService: PaymentService,
     private tableService: TableService,
-    private archivedPaymentService: ArchivedPaymentService
+    private archivedPaymentService: ArchivedPaymentService,
+    private orderService: OrderService
   ) {
     this.selectedTablePayment$ = this.paymentService.selectedTablePayment$;
 
@@ -245,18 +247,22 @@ export class OdemePageFacadeService2 {
   }
 
   closeTableAndSave(): void {
-    console.log('[OdemePageFacadeService] Table closure initiated...');
+    console.log('[OdemePageFacadeService][OrderFirebaseRepository] Table closure initiated...');
 
-    const selectedTable = this.tableService.getSelectedTableSync();
+    const selectedTable = this.tableService.getSelectedTable();
     if (!selectedTable) {
-      console.warn('[OdemePageFacadeService] No table selected.');
+      console.warn('[OdemePageFacadeService][OrderFirebaseRepository] No table selected.');
       return;
+    } else {
+      console.log('[OdemePageFacadeService][OrderFirebaseRepository] Selected Table:', selectedTable);
     }
 
     const currentPayment = this.paymentService.getPaymentByTableIdSync(selectedTable.id);
     if (!currentPayment) {
-      console.warn('[OdemePageFacadeService] No active payment found.');
+      console.warn('[OdemePageFacadeService][OrderFirebaseRepository] No active payment found.');
       return;
+    } else {
+      console.log('[OdemePageFacadeService][OrderFirebaseRepository] Current Payment:', currentPayment);
     }
 
     const archivedPayment = new ArchivedPayment(
@@ -269,17 +275,41 @@ export class OdemePageFacadeService2 {
       currentPayment.orders
     );
 
+    console.log('[OdemePageFacadeService] Archived Payment:', archivedPayment);
+
     this.archivedPaymentService.addArchivedPayment(archivedPayment).subscribe({
       next: () => {
         console.log('[OdemePageFacadeService] ArchivedPayment saved.');
 
-        this.tableService.updateTableStatus(selectedTable.id, TableStatus.Available).subscribe(() => {
-          console.log('[OdemePageFacadeService] Table marked as available.');
+        this.orderService.deleteOrdersByTableId(selectedTable.id).subscribe({
+          next: () => {
+            console.log('[OdemePageFacadeService] Orders deleted successfully.');
+            console.log('[OdemePageFacadeService] Closing table...', selectedTable.id);
 
-          this.paymentService.deletePayment(selectedTable.id).subscribe(() => {
-            console.log('[OdemePageFacadeService] Original Payment deleted.');
-          });
-        });
+            // After deleting orders, we can archive the payment
+            // this.archivePayment(currentPayment, selectedTable);
+            // delete subpayment with tableId
+            this.paymentService.deletePayment(selectedTable.id).subscribe({
+              next: () => {
+                console.log('[OdemePageFacadeService] Payment deleted successfully.');
+              },
+              error: (err) => {
+                console.error('[OdemePageFacadeService] Error deleting payment:', err);
+              }
+            });
+          },
+          error: (err) => {
+            console.error('[OdemePageFacadeService] Error deleting orders:', err);
+          }
+        }
+        );
+        // this.tableService.updateTableStatus(selectedTable.id, TableStatus.Available).subscribe(() => {
+        //   console.log('[OdemePageFacadeService] Table marked as available.');
+
+        //   this.paymentService.deletePayment(selectedTable.id).subscribe(() => {
+        //     console.log('[OdemePageFacadeService] Original Payment deleted.');
+        //   });
+        // });
       },
       error: (err) => {
         console.error('[OdemePageFacadeService] Error archiving payment:', err);

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, filter, map, Observable, tap, combineLatest, take } from 'rxjs';
+import { BehaviorSubject, filter, map, Observable, tap, combineLatest, take, of } from 'rxjs';
 import { Payment } from '../PaymentFeature/domain/entities/payment.entity';
 import { PaymentCommand } from '../PaymentFeature/domain/entities/payment-command';
 import { PaymentRepository } from '../PaymentFeature/domain/repositories/payment-repository';
@@ -158,7 +158,10 @@ export class PaymentService {
     }
 
     deletePayment(tableId: string): Observable<void> {
-        return this.paymentRepository.deletePayment(tableId);
+        // return this.paymentRepository.deletePayment(tableId);
+        return this.paymentRepository.deleteSubPayments(tableId);
+        // console.log('[PaymentService] deletePayment', tableId);
+        // return of(void 0);
     }
 
 }

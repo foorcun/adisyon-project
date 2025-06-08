@@ -41,6 +41,7 @@ export class OdemePageArea3Component {
   }
 
   kaydetVeMasayiBosalt(): void {
+    console.log("[OdemePageArea3Component][OrderFirebaseRepository] kaydetVeMasayiBosalt() tiklandi")
     this.odemePageFacadeService.canCloseTable$.pipe(take(1)).subscribe(canClose => {
       if (canClose) {
         this.odemePageFacadeService.closeTableAndSave();

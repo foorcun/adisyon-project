@@ -18,7 +18,7 @@ export class OrderFirebaseRepository extends OrderRepository {
   // cart$ = this.cartSubject.asObservable();
 
   private ordersSubject = new BehaviorSubject<Order[]>([]); // Now it holds an array of orders
-  order$ = this.ordersSubject.asObservable();
+  orders$ = this.ordersSubject.asObservable();
 
 
   constructor(private database: Database) {
@@ -176,6 +176,7 @@ export class OrderFirebaseRepository extends OrderRepository {
    * @returns An Observable indicating success or failure.
    */
   deleteOrder(orderId: string): Observable<void> {
+    console.log("[OrderFirebaseRepository] - Deleting order with ID:", orderId);
     return new Observable((observer) => {
       const orderRef = ref(this.database, `${this.basePath}/${this.menuKey}/${orderId}`);
       remove(orderRef)
