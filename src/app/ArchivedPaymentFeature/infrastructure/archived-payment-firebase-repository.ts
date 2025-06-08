@@ -12,13 +12,15 @@ import { Observable, BehaviorSubject } from 'rxjs';
 import { ArchivedPaymentRepository } from '../domain/repositories/archived-payment-repository';
 import { ArchivedPayment } from '../domain/entities/archived-payment.entity';
 import { ArchivedPaymentMapper } from '../domain/entities/archived-payment.mapper';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
     providedIn: 'root',
 })
 export class ArchivedPaymentFirebaseRepository extends ArchivedPaymentRepository {
     private basePath = 'archivedPayments';
-    private menuKey = 'menuKey_zeuspub';
+ // menuKey = 'menuKey_zeuspub';
+    menuKey = environment.key;
 
     private archivedPaymentsSubject = new BehaviorSubject<{ [key: string]: ArchivedPayment }>({});
     archivedPayments$ = this.archivedPaymentsSubject.asObservable();

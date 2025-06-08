@@ -4,6 +4,7 @@ import { Table } from '../../domain/entities/table.entity';
 import { Order } from '../../domain/entities/order.entity';
 
 import { Database, ref, onValue, push, remove, update } from '@angular/fire/database';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -12,7 +13,8 @@ export class TableFirebaseRepository {
   private basePath = 'myTables';
   private tablesSubject = new BehaviorSubject<{ [key: string]: Table } | null>(null);
   tables$ = this.tablesSubject.asObservable();
-  menuKey = 'menuKey_zeuspub';
+ // menuKey = 'menuKey_zeuspub';
+    menuKey = environment.key;
 
   constructor(private database: Database) { }
 

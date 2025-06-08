@@ -6,13 +6,15 @@ import { OrderRepository } from '../../domain/repositories/order-repository';
 import { Order } from '../../domain/entities/order.entity';
 import { OrderStatus } from '../../domain/entities/order-status';
 import { OrderDto } from '../../domain/entities/order.dto';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class OrderFirebaseRepository extends OrderRepository {
   private basePath = 'orders';
-  menuKey = 'menuKey_zeuspub';
+ // menuKey = 'menuKey_zeuspub';
+    menuKey = environment.key;
 
   // private cartSubject = new BehaviorSubject<Cart>(new Cart('', {}));
   // cart$ = this.cartSubject.asObservable();

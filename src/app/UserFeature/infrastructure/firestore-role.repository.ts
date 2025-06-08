@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { RoleRepository } from '../domain/repositories/role.repository';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -10,7 +11,8 @@ import { RoleRepository } from '../domain/repositories/role.repository';
 export class FirestoreRoleRepository extends RoleRepository {
   // private baseUrl = 'https://rodb-56626-default-rtdb.europe-west1.firebasedatabase.app/users/';
   private baseUrl = 'https://adisyon-project-default-rtdb.europe-west1.firebasedatabase.app/users/';
-  menuKey = 'menuKey_zeuspub';
+  // menuKey = 'menuKey_zeuspub';
+  menuKey = environment.key;
 
 
   constructor(private http: HttpClient) {

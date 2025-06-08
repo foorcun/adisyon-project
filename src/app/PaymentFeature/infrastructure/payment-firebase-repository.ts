@@ -15,6 +15,7 @@ import { Payment } from '../domain/entities/payment.entity';
 import { PaymentCommand } from '../domain/entities/payment-command';
 import { SubPayment } from '../domain/entities/sub-payment.entity';
 import { PaymentMapper } from '../domain/entities/payment.mapper';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
     providedIn: 'root',
@@ -25,7 +26,8 @@ export class PaymentFirebaseRepository extends PaymentRepository {
     private paymentsSubject = new BehaviorSubject<{ [tableId: string]: Payment }>({});
     payments$ = this.paymentsSubject.asObservable();
 
-    menuKey = 'menuKey_zeuspub';
+    // menuKey = 'menuKey_zeuspub';
+    menuKey = environment.key;
 
     constructor(private database: Database) {
         super();

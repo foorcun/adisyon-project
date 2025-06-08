@@ -5,6 +5,7 @@ import { Menu } from '../domain/entity/menu.entity';
 import { MenuMapper } from '../domain/entity/menu-mapper';
 import { Category } from '../domain/entity/category.entity';
 import { MenuItem } from '../domain/entity/menuitem.entity';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
     providedIn: 'root',
@@ -14,7 +15,8 @@ export class MenuFirebaseRepository {
     private menuSubject = new BehaviorSubject<Menu | null>(null);
     menu$ = this.menuSubject.asObservable();
     // menuKey = 'menuKey1';
-    menuKey = 'menuKey_zeuspub';
+    // menuKey = 'menuKey_zeuspub';
+    menuKey = environment.key;
 
     constructor(private database: Database) { }
 
