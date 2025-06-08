@@ -1,3 +1,5 @@
+$primary-color: #87764c;
+
 .menu-item-container {
   width: 30vw;
   height: 60vh; /* Keeps the component within a fixed height */
@@ -44,7 +46,7 @@ h3,
 }
 
 .menu-items-list::-webkit-scrollbar-thumb {
-  background-color: #4c3398;
+  background-color: $primary-color;
   border-radius: 6px;
 }
 
