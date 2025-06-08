@@ -10,6 +10,7 @@ import { OrderStatus } from '../../../OrderFeature/domain/entities/order-status'
 import { UserService } from '../../../services/user.service';
 import { UserWithRole } from '../../../UserFeature/domain/entities/user-with-role';
 import { OrderService } from '../../../services/order.service';
+import { TableService } from '../../../services/table.service';
 
 @Component({
   selector: 'app-cart-area',
@@ -27,6 +28,7 @@ export class CartAreaComponent implements OnInit, OnDestroy {
 
   constructor(
     private tableDetailsPageFacadeService: TableDetailsPageFacadeService,
+    private tableService: TableService,
     private orderService: OrderService,
     private userService: UserService
   ) { }
@@ -92,7 +94,7 @@ export class CartAreaComponent implements OnInit, OnDestroy {
     const orderDto: OrderDto = {
       id: '',
       items: orderItems,
-      tableUUID: this.tableDetailsPageFacadeService.getTable()?.id || '',
+      tableUUID: this.tableService.getSelectedTable()?.id || '',
       status: OrderStatus.PENDING,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),

@@ -14,8 +14,8 @@ import { CartItem } from '../CartFeature/domain/entity/cart-item';
   providedIn: 'root'
 })
 export class TableDetailsPageFacadeService {
-  private tableSubject = new BehaviorSubject<Table | null>(null);
-  table$ = this.tableSubject.asObservable();
+public table$!: Observable<Table | undefined>;
+
 
   private ordersSubject = new BehaviorSubject<Order[]>([]);
   orders$ = this.ordersSubject.asObservable();
@@ -30,10 +30,10 @@ export class TableDetailsPageFacadeService {
   error$ = this.errorSubject.asObservable();
 
   private selectedCategorySubject = new BehaviorSubject<Category | null>(null);
-  selectedCategory$ = this.selectedCategorySubject.asObservable(); // ✅ Expose as Observable
+  selectedCategory$ = this.selectedCategorySubject.asObservable();
 
   private activeCartSubject = new BehaviorSubject<Cart | null>(null);
-  activeCart$ = this.activeCartSubject.asObservable(); // ✅ Expose as Observable
+  activeCart$ = this.activeCartSubject.asObservable();
 
   public selectedQuantity: number | null = null;
 
@@ -42,28 +42,26 @@ export class TableDetailsPageFacadeService {
     private orderService: OrderService,
     private menuService: MenuService
   ) {
-    // this.heartBeat();
+  this.table$ = this.tableService.selectedTable$;
+
     this.activeCartSubject.next(new Cart('active-cart'));
   }
 
-  /** ✅ Log a Heartbeat Message */
   heartBeat(): void {
     console.log("[TableDetailsPageFacadeService] - Heartbeat, I'm alive!");
   }
 
-  /** ✅ Fetch Table Details */
   fetchTableDetails(tableId: string): void {
     const table = this.tableService.getTables()[tableId] || null;
-    this.tableSubject.next(table);
-
     if (table) {
+      this.tableService.setSelectedTable(table);
       this.fetchOrdersForTable(table.name);
     } else {
+      this.tableService.setSelectedTable(undefined);
       this.errorSubject.next('Table not found.');
     }
   }
 
-  /** ✅ Fetch Orders for a Table */
   fetchOrdersForTable(tableUUID: string): void {
     this.loadingSubject.next(true);
     this.orderService.orders$.subscribe({
@@ -80,7 +78,6 @@ export class TableDetailsPageFacadeService {
     });
   }
 
-  /** ✅ Fetch Categories */
   fetchCategories(): void {
     this.loadingSubject.next(true);
     this.menuService.categories$.pipe(
@@ -105,11 +102,6 @@ export class TableDetailsPageFacadeService {
     });
   }
 
-  /** ✅ Get Latest Values Without Using Observables */
-  getTable(): Table | null {
-    return this.tableSubject.getValue();
-  }
-
   getOrders(): Order[] {
     return this.ordersSubject.getValue();
   }
@@ -126,18 +118,15 @@ export class TableDetailsPageFacadeService {
     return this.errorSubject.getValue();
   }
 
-  /** ✅ Handle Back Navigation */
   goBack(): void {
     window.history.back();
   }
 
-  /** ✅ Set the selected category */
   setSelectedCategory(category: Category): void {
     console.log(`[TableDetailsPageFacadeService] - Selected Category:`, category);
     this.selectedCategorySubject.next(category);
   }
 
-  /** ✅ Add Item to Cart */
   addItemToCart(cartItem: CartItem): void {
     const activeCart = this.activeCartSubject.getValue();
     if (activeCart) {

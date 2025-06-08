@@ -14,7 +14,6 @@ export class TableService {
   private selectedTableSubject = new BehaviorSubject<Table | undefined>(undefined);
   selectedTable$ = this.selectedTableSubject.asObservable();
 
-
   constructor(private tableRepository: TableFirebaseRepository) {
     this.listenForTablesChanges(); // 🔥 Listen immediately when the service is initialized
   }
@@ -23,14 +22,13 @@ export class TableService {
     this.tableRepository.listenForTablesChanges();
     this.tableRepository.tables$.subscribe(tables => {
       if (tables) {
-        console.log("[TableService] tables: ", tables)
+        console.log("[TableService] tables: ", tables);
         this.tablesSubject.next(tables);
       }
     });
   }
 
   getTables(): { [key: string]: Table } {
-    // return this.tablesSubject.getValue();
     const tables = this.tablesSubject.getValue();
 
     // Convert to array, sort by name using natural sorting, then back to an object
@@ -44,16 +42,14 @@ export class TableService {
     return sortedTablesArray;
   }
 
-
-
-  // ✅ Expose Create Table Function
+  /** ✅ Expose Create Table Function */
   createTable(table: Table): Observable<void> {
     return this.tableRepository.createTable(table);
   }
+
   updateTable(tableId: string, updates: Partial<Table>): Observable<void> {
     return this.tableRepository.updateTable(tableId, updates);
   }
-
 
   /** ✅ Delete a table */
   deleteTable(tableId: string): Observable<void> {
@@ -65,18 +61,26 @@ export class TableService {
     return tables[tableId]?.name;
   }
 
-  setSelectedTable(table: Table) {
-    console.log("[PaymentFirebaseRepository] selected table.id" + table.id)
+  /** ✅ Allow setting table to undefined (fixes TS2345 error) */
+  setSelectedTable(table: Table | undefined): void {
+    if (table) {
+      console.log("[TableService] selected table.id:", table.id);
+    } else {
+      console.warn("[TableService] clearing selected table (undefined)");
+    }
     this.selectedTableSubject.next(table);
   }
+
   getSelectedTableSync(): Table | undefined {
     return this.selectedTableSubject.getValue();
   }
-
 
   /** ✅ Update only the table's status */
   updateTableStatus(tableId: string, newStatus: TableStatus): Observable<void> {
     return this.updateTable(tableId, { status: newStatus });
   }
 
+  getSelectedTable(): Table | undefined {
+    return this.selectedTableSubject.getValue();
+  }
 }

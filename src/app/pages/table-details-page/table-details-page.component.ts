@@ -29,7 +29,8 @@ import { QuantityBeltComponent } from './quantity-belt/quantity-belt.component';
   ]
 })
 export class TableDetailsPageComponent implements OnInit, OnDestroy {
-  table: Table | null = null;
+  table: Table | undefined;
+
   orders: Order[] = [];
   categories: Category[] = [];
   loading: boolean = true;

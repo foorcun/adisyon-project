@@ -10,6 +10,7 @@ import { OrderItem } from '../../../../OrderFeature/domain/entities/order-item.e
 import { ProductOrder } from '../../../../OrderFeature/domain/entities/product-order.entity';
 import { OrderDto } from '../../../../OrderFeature/domain/entities/order.dto';
 import { OrderStatus } from '../../../../OrderFeature/domain/entities/order-status';
+import { TableService } from '../../../../services/table.service';
 
 @Component({
   selector: 'app-cart-area-mobile',
@@ -26,6 +27,7 @@ export class CartAreaMobileComponent {
 
   constructor(
     private tableDetailsPageFacadeService: TableDetailsPageFacadeService,
+    private tableService: TableService,
     private orderService: OrderService,
     private userService: UserService
   ) { }
@@ -87,7 +89,7 @@ export class CartAreaMobileComponent {
     const orderDto: OrderDto = {
       id: '',
       items: orderItems,
-      tableUUID: this.tableDetailsPageFacadeService.getTable()?.id || '',
+      tableUUID: this.tableService.getSelectedTable()?.id || '',
       status: OrderStatus.PENDING,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
