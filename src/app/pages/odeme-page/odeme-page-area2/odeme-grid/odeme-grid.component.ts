@@ -14,7 +14,9 @@ export class OdemeGridComponent {
   ) { }
 
   handleClick(value: string): void {
-    this.odemePageFacadeService.updatePaymentAmount(value);
+    if (value != "-") {
+      this.odemePageFacadeService.updatePaymentAmount(value);
+    }
   }
 
 
