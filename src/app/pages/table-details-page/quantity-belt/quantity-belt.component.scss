@@ -1,4 +1,4 @@
-
+$primary-color: #87764c;
 $secondary-color: #ffc107;
 
 .quantity-belt {
@@ -28,7 +28,7 @@ $secondary-color: #ffc107;
   padding: 10px 15px;
   font-size: 1.5rem;
   text-align: center;
-  background-color: #4c3398;
+  background-color: $primary-color;
   color: white;
   border-radius: 10px;
   cursor: pointer;

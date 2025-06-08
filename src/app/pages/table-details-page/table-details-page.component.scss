@@ -32,7 +32,7 @@ $primary-color: #87764c;
     align-items: center;
     font-size: 2rem;
     font-weight: bold;
-    color: #4c3398;
+    color: $primary-color;
   }
 
   /* Merging Top row (full width) */

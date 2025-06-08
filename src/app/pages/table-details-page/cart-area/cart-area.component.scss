@@ -1,3 +1,4 @@
+$primary-color: #87764c;
 .cart-area {
   width: 30vw; /* ✅ Fixed width for the cart */
   height: 60vh; /* ✅ Fixed height */
@@ -44,7 +45,7 @@ h3 {
 }
 
 .cart-list::-webkit-scrollbar-thumb {
-  background-color: #4c3398;
+  background-color: $primary-color;
   border-radius: 6px;
 }
 
@@ -86,7 +87,7 @@ h3 {
 }
 
 .quantity-btn {
-  background: #4c3398;
+  background: $primary-color;
   color: white;
   border: none;
   padding: 5px 10px;
@@ -97,14 +98,14 @@ h3 {
   transition: background 0.2s;
 
   &:hover {
-    background: #372675;
+    background: $primary-color;
   }
 }
 
 .quantity-number {
   font-size: 1.2rem;
   font-weight: bold;
-  color: #4C3398;
+  color: $primary-color;
   min-width: 30px;
   text-align: center;
 }
@@ -151,7 +152,7 @@ h3 {
 
 /* Order Button */
 .order-btn {
-  background: #4c3398;
+  background: $primary-color;
   color: white;
   border: none;
   padding: 8px 16px;
@@ -162,7 +163,7 @@ h3 {
   transition: background 0.2s;
 
   &:hover {
-    background: #372675;
+    background: $primary-color;
   }
 
   &:disabled {
