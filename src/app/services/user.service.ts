@@ -70,10 +70,11 @@ export class UserService {
    * @param firebaseUser The Firebase user object.
    */
   private fetchUserWithRole(firebaseUser: User): void {
+    console.log("firebase user : ", firebaseUser)
     this.getUserRoleUseCase.execute(firebaseUser.uid).subscribe({
       next: (role) => {
         console.log(`Fetched role for UID ${firebaseUser.uid}:`, role);
-        const userRole = (role as unknown as UserRole) || Role.USER; // Default to 'USER' if role is null
+        const userRole = new UserRole('uid123', role! as Role, '2025-06-09'); // Default to 'USER' if role is null
         const userWithRole = new UserWithRole(firebaseUser, userRole);
         this.currentUserWithRoleSubject.next(userWithRole);
       },

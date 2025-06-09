@@ -27,7 +27,8 @@ export class NavbarBootstrapComponent {
   }
 
   get isAdmin(): boolean {
-    return this.currentUserWithRole?.role.roleName === Role.ADMIN;
+    // return this.currentUserWithRole?.role === Role.ADMIN;
+    return this.currentUserWithRole?.isAdmin() || false;
   }
   toggleNavbar(): void {
     const navbar = document.querySelector('.navbar-collapse');

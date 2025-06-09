@@ -6,9 +6,16 @@ export class UserWithRole {
   constructor(
     public firebaseUser: User, // Firebase's User object
     public role: UserRole, // UserRole as a separate property
-  ) {}
+  ) { }
 
-  isUser(){
+  isUser() {
     return this.role.roleName === Role.USER;
   }
+
+  isAdmin() {
+    console.log('[UserWithRole] Checking if user is admin:', this.role);
+    console.log('[UserWithRole] ', this.role.roleName);
+    return this.role.roleName === Role.ADMIN;
+  }
+
 }
