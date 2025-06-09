@@ -1,9 +1,13 @@
+import { SubPaymentItem } from "./sub-payment-item.interface";
+
 export class SubPayment {
   constructor(
     public method: string,
     public amount: number,
     public createdAt: Date = new Date(),
-    public subPaymentItems: { productId: string; quantity: number }[] = []
+    // public subPaymentItems: { productId: string; quantity: number }[] = []
+    public subPaymentItems: SubPaymentItem[] = []
+
   ) {}
 
   toPlainObject(): any {
