@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { OrderService } from '../../services/order.service';
 import { UserService } from '../../services/user.service';
-import { UserWithRole } from '../../UserFeature/domain/entities/user-with-role';
+import { UserWithRole } from '../../UserFeature/domain/entities/user-with-role.entity';
 import { Order } from '../../OrderFeature/domain/entities/order.entity';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';

@@ -1,8 +1,8 @@
 import { Component, Renderer2 } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { UserService } from '../../services/user.service';
-import { UserWithRole } from '../../UserFeature/domain/entities/user-with-role';
-import { UserRole } from '../../UserFeature/domain/entities/user-role.entity';
+import { UserWithRole } from '../../UserFeature/domain/entities/user-with-role.entity';
+import { CustomUser } from '../../UserFeature/domain/entities/custom-user.entity';
 import { CommonModule } from '@angular/common';
 import { Role } from '../../UserFeature/domain/entities/role.enum';
 

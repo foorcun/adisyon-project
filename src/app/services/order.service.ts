@@ -5,7 +5,7 @@ import { Order } from '../OrderFeature/domain/entities/order.entity';
 import { OrderDto } from '../OrderFeature/domain/entities/order.dto';
 import { OrderStatus } from '../OrderFeature/domain/entities/order-status';
 import { UserService } from './user.service';
-import { UserWithRole } from '../UserFeature/domain/entities/user-with-role';
+import { UserWithRole } from '../UserFeature/domain/entities/user-with-role.entity';
 
 @Injectable({
   providedIn: 'root',

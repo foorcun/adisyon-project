@@ -13,7 +13,7 @@ import { CartPageNavbarComponent } from './cart-page-navbar/cart-page-navbar.com
 import { CartService } from '../../services/cart.service';
 import { filter, take } from 'rxjs/operators';
 import { UserService } from '../../services/user.service';
-import { UserWithRole } from '../../UserFeature/domain/entities/user-with-role';
+import { UserWithRole } from '../../UserFeature/domain/entities/user-with-role.entity';
 import { Order } from '../../OrderFeature/domain/entities/order.entity';
 import { OrderStatus } from '../../OrderFeature/domain/entities/order-status';
 import { OrderItem } from '../../OrderFeature/domain/entities/order-item.entity';

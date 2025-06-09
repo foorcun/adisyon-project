@@ -4,7 +4,7 @@ import { Cart } from '../CartFeature/domain/entity/cart';
 import { CartFirebase2Repository } from '../CartFeature/infrastructure/repositories/cart-firebase2.repository';
 import { CartItem } from '../CartFeature/domain/entity/cart-item';
 import { UserService } from './user.service';
-import { UserWithRole } from '../UserFeature/domain/entities/user-with-role';
+import { UserWithRole } from '../UserFeature/domain/entities/user-with-role.entity';
 import { OrderRepository } from '../OrderFeature/domain/repositories/order-repository';
 import { Order } from '../OrderFeature/domain/entities/order.entity';
 import { OrderDto } from '../OrderFeature/domain/entities/order.dto';

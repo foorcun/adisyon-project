@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { Cart } from '../../../../CartFeature/domain/entity/cart';
 import { Subscription } from 'rxjs';
-import { UserWithRole } from '../../../../UserFeature/domain/entities/user-with-role';
+import { UserWithRole } from '../../../../UserFeature/domain/entities/user-with-role.entity';
 import { TableDetailsPageFacadeService } from '../../../../services/table-details-page.facade.service';
 import { OrderService } from '../../../../services/order.service';
 import { UserService } from '../../../../services/user.service';

@@ -1,6 +1,6 @@
 import { Role } from "./role.enum";
 
-export class UserRole {
+export class CustomUser {
   constructor(
     public userId: string, // uid
     public roleName: Role, // role

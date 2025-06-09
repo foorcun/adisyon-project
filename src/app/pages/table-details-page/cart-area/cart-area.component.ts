@@ -8,7 +8,7 @@ import { ProductOrder } from '../../../OrderFeature/domain/entities/product-orde
 import { OrderDto } from '../../../OrderFeature/domain/entities/order.dto';
 import { OrderStatus } from '../../../OrderFeature/domain/entities/order-status';
 import { UserService } from '../../../services/user.service';
-import { UserWithRole } from '../../../UserFeature/domain/entities/user-with-role';
+import { UserWithRole } from '../../../UserFeature/domain/entities/user-with-role.entity';
 import { OrderService } from '../../../services/order.service';
 import { TableService } from '../../../services/table.service';
 

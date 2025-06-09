@@ -6,7 +6,7 @@ import { CartFirebase2Repository } from '../../../CartFeature/infrastructure/rep
 import { Router } from '@angular/router';
 import { CartService } from '../../../services/cart.service';
 import { UserService } from '../../../services/user.service';
-import { UserWithRole } from '../../../UserFeature/domain/entities/user-with-role';
+import { UserWithRole } from '../../../UserFeature/domain/entities/user-with-role.entity';
 
 @Component({
   selector: 'app-cart-page-navbar',

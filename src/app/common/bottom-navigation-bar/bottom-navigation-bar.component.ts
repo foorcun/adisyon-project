@@ -1,11 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Observable } from 'rxjs';
 import { UserService } from '../../services/user.service';
-import { UserRole } from '../../UserFeature/domain/entities/user-role.entity';
-import { UserWithRole } from '../../UserFeature/domain/entities/user-with-role';
 import { CartService } from '../../services/cart.service';
+import { UserWithRole } from '../../UserFeature/domain/entities/user-with-role.entity';
 import { Role } from '../../UserFeature/domain/entities/role.enum';
 
 @Component({
@@ -18,7 +16,7 @@ import { Role } from '../../UserFeature/domain/entities/role.enum';
 export class BottomNavigationBarComponent {
 
   activeRoute: string = 'home-page';
-  thisRole: Role | null = null;
+  currentRole: Role | null = null;
 
   navItems = [
     { id: 'home', label: 'Home', icon: 'fas fa-home', route: 'home-page' },
@@ -32,9 +30,11 @@ export class BottomNavigationBarComponent {
     },
     { id: 'profile', label: 'Profile', icon: 'fas fa-user', route: 'profile-page' },
     {
-      id: 'orders', label: 'Siparişlerim', icon: 'fas fa-store', route: 'user-orders-page',
-
-      disabled: false // 👈 Temporarily disable
+      id: 'orders',
+      label: 'Siparişlerim',
+      icon: 'fas fa-store',
+      route: 'user-orders-page',
+      disabled: false
     }
   ];
 
@@ -43,13 +43,15 @@ export class BottomNavigationBarComponent {
     private cartService: CartService,
     private userService: UserService
   ) {
+    // Update cart badge
     this.cartService.cart$.subscribe(cart => {
       this.updateBadge('cart', cart.getItemsCount());
     });
 
+    // Get current user and update navigation
     this.userService.currentUserWithRole$.subscribe((userWithRole: UserWithRole | null) => {
-      if (userWithRole) {
-        this.thisRole = userWithRole.role as unknown as Role;
+      if (userWithRole?.customUser) {
+        this.currentRole = userWithRole.customUser.roleName;
         this.updateNavItemsForRole();
       }
     });
@@ -64,16 +66,16 @@ export class BottomNavigationBarComponent {
 
   private updateNavItemsForRole(): void {
     const ordersItem = this.navItems.find(nav => nav.id === 'orders');
-    if (ordersItem) {
-      if (this.thisRole === Role.ADMIN) {
-        ordersItem.label = 'Sipariş';
-        ordersItem.icon = 'fas fa-store';
-        ordersItem.route = 'admin-orders-page';
-      } else {
-        ordersItem.label = 'Siparişlerim';
-        ordersItem.icon = 'fas fa-box';
-        ordersItem.route = 'user-orders-page';
-      }
+    if (!ordersItem || !this.currentRole) return;
+
+    if (this.currentRole === Role.ADMIN) {
+      ordersItem.label = 'Sipariş';
+      ordersItem.icon = 'fas fa-store';
+      ordersItem.route = 'admin-orders-page';
+    } else {
+      ordersItem.label = 'Siparişlerim';
+      ordersItem.icon = 'fas fa-box';
+      ordersItem.route = 'user-orders-page';
     }
   }
 

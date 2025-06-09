@@ -4,7 +4,7 @@ import { UserService } from '../../services/user.service';
 
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { UserWithRole } from '../../UserFeature/domain/entities/user-with-role';
+import { UserWithRole } from '../../UserFeature/domain/entities/user-with-role.entity';
 
 @Component({
   selector: 'app-profile-page',

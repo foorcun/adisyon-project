@@ -4,7 +4,7 @@ import { BehaviorSubject, Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { RoleRepository } from '../domain/repositories/role.repository';
 import { Role } from '../domain/entities/role.enum';
-import { UserRole } from '../domain/entities/user-role.entity';
+import { CustomUser } from '../domain/entities/custom-user.entity';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
@@ -14,7 +14,7 @@ export class FirestoreRoleRepository extends RoleRepository {
   private basePath = 'users';
   private menuKey = environment.key;
 
-  private rolesSubject = new BehaviorSubject<Record<string, UserRole>>({});
+  private rolesSubject = new BehaviorSubject<Record<string, CustomUser>>({});
   roles$ = this.rolesSubject.asObservable();
 
   constructor(private database: Database) {
@@ -30,7 +30,7 @@ export class FirestoreRoleRepository extends RoleRepository {
       (snapshot: DataSnapshot) => {
         const data = snapshot.val();
         if (data) {
-          const rolesMap: Record<string, UserRole> = {};
+          const rolesMap: Record<string, CustomUser> = {};
           for (const [uid, entry] of Object.entries(data)) {
             if (
               typeof entry === 'object' &&
@@ -38,7 +38,7 @@ export class FirestoreRoleRepository extends RoleRepository {
               'role' in entry &&
               'email' in entry
             ) {
-              rolesMap[uid] = new UserRole(
+              rolesMap[uid] = new CustomUser(
                 uid,
                 entry['role'] as Role,
                 entry['email'] as string

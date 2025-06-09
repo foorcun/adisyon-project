@@ -10,9 +10,9 @@ import {
 } from '@angular/fire/auth';
 import { signInAnonymously } from 'firebase/auth';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { UserWithRole } from '../UserFeature/domain/entities/user-with-role';
+import { UserWithRole } from '../UserFeature/domain/entities/user-with-role.entity';
 import { GetUserRoleUseCase } from '../UserFeature/application/usecases/get-user-role.usecase';
-import { UserRole } from '../UserFeature/domain/entities/user-role.entity';
+import { CustomUser } from '../UserFeature/domain/entities/custom-user.entity';
 import { Role } from '../UserFeature/domain/entities/role.enum';
 
 @Injectable({
@@ -72,7 +72,7 @@ export class UserService {
       next: (role) => {
         console.log(`Fetched role for UID ${firebaseUser.uid}:`, role);
         if (role) {
-          const userRole = new UserRole(firebaseUser.uid, role as Role, firebaseUser.email ?? '');
+          const userRole = new CustomUser(firebaseUser.uid, role as Role, firebaseUser.email ?? '');
           const userWithRole = new UserWithRole(firebaseUser, userRole);
           this.currentUserWithRoleSubject.next(userWithRole);
         } else {
