@@ -45,6 +45,8 @@ export class FirestoreRoleRepository extends RoleRepository {
               );
             }
           }
+          console.log('[FirestoreRoleRepository] Roles updated:', rolesMap);
+          // Update the BehaviorSubject with the new roles map
           this.rolesSubject.next(rolesMap);
         } else {
           this.rolesSubject.next({});

@@ -14,15 +14,12 @@ import { UserWithRole } from '../UserFeature/domain/entities/user-with-role';
 import { GetUserRoleUseCase } from '../UserFeature/application/usecases/get-user-role.usecase';
 import { UserRole } from '../UserFeature/domain/entities/user-role.entity';
 import { Role } from '../UserFeature/domain/entities/role.enum';
-// import { GetUserRoleUseCase } from '../UserFeature/application/usecases/get-user-role.usecase';
-// import { UserWithRole } from '../UserFeature/domain/entities/user-with-role';
-// import { UserRole } from '../UserFeature/domain/entities/user-role.enum';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
-  private currentUserWithRoleSubject: BehaviorSubject<UserWithRole | null> = new BehaviorSubject<UserWithRole | null>(null);
+  private currentUserWithRoleSubject = new BehaviorSubject<UserWithRole | null>(null);
   public currentUserWithRole$: Observable<UserWithRole | null> = this.currentUserWithRoleSubject.asObservable();
 
   constructor(private auth: Auth, private getUserRoleUseCase: GetUserRoleUseCase) {
@@ -70,13 +67,18 @@ export class UserService {
    * @param firebaseUser The Firebase user object.
    */
   private fetchUserWithRole(firebaseUser: User): void {
-    console.log("firebase user : ", firebaseUser)
+    console.log('firebase user :', firebaseUser);
     this.getUserRoleUseCase.execute(firebaseUser.uid).subscribe({
       next: (role) => {
         console.log(`Fetched role for UID ${firebaseUser.uid}:`, role);
-        const userRole = new UserRole('uid123', role! as Role, '2025-06-09'); // Default to 'USER' if role is null
-        const userWithRole = new UserWithRole(firebaseUser, userRole);
-        this.currentUserWithRoleSubject.next(userWithRole);
+        if (role) {
+          const userRole = new UserRole(firebaseUser.uid, role as Role, firebaseUser.email ?? '');
+          const userWithRole = new UserWithRole(firebaseUser, userRole);
+          this.currentUserWithRoleSubject.next(userWithRole);
+        } else {
+          console.warn(`[UserService] No role found for UID ${firebaseUser.uid}`);
+          this.currentUserWithRoleSubject.next(null);
+        }
       },
       error: (err) => {
         console.error('Error fetching user role:', err);
