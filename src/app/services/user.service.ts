@@ -12,7 +12,8 @@ import { signInAnonymously } from 'firebase/auth';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { UserWithRole } from '../UserFeature/domain/entities/user-with-role';
 import { GetUserRoleUseCase } from '../UserFeature/application/usecases/get-user-role.usecase';
-import { UserRole } from '../UserFeature/domain/entities/user-role.enum';
+import { UserRole } from '../UserFeature/domain/entities/user-role.entity';
+import { Role } from '../UserFeature/domain/entities/role.enum';
 // import { GetUserRoleUseCase } from '../UserFeature/application/usecases/get-user-role.usecase';
 // import { UserWithRole } from '../UserFeature/domain/entities/user-with-role';
 // import { UserRole } from '../UserFeature/domain/entities/user-role.enum';
@@ -72,7 +73,7 @@ export class UserService {
     this.getUserRoleUseCase.execute(firebaseUser.uid).subscribe({
       next: (role) => {
         console.log(`Fetched role for UID ${firebaseUser.uid}:`, role);
-        const userRole = role as UserRole || UserRole.USER; // Default to 'USER' if role is null
+        const userRole = (role as unknown as UserRole) || Role.USER; // Default to 'USER' if role is null
         const userWithRole = new UserWithRole(firebaseUser, userRole);
         this.currentUserWithRoleSubject.next(userWithRole);
       },

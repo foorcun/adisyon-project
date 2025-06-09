@@ -1,13 +1,14 @@
 import { User } from '@angular/fire/auth';
-import { UserRole } from './user-role.enum'; // Optional enum for roles
+import { UserRole } from './user-role.entity'; // Optional enum for roles
+import { Role } from './role.enum';
 
 export class UserWithRole {
   constructor(
     public firebaseUser: User, // Firebase's User object
-    public role: UserRole, // Role as a separate property
+    public role: UserRole, // UserRole as a separate property
   ) {}
 
   isUser(){
-    return this.role === UserRole.USER
+    return this.role.roleName === Role.USER;
   }
 }

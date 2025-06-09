@@ -2,8 +2,9 @@ import { Component, Renderer2 } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { UserService } from '../../services/user.service';
 import { UserWithRole } from '../../UserFeature/domain/entities/user-with-role';
-import { UserRole } from '../../UserFeature/domain/entities/user-role.enum';
+import { UserRole } from '../../UserFeature/domain/entities/user-role.entity';
 import { CommonModule } from '@angular/common';
+import { Role } from '../../UserFeature/domain/entities/role.enum';
 
 @Component({
   selector: 'app-navbar-bootstrap',
@@ -26,7 +27,7 @@ export class NavbarBootstrapComponent {
   }
 
   get isAdmin(): boolean {
-    return this.currentUserWithRole?.role === UserRole.ADMIN;
+    return this.currentUserWithRole?.role.roleName === Role.ADMIN;
   }
   toggleNavbar(): void {
     const navbar = document.querySelector('.navbar-collapse');

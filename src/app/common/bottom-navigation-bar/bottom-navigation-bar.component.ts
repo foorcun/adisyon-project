@@ -3,9 +3,10 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { UserService } from '../../services/user.service';
-import { UserRole } from '../../UserFeature/domain/entities/user-role.enum';
+import { UserRole } from '../../UserFeature/domain/entities/user-role.entity';
 import { UserWithRole } from '../../UserFeature/domain/entities/user-with-role';
 import { CartService } from '../../services/cart.service';
+import { Role } from '../../UserFeature/domain/entities/role.enum';
 
 @Component({
   selector: 'app-bottom-navigation-bar',
@@ -17,7 +18,7 @@ import { CartService } from '../../services/cart.service';
 export class BottomNavigationBarComponent {
 
   activeRoute: string = 'home-page';
-  userRole: UserRole | null = null;
+  thisRole: Role | null = null;
 
   navItems = [
     { id: 'home', label: 'Home', icon: 'fas fa-home', route: 'home-page' },
@@ -48,7 +49,7 @@ export class BottomNavigationBarComponent {
 
     this.userService.currentUserWithRole$.subscribe((userWithRole: UserWithRole | null) => {
       if (userWithRole) {
-        this.userRole = userWithRole.role;
+        this.thisRole = userWithRole.role as unknown as Role;
         this.updateNavItemsForRole();
       }
     });
@@ -64,7 +65,7 @@ export class BottomNavigationBarComponent {
   private updateNavItemsForRole(): void {
     const ordersItem = this.navItems.find(nav => nav.id === 'orders');
     if (ordersItem) {
-      if (this.userRole === UserRole.ADMIN) {
+      if (this.thisRole === Role.ADMIN) {
         ordersItem.label = 'Sipariş';
         ordersItem.icon = 'fas fa-store';
         ordersItem.route = 'admin-orders-page';
