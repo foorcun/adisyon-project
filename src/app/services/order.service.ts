@@ -6,6 +6,8 @@ import { OrderDto } from '../OrderFeature/domain/entities/order.dto';
 import { OrderStatus } from '../OrderFeature/domain/entities/order-status';
 import { UserService } from './user.service';
 import { UserWithRole } from '../UserFeature/domain/entities/user-with-role.entity';
+import { LoggerService } from './logger.service';
+import { BreadcrumbService } from './breadcrumb.service';
 
 @Injectable({
   providedIn: 'root',
@@ -18,7 +20,9 @@ export class OrderService {
 
   constructor(
     private orderRepository: OrderFirebaseRepository,
-    private userService: UserService
+    private userService: UserService,
+    private logger: LoggerService,
+    private breadcrumbService: BreadcrumbService
   ) {
 
     this.userService.currentUserWithRole$.subscribe(user => {
@@ -59,6 +63,7 @@ export class OrderService {
 
   /** ✅ Create a new order */
   createOrder(order: OrderDto): Observable<string> {
+    this.logger.log(`[OrderService] createOrder called with breadcrumb=${this.breadcrumbService.getBreadcrumbId()} order=${JSON.stringify(order)}`);
     return this.orderRepository.createOrder(order);
   }
 

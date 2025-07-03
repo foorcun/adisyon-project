@@ -7,14 +7,16 @@ import { Order } from '../../domain/entities/order.entity';
 import { OrderStatus } from '../../domain/entities/order-status';
 import { OrderDto } from '../../domain/entities/order.dto';
 import { environment } from '../../../../environments/environment';
+import { LoggerService } from '../../../services/logger.service';
+import { BreadcrumbService } from '../../../services/breadcrumb.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class OrderFirebaseRepository extends OrderRepository {
   private basePath = 'orders';
- // menuKey = 'menuKey_zeuspub';
-    menuKey = environment.key;
+  // menuKey = 'menuKey_zeuspub';
+  menuKey = environment.key;
 
   // private cartSubject = new BehaviorSubject<Cart>(new Cart('', {}));
   // cart$ = this.cartSubject.asObservable();
@@ -23,7 +25,11 @@ export class OrderFirebaseRepository extends OrderRepository {
   orders$ = this.ordersSubject.asObservable();
 
 
-  constructor(private database: Database) {
+  constructor(
+    private database: Database,
+    private logger: LoggerService,
+    private breadcrumbService: BreadcrumbService
+  ) {
     super();
   }
 
@@ -70,17 +76,21 @@ export class OrderFirebaseRepository extends OrderRepository {
 
 
   createOrder(order: OrderDto): Observable<string> {
-    console.log("[OrderFirebaseRepository] - Creating order...", order);
+    this.logger.log(`[OrderFirebaseRepository] Creating order with breadcrumb=${this.breadcrumbService.getBreadcrumbId()} order=${JSON.stringify(order)}`);
+
     return new Observable((observer) => {
       const orderRef = push(ref(this.database, `${this.basePath}/${this.menuKey}`));
 
       set(orderRef, order)
         .then(() => {
+          this.logger.log(`[OrderFirebaseRepository] Order created successfully with breadcrumb=${this.breadcrumbService.getBreadcrumbId()} id=${orderRef.key}`);
           observer.next(orderRef.key as string); // Firebase-generated ID
           observer.complete();
-          console.log("[OrderFirebaseRepository] - Order created successfully.");
         })
-        .catch((error) => observer.error(error));
+        .catch((error) => {
+          this.logger.error(`[OrderFirebaseRepository] Order creation failed with breadcrumb=${this.breadcrumbService.getBreadcrumbId()}`, error);
+          observer.error(error);
+        });
     });
   }
 
