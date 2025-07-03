@@ -123,7 +123,8 @@ export class OdemePageFacadeService2 {
     );
 
     this.canCloseTable$ = this.remainingInfo$.pipe(
-      map(info => info.label === 'Tam Ödendi' && info.amount === 0)
+      // map(info => info.label === 'Tam Ödendi' && info.amount === 0)
+      map(info => info.label === 'Tam Ödendi' || info.label === 'Para Üstü')
     );
   }
 
@@ -265,7 +266,7 @@ export class OdemePageFacadeService2 {
       console.log('[OdemePageFacadeService][OrderFirebaseRepository] Current Payment:', currentPayment);
     }
 
-    const archivedPayment = new ArchivedPayment(
+    var archivedPayment = new ArchivedPayment(
       currentPayment.tableId,
       currentPayment.totalAmount,
       currentPayment.subPayments,
@@ -274,6 +275,10 @@ export class OdemePageFacadeService2 {
       new Date(), // closedAt
       currentPayment.orders
     );
+
+    this.remainingInfo$.subscribe(change=>{
+      archivedPayment.change = change.amount
+    })
 
     console.log('[OdemePageFacadeService] Archived Payment:', archivedPayment);
 

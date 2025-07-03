@@ -1,5 +1,4 @@
 import { PaymentOrderItem } from "./payment-order-item.entity";
-import { Payment } from './payment.entity';
 
 export class PaymentOrder {
   constructor(

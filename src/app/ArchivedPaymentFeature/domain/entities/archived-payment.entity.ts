@@ -9,6 +9,7 @@ export class ArchivedPayment {
     public readonly isClosed: boolean,
     public readonly createdAt: Date,
     public readonly closedAt: Date,
-    public readonly orders: PaymentOrder[]
+    public readonly orders: PaymentOrder[],
+    public change: number = 0
   ) {}
 }

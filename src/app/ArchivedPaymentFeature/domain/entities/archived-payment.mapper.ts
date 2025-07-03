@@ -39,7 +39,9 @@ export class ArchivedPaymentMapper {
             })
             : [];
 
-        return new ArchivedPayment(tableId, totalAmount, subPayments, isClosed, createdAt, closedAt, orders);
+        const change = raw['change'] ?? 0; // ✅ Safely fallback to 0 if missing
+
+        return new ArchivedPayment(tableId, totalAmount, subPayments, isClosed, createdAt, closedAt, orders, change);
     }
 
     static toJson(payment: ArchivedPayment): any {
@@ -49,6 +51,7 @@ export class ArchivedPaymentMapper {
             isClosed: payment.isClosed,
             createdAt: payment.createdAt.toISOString(),
             closedAt: payment.closedAt.toISOString(),
+            change: payment.change, // ✅ Include the new field
             subPayments: Object.entries(payment.subPayments).reduce((acc, [key, sub]) => {
                 acc[key] = sub.toPlainObject();
                 return acc;
