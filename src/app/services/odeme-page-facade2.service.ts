@@ -254,6 +254,7 @@ export class OdemePageFacadeService2 {
     return raw ? parseFloat(raw) : 0;
   }
 
+
   closeTableAndSave(): void {
     this.logger.log('[OdemePageFacadeService] Table closure initiated...');
 

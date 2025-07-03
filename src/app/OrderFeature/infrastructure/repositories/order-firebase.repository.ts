@@ -84,6 +84,7 @@ export class OrderFirebaseRepository extends OrderRepository {
       set(orderRef, order)
         .then(() => {
           this.logger.log(`[OrderFirebaseRepository] Order created successfully with breadcrumb=${this.breadcrumbService.getBreadcrumbId()} id=${orderRef.key}`);
+          this.logger.log(`[OrderFirebaseRepository] Order: ${JSON.stringify(order)} | json`);
           observer.next(orderRef.key as string); // Firebase-generated ID
           observer.complete();
         })

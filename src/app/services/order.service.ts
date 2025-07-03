@@ -109,19 +109,37 @@ export class OrderService {
   }
 
   deleteOrdersByTableId(tableId: string): Observable<void> {
-    console.log('[OrderService][OrderFirebaseRepository] Deleting orders for table:', tableId);
+    this.logger.log(`[OrderService] deleteOrdersByTableId called with tableId=${tableId} breadcrumb=${this.breadcrumbService.getBreadcrumbId()}`);
+
     return this.orderRepository.orders$.pipe(
-      map((orders: Order[]) =>
-        orders.filter(order => order.tableUUID === tableId).map(order => order.id)
-      ),
+      map((orders: Order[]) => {
+        const orderIds = orders
+          .filter(order => order.tableUUID === tableId)
+          .map(order => order.id);
+
+        this.logger.log(`[OrderService] Found ${orderIds.length} orders to delete for table=${tableId} breadcrumb=${this.breadcrumbService.getBreadcrumbId()}`);
+        return orderIds;
+      }),
       switchMap((orderIds: string[]) => {
-        if (orderIds.length === 0) return of(void 0); // nothing to delete
-        const deletionObservables = orderIds.map(id =>
-          this.orderRepository.deleteOrder(id)
+        if (orderIds.length === 0) {
+          this.logger.log(`[OrderService] No orders to delete for table=${tableId} breadcrumb=${this.breadcrumbService.getBreadcrumbId()}`);
+          return of(void 0);
+        }
+
+        const deletionObservables = orderIds.map(id => {
+          this.logger.log(`[OrderService] Deleting order id=${id} breadcrumb=${this.breadcrumbService.getBreadcrumbId()}`);
+          return this.orderRepository.deleteOrder(id);
+        });
+
+        return forkJoin(deletionObservables).pipe(
+          map(() => {
+            this.logger.log(`[OrderService] All orders deleted for table=${tableId} breadcrumb=${this.breadcrumbService.getBreadcrumbId()}`);
+            return void 0;
+          })
         );
-        return forkJoin(deletionObservables).pipe(map(() => void 0));
       })
     );
   }
+
 
 }
