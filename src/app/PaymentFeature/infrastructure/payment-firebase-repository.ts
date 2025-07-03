@@ -16,6 +16,8 @@ import { PaymentCommand } from '../domain/entities/payment-command';
 import { SubPayment } from '../domain/entities/sub-payment.entity';
 import { PaymentMapper } from '../domain/entities/payment.mapper';
 import { environment } from '../../../environments/environment';
+import { LoggerService } from '../../services/logger.service';
+import { BreadcrumbService } from '../../services/breadcrumb.service';
 
 @Injectable({
     providedIn: 'root',
@@ -29,7 +31,11 @@ export class PaymentFirebaseRepository extends PaymentRepository {
     // menuKey = 'menuKey_zeuspub';
     menuKey = environment.key;
 
-    constructor(private database: Database) {
+    constructor(
+        private database: Database,
+        private logger: LoggerService,
+        private breadcrumbService: BreadcrumbService,
+    ) {
         super();
         this.listenForPayments();
     }
@@ -87,11 +93,14 @@ export class PaymentFirebaseRepository extends PaymentRepository {
         return new Observable((observer) => {
             push(paymentRef, subPayment.toPlainObject())
                 .then(() => {
+                    this.logger.log(`[PaymentFirebaseRepository] - SubPayment added with breadcrumb=${this.breadcrumbService.getBreadcrumbId()} data=${JSON.stringify(subPayment)}`);
                     observer.next();
                     observer.complete();
-                    console.log(`[PaymentFirebaseRepository] - SubPayment added:`, subPayment);
                 })
-                .catch((error) => observer.error(error));
+                .catch((error) => {
+                    this.logger.error(`[PaymentFirebaseRepository] - SubPayment failed with breadcrumb=${this.breadcrumbService.getBreadcrumbId()}`, error);
+                    observer.error(error);
+                });
         });
     }
 

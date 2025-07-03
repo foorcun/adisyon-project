@@ -18,6 +18,8 @@ import { ArchivedPayment } from '../ArchivedPaymentFeature/domain/entities/archi
 import { ArchivedPaymentService } from './archived-payment.service';
 import { PaymentOrder } from '../PaymentFeature/domain/entities/payment-order.entity';
 import { OrderService } from './order.service';
+import { LoggerService } from './logger.service';
+import { BreadcrumbService } from './breadcrumb.service';
 
 @Injectable({
   providedIn: 'root'
@@ -49,7 +51,9 @@ export class OdemePageFacadeService2 {
     private paymentService: PaymentService,
     private tableService: TableService,
     private archivedPaymentService: ArchivedPaymentService,
-    private orderService: OrderService
+    private orderService: OrderService,
+    private logger: LoggerService,
+    private breadcrumbService: BreadcrumbService
   ) {
     this.selectedTablePayment$ = this.paymentService.selectedTablePayment$;
 
@@ -193,12 +197,12 @@ export class OdemePageFacadeService2 {
 
   pay(amount: number, method: PaymentMethod): void {
     if (!this.tableId) {
-      console.warn('[OdemePageFacadeService] Cannot process payment — no table ID.');
+      this.logger.log('[OdemePageFacadeService] Cannot process payment — no table ID.');
       return;
     }
 
     if (isNaN(amount) || amount <= 0) {
-      console.warn('[OdemePageFacadeService] Invalid payment amount:', amount);
+      this.logger.log(`[OdemePageFacadeService] Invalid payment amount: ${amount}`);
       return;
     }
 
@@ -206,22 +210,25 @@ export class OdemePageFacadeService2 {
       .filter(([item, count]) => count > 0)
       .map(([item, count]) => ({
         productId: item.product.id,
-        quantity: count
+        quantity: count,
       }));
 
     const command = new PaymentCommand(this.tableId, method, amount, subPaymentItems);
 
+    this.logger.log(`[OdemePageFacadeService] SubPayment started with breadcrumb=${this.breadcrumbService.getBreadcrumbId()} command=${JSON.stringify(command)}`);
+
     this.paymentService.addSubPayment(command).subscribe({
       next: () => {
-        console.log('[OdemePageFacadeService] SubPayment successful:', command);
         this.selectedCountMap.clear();
         this._paymentAmount$.next('');
+        this.logger.log(`[OdemePageFacadeService] SubPayment successful with breadcrumb=${this.breadcrumbService.getBreadcrumbId()} command=${JSON.stringify(command)}`);
       },
       error: err => {
-        console.error('[OdemePageFacadeService] SubPayment failed:', err);
+        this.logger.error(`[OdemePageFacadeService] SubPayment failed with breadcrumb=${this.breadcrumbService.getBreadcrumbId()}`, err);
       }
     });
   }
+
 
   deleteSubPaymentAtIndex(index: string): void {
     this.currentPayment$.pipe(
@@ -276,7 +283,7 @@ export class OdemePageFacadeService2 {
       currentPayment.orders
     );
 
-    this.remainingInfo$.subscribe(change=>{
+    this.remainingInfo$.subscribe(change => {
       archivedPayment.change = change.amount
     })
 

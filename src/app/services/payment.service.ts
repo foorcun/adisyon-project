@@ -8,6 +8,8 @@ import { OrderService } from './order.service';
 import { TableService } from './table.service';
 import { PaymentFactory } from '../PaymentFeature/domain/entities/payment-factory';
 import { SubPayment } from '../PaymentFeature/domain/entities/sub-payment.entity';
+import { LoggerService } from './logger.service';
+import { BreadcrumbService } from './breadcrumb.service';
 
 @Injectable({
     providedIn: 'root',
@@ -43,7 +45,9 @@ export class PaymentService {
     constructor(
         private paymentRepository: PaymentFirebaseRepository,
         private orderService: OrderService,
-        private tableService: TableService
+        private tableService: TableService,
+        private logger: LoggerService,
+        private breadcrumbService: BreadcrumbService
     ) {
         this.listenForPayments();
     }
@@ -120,6 +124,7 @@ export class PaymentService {
     }
 
     addSubPayment(command: PaymentCommand): Observable<void> {
+        this.logger.log(`[PaymentService] addSubPayment called with breadcrumb=${this.breadcrumbService.getBreadcrumbId()}`)
         return this.paymentRepository.addSubPayment(command);
     }
 
